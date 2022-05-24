@@ -8,18 +8,42 @@ class Benefit extends Equatable {
   final bool employeeCanRedeem;
   final BenefitType benefitType;
 
-  const Benefit(
+  //detailed_screen
+  String? description;
+  List<String>? benefitWorkflow;
+  List<String>? benefitConditions;
+
+  //popupForm
+  int? minParticipant;
+  int? maxParticipant;
+
+  Benefit(
       {required this.id,
       required this.name,
       required this.year,
       required this.benefitCard,
       required this.employeeCanRedeem,
-      required this.benefitType});
+      required this.benefitType,
+      this.description,
+      this.benefitConditions,
+      this.benefitWorkflow,
+      this.minParticipant,
+      this.maxParticipant});
 
   @override
-  // TODO: implement props
-  List<Object?> get props =>
-      [id, name, year, benefitCard, employeeCanRedeem, benefitType];
+  List<Object?> get props => [
+        id,
+        name,
+        year,
+        benefitCard,
+        employeeCanRedeem,
+        benefitType,
+        description,
+        benefitWorkflow,
+        benefitConditions,
+        minParticipant,
+        maxParticipant
+      ];
 }
 
 class BenefitType extends Equatable {
@@ -29,6 +53,5 @@ class BenefitType extends Equatable {
   const BenefitType({required this.id, required this.name});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id, name];
 }

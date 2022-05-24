@@ -1,14 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:more4u/injection_container.dart';
+import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
-import '../pages/home_screen.dart';
+import '../home/home_screen.dart';
 import '../widgets/utils/loading_dialog.dart';
 import '../widgets/utils/message_dialog.dart';
 import 'cubits/login_cubit.dart';
 import 'cubits/login_states.dart';
-
-
 
 class LoginScreen extends StatefulWidget {
   static const routeName = 'LoginScreen';
@@ -71,110 +70,106 @@ class LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 80.0),
               child: Center(
-                child: Container(
-                    child: Image.asset('assets/images/more4u.png')),
+                child:
+                    Container(child: Image.asset('assets/images/more4u.png')),
               ),
             ),
             BlocConsumer(
-                bloc: _cubit,
-                listener: (context, state) {
-                  if (state is LoginLoadingState) loadingAlertDialog(context);
-                  if (state is LoginErrorState) {
-                    Navigator.pop(context);
-                    showMessageDialog(
-                        context: context,
-                        message: state.message,
-                        isSucceeded: false,
-                        onPressedRetry: (){
-                          print('ha');
-                        }
-                    );
-                  }
-                  if (state is LoginSuccessState) {
-                    print(state.loginResponse);
-                    Navigator.pop(context);
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          HomeScreen.routeName, (Route<dynamic> route) => false);
-                  }
+              bloc: _cubit,
+              listener: (context, state) {
+                if (state is LoginLoadingState) loadingAlertDialog(context);
+                if (state is LoginErrorState) {
+                  Navigator.pop(context);
+                  showMessageDialog(
+                      context: context,
+                      message: state.message,
+                      isSucceeded: false,
+                      onPressedRetry: () {
+                        print('ha');
+                      });
+                }
+                if (state is LoginSuccessState) {
+                  Navigator.pop(context);
+                  print(state.loginResponse);
+                  var homeCubit = HomeCubit.get(context);
+                  homeCubit.benefitModels = state.loginResponse.benefitModels;
+                  homeCubit.availableBenefitModels =
+                      state.loginResponse.availableBenefitModels;
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      HomeScreen.routeName, (Route<dynamic> route) => false);
+                }
+              },
+              builder: (context, state) {
+                return Form(
+                  key: _formKey,
+                  // autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'ID',
+                            hintText: 'ID',
+                            labelStyle: TextStyle(fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, color: Colors.blue),
+                        keyboardType: TextInputType.emailAddress,
+                        controller: _cubit.userNameController,
+                        validator: validateEmail,
+                        // onChanged: (String val) {
+                        //   // user.email = emailController.text.toString();
+                        // },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15.0, right: 15.0, top: 15, bottom: 0),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'password',
+                            hintText: 'password',
+                            labelStyle: TextStyle(fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, color: Colors.blue),
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: true,
+                        controller: _cubit.passwordController,
+                        validator: validatePassword,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 45),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width - 30.0,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: FlatButton(
+                        onPressed: () {
+                          // _cubit.loginUser(User(
+                          //     username: 'nabeh', pass: '123'));
 
-                },
-                builder: (context, state) {
-                  return Form(
-                    key: _formKey,
-                    // autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'email',
-                              hintText: 'emailHint',
-                              labelStyle:
-                              TextStyle(fontWeight: FontWeight.w600)),
+                          _cubit.login();
+
+                          // if (_formKey.currentState!.validate()) {
+                          //   _cubit.login();
+                          // }
+
+                        },
+                        child: Text(
+                          'login',
                           style: TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.blue),
-                          keyboardType: TextInputType.emailAddress,
-                          controller: _cubit.userNameController,
-                          validator: validateEmail,
-                          // onChanged: (String val) {
-                          //   // user.email = emailController.text.toString();
-                          // },
+                              color: Colors.white, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15.0, right: 15.0, top: 15, bottom: 0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'password',
-                              hintText: 'passwordHint',
-                              labelStyle:
-                              TextStyle(fontWeight: FontWeight.w600)),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.blue),
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: true,
-                          controller: _cubit.passwordController,
-                          validator: validatePassword,
-
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 45),
-                        height: 50,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width - 30.0,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: FlatButton(
-                          onPressed: () {
-                            // _cubit.loginUser(User(
-                            //     username: 'nabeh', pass: '123'));
-
-                            // _cubit.login();
-
-                            if (_formKey.currentState!.validate()) {
-                              _cubit.login();
-                            }
-                          },
-                          child: Text(
-                            'login',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                    ]),
-                  );
-                },
-          ),
+                    ),
+                  ]),
+                );
+              },
+            ),
           ],
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../presentation/Login/login_screen.dart';
-import '../../../presentation/pages/beneifit_detailed_screen.dart';
-import '../../../presentation/pages/home_screen.dart';
+import '../../../presentation/benefit_details/beneifit_detailed_screen.dart';
+import '../../../presentation/home/home_screen.dart';
 import '../../../presentation/pages/profile.dart';
 
 

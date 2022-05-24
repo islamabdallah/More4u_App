@@ -6,7 +6,7 @@ import 'package:more4u/domain/entities/user.dart';
 import './user_model.dart';
 import '../../domain/entities/login_response.dart';
 import '../../../../../core/models/base_model.dart';
-import 'benifit_model.dart';
+import 'benefit_model.dart';
 
 class LoginResponseModel extends LoginResponse {
   LoginResponseModel(

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:more4u/core/constants/constants.dart';
 import 'package:more4u/domain/usecases/login_user.dart';
 
 import '../../../../../core/utils/services/local_storage/local_storage_service.dart';
@@ -36,6 +37,7 @@ class LoginCubit extends Cubit<LoginStates> {
     result.fold((failure) {
       emit(LoginErrorState(failure.message));
     }, (loginResponse) {
+      userData = loginResponse.user;
       emit(LoginSuccessState(loginResponse));
     });
   }

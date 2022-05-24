@@ -7,8 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:more4u/data/models/user_model.dart';
 import 'package:more4u/presentation/Login/login_screen.dart';
+import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
-import 'presentation/pages/home_screen.dart';
+import 'presentation/home/home_screen.dart';
 import 'core/config/bloc_observer.dart';
 import 'core/config/routes/routes.dart';
 import 'core/utils/services/local_storage/local_storage_service.dart';
@@ -45,13 +46,20 @@ class MyApp extends StatelessWidget {
         designSize: const Size(375, 812),
         minTextAdapt: true,
       builder: (child) {
-        return const MaterialApp(
-          title: 'Flutter Demo',
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: AppRoutes.onGenerateRoutes,
-          initialRoute: LoginScreen.routeName,
-          // initialRoute: HomeScreen.routeName,
-          // initialRoute: BenefitDetailedScreen.routeName,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<HomeCubit>(
+              create: (context) => HomeCubit(),
+            ),
+          ],
+          child: const MaterialApp(
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: AppRoutes.onGenerateRoutes,
+            initialRoute: LoginScreen.routeName,
+            // initialRoute: HomeScreen.routeName,
+            // initialRoute: BenefitDetailedScreen.routeName,
+          ),
         );
       }
     );

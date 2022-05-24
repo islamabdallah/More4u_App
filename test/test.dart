@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:more4u/data/models/benifit_model.dart';
+import 'package:more4u/data/models/benefit_model.dart';
 import 'package:more4u/data/models/login_response_model.dart';
 import 'package:more4u/data/models/user_model.dart';
 
