@@ -3,46 +3,61 @@ import 'package:equatable/equatable.dart';
 class Benefit extends Equatable {
   final int id;
   final String name;
-  final int year;
   final String benefitCard;
+  final int times;
   final bool employeeCanRedeem;
   final BenefitType benefitType;
 
-  //detailed_screen
+  //Data to use in details screen
   String? description;
-  List<String>? benefitWorkflow;
   List<String>? benefitConditions;
+  List<String>? benefitWorkflows;
 
-  //popupForm
-  int? minParticipant;
-  int? maxParticipant;
+  //Data to use in Redeem
+  final bool isAgift;
+  final int minParticipant;
+  final int maxParticipant;
+  String? requiredDocuments;
+  int? numberOfDays;
+  String? dateToMatch;
+  String? certainDate;
 
-  Benefit(
-      {required this.id,
-      required this.name,
-      required this.year,
-      required this.benefitCard,
-      required this.employeeCanRedeem,
-      required this.benefitType,
-      this.description,
-      this.benefitConditions,
-      this.benefitWorkflow,
-      this.minParticipant,
-      this.maxParticipant});
+  Benefit({
+    required this.id,
+    required this.name,
+    required this.benefitCard,
+    required this.times,
+    required this.employeeCanRedeem,
+    required this.benefitType,
+    this.description,
+    this.benefitWorkflows,
+    this.benefitConditions,
+    required this.isAgift,
+    required this.minParticipant,
+    required this.maxParticipant,
+    this.requiredDocuments,
+    this.numberOfDays,
+    this.dateToMatch,
+    this.certainDate,
+  });
 
   @override
   List<Object?> get props => [
         id,
         name,
-        year,
         benefitCard,
+        times,
         employeeCanRedeem,
         benefitType,
         description,
-        benefitWorkflow,
+        benefitWorkflows,
         benefitConditions,
+        isAgift,
         minParticipant,
-        maxParticipant
+        maxParticipant,
+        requiredDocuments,
+        dateToMatch,
+        certainDate,
       ];
 }
 

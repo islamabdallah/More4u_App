@@ -38,5 +38,12 @@ main() {
       },
     );
 
+    test('string to date',(){
+      String birthday = "2021-12-01T00:00:00";
+      print(DateTime.parse(birthday).toString());
+
+    },
+    );
+
   });
 }

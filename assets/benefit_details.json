@@ -26,7 +26,7 @@
     "isVisible": true,
     "createdDate": "2022-05-18T09:02:31.3322852",
     "updatedDate": "2022-05-18T09:02:31.3323995",
-    "employeeCanRedeem": false,
+    "employeeCanRedeem": true,
     "benefitConditions": [
       "Age : Any",
       "Type : Individual",

@@ -131,13 +131,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Expanded(
                     child: TabBarView(controller: _tabController, children: [
                       ListView.builder(
-                        itemBuilder: (context, index) => BenefitCard(),
+                        itemBuilder: (context, index) => BenefitCard(benefit: cubit.benefitModels[index]),
                         itemCount: cubit.benefitModels.length,
                       ),
                       cubit.availableBenefitModels != null &&
                               cubit.availableBenefitModels?.length != 0
                           ? ListView.builder(
-                              itemBuilder: (context, index) => BenefitCard(),
+                              itemBuilder: (context, index) => BenefitCard(benefit: cubit.availableBenefitModels![index]),
                               itemCount: cubit.availableBenefitModels?.length,
                             )
                           : Center(child: Text('No Benefits available')),

@@ -1,0 +1,254 @@
+{
+  "message": "Sucessful login",
+  "data": {
+    "user": {
+      "employeeName": "Doaa Mohamed",
+      "email": "doaa@gmail.com",
+      "employeeNumber": 100,
+      "positionName": "Software Engineer",
+      "departmentName": "Planning",
+      "birthDate": "1990-09-15T00:00:00",
+      "joinDate": "2021-12-01T00:00:00",
+      "hasRequests": true
+    },
+    "benefitModels": [
+      {
+        "id": 47,
+        "name": "Birth Date",
+        "description": "Birth Date Description",
+        "benefitCard": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_BD.png",
+        "times": 1,
+        "benefitType": {
+          "id": 2,
+          "name": "Individual"
+        },
+        "benefitTypeId": 2,
+        "employeeCanRedeem": true,
+        "isAgift": false,
+        "minParticipant": 1,
+        "maxParticipant": 1,
+        "requiredDocuments": null,
+        "numberOfDays": 1,
+        "dateToMatch": "Birth Date",
+        "certainDate": "0001-01-01T00:00:00",
+        "benefitWorkflows": [
+          "1:Supervisor",
+          "2:HR"
+        ],
+        "benefitConditions": [
+          "Age : Any",
+          "Type : Individual",
+          "Work Duration : 1",
+          "Gender : Any",
+          "MaritalStatus : Any",
+          "Payroll Area : Any",
+          "Benefit Redeemation date must match with your :Birth Date"
+        ]
+      },
+      {
+        "id": 49,
+        "name": "Working MoM",
+        "description": "Working MoM benefit",
+        "benefitCard": "8328d45f-554a-4eb6-813a-36752411a790_Mom.png",
+        "times": 1,
+        "benefitType": {
+          "id": 2,
+          "name": "Individual"
+        },
+        "benefitTypeId": 2,
+        "employeeCanRedeem": false,
+        "isAgift": false,
+        "minParticipant": 1,
+        "maxParticipant": 1,
+        "requiredDocuments": null,
+        "numberOfDays": 60,
+        "dateToMatch": "Any",
+        "certainDate": "0001-01-01T00:00:00",
+        "benefitWorkflows": [
+          "2:Department Manager",
+          "1:Supervisor",
+          "3:HR"
+        ],
+        "benefitConditions": [
+          "Age : Any",
+          "Type : Individual",
+          "Work Duration : 0",
+          "Gender : Female",
+          "MaritalStatus : Married",
+          "Payroll Area : Any",
+          "Benefit Redeemation can be at any date you desired",
+          "No required documents"
+        ]
+      },
+      {
+        "id": 50,
+        "name": "Sport Group ",
+        "description": "Sport Group Benefit",
+        "benefitCard": "6b29a5e8-beb7-4dce-8def-bcb34d931b53_ThankYou.png",
+        "times": 3,
+        "benefitType": {
+          "id": 3,
+          "name": "Group"
+        },
+        "benefitTypeId": 3,
+        "employeeCanRedeem": true,
+        "isAgift": false,
+        "minParticipant": 5,
+        "maxParticipant": 10,
+        "requiredDocuments": null,
+        "numberOfDays": 1,
+        "dateToMatch": "Any",
+        "certainDate": "0001-01-01T00:00:00",
+        "benefitWorkflows": [
+          "1:HR"
+        ],
+        "benefitConditions": [
+          "Age <60",
+          "Type : Group",
+          "Work Duration : 1",
+          "Gender : Any",
+          "MaritalStatus : Any",
+          "Payroll Area : Any",
+          "Benefit Redeemation can be at any date you desired",
+          "Min Participant : 5",
+          "Max Participant : 10"
+        ]
+      },
+      {
+        "id": 51,
+        "name": "Parents Benefit",
+        "description": "Parents Benefit Description",
+        "benefitCard": "e8323761-82a3-450a-aaf6-715be00ca507_Paternatity leave.png",
+        "times": 1,
+        "benefitType": {
+          "id": 2,
+          "name": "Individual"
+        },
+        "benefitTypeId": 2,
+        "employeeCanRedeem": false,
+        "isAgift": false,
+        "minParticipant": 1,
+        "maxParticipant": 1,
+        "requiredDocuments": null,
+        "numberOfDays": 1,
+        "dateToMatch": "Any",
+        "certainDate": "0001-01-01T00:00:00",
+        "benefitWorkflows": [
+          "1:HR"
+        ],
+        "benefitConditions": [
+          "Age >30",
+          "Type : Individual",
+          "Work Duration : 3",
+          "Gender : Any",
+          "MaritalStatus : Married",
+          "Payroll Area : WhiteCollar",
+          "Benefit Redeemation can be at any date you desired",
+          "No required documents"
+        ]
+      },
+      {
+        "id": 52,
+        "name": "test benefit",
+        "description": "test benefit Description",
+        "benefitCard": "c62bbcd7-f649-4729-b82e-e16bce3add42_ThankYou.png",
+        "times": 3,
+        "benefitType": {
+          "id": 2,
+          "name": "Individual"
+        },
+        "benefitTypeId": 2,
+        "employeeCanRedeem": false,
+        "isAgift": false,
+        "minParticipant": 1,
+        "maxParticipant": 1,
+        "requiredDocuments": null,
+        "numberOfDays": 2,
+        "dateToMatch": "Any",
+        "certainDate": "0001-01-01T00:00:00",
+        "benefitWorkflows": [
+          "1:Supervisor",
+          "2:HR"
+        ],
+        "benefitConditions": [
+          "Age : Any",
+          "Type : Individual",
+          "Work Duration : 1",
+          "Gender : Male",
+          "MaritalStatus : Any",
+          "Payroll Area : WhiteCollar",
+          "Benefit Redeemation can be at any date you desired"
+        ]
+      }
+    ],
+    "availableBenefitModels": [
+      {
+        "id": 47,
+        "name": "Birth Date",
+        "description": "Birth Date Description",
+        "benefitCard": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_BD.png",
+        "times": 1,
+        "benefitType": {
+          "id": 2,
+          "name": "Individual"
+        },
+        "benefitTypeId": 2,
+        "employeeCanRedeem": true,
+        "isAgift": false,
+        "minParticipant": 1,
+        "maxParticipant": 1,
+        "requiredDocuments": null,
+        "numberOfDays": 1,
+        "dateToMatch": "Birth Date",
+        "certainDate": "0001-01-01T00:00:00",
+        "benefitWorkflows": [
+          "1:Supervisor",
+          "2:HR"
+        ],
+        "benefitConditions": [
+          "Age : Any",
+          "Type : Individual",
+          "Work Duration : 1",
+          "Gender : Any",
+          "MaritalStatus : Any",
+          "Payroll Area : Any",
+          "Benefit Redeemation date must match with your :Birth Date"
+        ]
+      },
+      {
+        "id": 50,
+        "name": "Sport Group ",
+        "description": "Sport Group Benefit",
+        "benefitCard": "6b29a5e8-beb7-4dce-8def-bcb34d931b53_ThankYou.png",
+        "times": 3,
+        "benefitType": {
+          "id": 3,
+          "name": "Group"
+        },
+        "benefitTypeId": 3,
+        "employeeCanRedeem": true,
+        "isAgift": false,
+        "minParticipant": 5,
+        "maxParticipant": 10,
+        "requiredDocuments": null,
+        "numberOfDays": 1,
+        "dateToMatch": "Any",
+        "certainDate": "0001-01-01T00:00:00",
+        "benefitWorkflows": [
+          "1:HR"
+        ],
+        "benefitConditions": [
+          "Age <60",
+          "Type : Group",
+          "Work Duration : 1",
+          "Gender : Any",
+          "MaritalStatus : Any",
+          "Payroll Area : Any",
+          "Benefit Redeemation can be at any date you desired",
+          "Min Participant : 5",
+          "Max Participant : 10"
+        ]
+      }
+    ]
+  }
+}

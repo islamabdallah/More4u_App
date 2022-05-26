@@ -4,44 +4,59 @@ class BenefitModel extends Benefit {
   BenefitModel({
     required int id,
     required String name,
-    required int year,
     required String benefitCard,
+    required int times,
     required bool employeeCanRedeem,
     required BenefitType benefitType,
-    //detailed_screen
+    //Data to use in details screen
     String? description,
-    List<String>? benefitWorkflow,
+    List<String>? benefitWorkflows,
     List<String>? benefitConditions,
-    //popupForm
-    int? minParticipant,
-    int? maxParticipant,
+    //Data to use in Redeem
+    required bool isAgift,
+    required int minParticipant,
+    required int maxParticipant,
+    String? requiredDocuments,
+    int? numberOfDays,
+    String? dateToMatch,
+    String? certainDate,
   }) : super(
           id: id,
           name: name,
-          year: year,
           benefitCard: benefitCard,
+          times: times,
           employeeCanRedeem: employeeCanRedeem,
           benefitType: benefitType,
           description: description,
+    benefitWorkflows: benefitWorkflows,
           benefitConditions: benefitConditions,
-          benefitWorkflow: benefitWorkflow,
+          isAgift: isAgift,
           minParticipant: minParticipant,
           maxParticipant: maxParticipant,
+          requiredDocuments: requiredDocuments,
+          numberOfDays: numberOfDays,
+          dateToMatch: dateToMatch,
+          certainDate: certainDate,
         );
 
   factory BenefitModel.fromJson(Map<String, dynamic> json) {
     return BenefitModel(
       id: json['id'],
       name: json['name'],
-      year: json['year'],
       benefitCard: json['benefitCard'],
+      times: json['times'],
       employeeCanRedeem: json['employeeCanRedeem'],
       benefitType: BenefitTypeModel.fromJson(json['benefitType']),
       description: json['description'],
+      benefitWorkflows: json['benefitWorkflows']?.cast<String>(),
       benefitConditions: json['benefitConditions']?.cast<String>(),
-      benefitWorkflow: json['benefitWorkflow']?.cast<String>(),
+      isAgift: json['isAgift'],
       minParticipant: json['minParticipant'],
       maxParticipant: json['maxParticipant'],
+      requiredDocuments: json['requiredDocuments'],
+      numberOfDays: json['numberOfDays'],
+      dateToMatch: json['dateToMatch'],
+      certainDate: json['certainDate'],
     );
   }
 }

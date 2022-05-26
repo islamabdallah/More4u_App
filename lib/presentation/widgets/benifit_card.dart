@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/constants.dart';
+import '../../domain/entities/benefit.dart';
 import '../benefit_details/beneifit_detailed_screen.dart';
+import '../benefit_redeem/BenefitRedeemScreen.dart';
 
 class BenefitCard extends StatelessWidget {
-  const BenefitCard({Key? key}) : super(key: key);
+  final Benefit benefit;
+  const BenefitCard({Key? key, required this.benefit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class BenefitCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: (){
-          Navigator.pushNamed(context, BenefitDetailedScreen.routeName);
+          Navigator.pushNamed(context, BenefitDetailedScreen.routeName,arguments: benefit);
         },
         child: Card(
           elevation: 8,
@@ -34,7 +37,7 @@ class BenefitCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16, vertical: 4),
                 child: Text(
-                  'BD benifit',
+                  benefit.name,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -55,7 +58,7 @@ class BenefitCard extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      'Indivisual',
+                      benefit.benefitType.name,
                       style: TextStyle(color: mainColor),
                     ),
                   ],
@@ -65,7 +68,7 @@ class BenefitCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16, vertical: 4),
                 child: Text(
-                  '0/3',
+                  '0/${benefit.times}',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -85,7 +88,14 @@ class BenefitCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: benefit != null
+                          ? (benefit.employeeCanRedeem
+                          ? () {
+                        Navigator.pushNamed(context,
+                            BenefitRedeemScreen.routeName);
+                      }
+                          : null)
+                          : null,
                       child: Text('Redeem'),
                     ),
                   ),

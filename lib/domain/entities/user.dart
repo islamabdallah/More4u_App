@@ -6,6 +6,8 @@ class User extends Equatable {
  final int employeeNumber;
  final String positionName;
  final String departmentName;
+ final String birthDate;
+ final String joinDate;
  final bool hasRequests;
 
   const User({required this.employeeName,
@@ -13,6 +15,8 @@ class User extends Equatable {
     required this.employeeNumber,
     required this.positionName,
     required this.departmentName,
+    required this.birthDate,
+    required this.joinDate,
     required this.hasRequests});
 
   @override

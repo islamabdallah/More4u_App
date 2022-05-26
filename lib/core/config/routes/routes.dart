@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../domain/entities/benefit.dart';
 import '../../../presentation/Login/login_screen.dart';
 import '../../../presentation/benefit_details/beneifit_detailed_screen.dart';
+import '../../../presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import '../../../presentation/home/home_screen.dart';
 import '../../../presentation/pages/profile.dart';
 
@@ -20,7 +22,10 @@ class AppRoutes {
           return _materialRoute(const HomeScreen(), HomeScreen.routeName);
 
           case BenefitDetailedScreen.routeName:
-          return _materialRoute(const BenefitDetailedScreen(), BenefitDetailedScreen.routeName);
+          return _materialRoute(BenefitDetailedScreen(benefit: settings.arguments as Benefit), BenefitDetailedScreen.routeName);
+
+          case BenefitRedeemScreen.routeName:
+          return _materialRoute(const BenefitRedeemScreen(), BenefitRedeemScreen.routeName);
 
 
       default:

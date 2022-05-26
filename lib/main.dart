@@ -9,6 +9,7 @@ import 'package:more4u/data/models/user_model.dart';
 import 'package:more4u/presentation/Login/login_screen.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
+import 'presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import 'presentation/home/home_screen.dart';
 import 'core/config/bloc_observer.dart';
 import 'core/config/routes/routes.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
             initialRoute: LoginScreen.routeName,
             // initialRoute: HomeScreen.routeName,
             // initialRoute: BenefitDetailedScreen.routeName,
+            // initialRoute: BenefitRedeemScreen.routeName,
           ),
         );
       }

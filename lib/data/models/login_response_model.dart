@@ -23,12 +23,12 @@ class LoginResponseModel extends LoginResponse {
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
     return LoginResponseModel(
         message: json['message'],
-        user: UserModel.fromJson(json['user']),
-        benefitModels: List<BenefitModel>.from(json['benefitModels']
+        user: UserModel.fromJson(json['data']['user']),
+        benefitModels: List<BenefitModel>.from(json['data']['benefitModels']
             .map((x) => BenefitModel.fromJson(x))
             .toList()),
-        availableBenefitModels: json['availableBenefitModels'] != null
-            ? List<BenefitModel>.from(json['availableBenefitModels']
+        availableBenefitModels: json['data']['availableBenefitModels'] != null
+            ? List<BenefitModel>.from(json['data']['availableBenefitModels']
                 .map((x) => BenefitModel.fromJson(x))
                 .toList())
             : null);
