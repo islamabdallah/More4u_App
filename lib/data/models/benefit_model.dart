@@ -1,13 +1,14 @@
 import 'package:more4u/domain/entities/benefit.dart';
 
 class BenefitModel extends Benefit {
-  BenefitModel({
+  const BenefitModel({
     required int id,
     required String name,
     required String benefitCard,
     required int times,
+    required int timesEmployeeReceiveThisBenefit,
     required bool employeeCanRedeem,
-    required BenefitType benefitType,
+    required String benefitType,
     //Data to use in details screen
     String? description,
     List<String>? benefitWorkflows,
@@ -25,10 +26,11 @@ class BenefitModel extends Benefit {
           name: name,
           benefitCard: benefitCard,
           times: times,
+          timesEmployeeReceiveThisBenefit: timesEmployeeReceiveThisBenefit,
           employeeCanRedeem: employeeCanRedeem,
           benefitType: benefitType,
           description: description,
-    benefitWorkflows: benefitWorkflows,
+          benefitWorkflows: benefitWorkflows,
           benefitConditions: benefitConditions,
           isAgift: isAgift,
           minParticipant: minParticipant,
@@ -45,8 +47,9 @@ class BenefitModel extends Benefit {
       name: json['name'],
       benefitCard: json['benefitCard'],
       times: json['times'],
+      timesEmployeeReceiveThisBenefit: json['timesEmployeeReceiveThisBenefit'],
       employeeCanRedeem: json['employeeCanRedeem'],
-      benefitType: BenefitTypeModel.fromJson(json['benefitType']),
+      benefitType: json['benefitType'],
       description: json['description'],
       benefitWorkflows: json['benefitWorkflows']?.cast<String>(),
       benefitConditions: json['benefitConditions']?.cast<String>(),
@@ -60,15 +63,15 @@ class BenefitModel extends Benefit {
     );
   }
 }
-
-class BenefitTypeModel extends BenefitType {
-  BenefitTypeModel({required int id, required String name})
-      : super(id: id, name: name);
-
-  factory BenefitTypeModel.fromJson(Map<String, dynamic> json) {
-    return BenefitTypeModel(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
-}
+//
+// class BenefitTypeModel extends BenefitType {
+//   BenefitTypeModel({required int id, required String name})
+//       : super(id: id, name: name);
+//
+//   factory BenefitTypeModel.fromJson(Map<String, dynamic> json) {
+//     return BenefitTypeModel(
+//       id: json['id'],
+//       name: json['name'],
+//     );
+//   }
+// }

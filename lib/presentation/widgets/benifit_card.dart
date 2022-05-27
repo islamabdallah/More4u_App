@@ -58,7 +58,7 @@ class BenefitCard extends StatelessWidget {
                       width: 4,
                     ),
                     Text(
-                      benefit.benefitType.name,
+                      benefit.benefitType,
                       style: TextStyle(color: mainColor),
                     ),
                   ],
@@ -68,7 +68,7 @@ class BenefitCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16, vertical: 4),
                 child: Text(
-                  '0/${benefit.times}',
+                  '${benefit.timesEmployeeReceiveThisBenefit}/${benefit.times}',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class BenefitCard extends StatelessWidget {
                           ? (benefit.employeeCanRedeem
                           ? () {
                         Navigator.pushNamed(context,
-                            BenefitRedeemScreen.routeName);
+                            BenefitRedeemScreen.routeName,arguments: benefit);
                       }
                           : null)
                           : null,

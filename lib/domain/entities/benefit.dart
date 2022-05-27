@@ -5,28 +5,30 @@ class Benefit extends Equatable {
   final String name;
   final String benefitCard;
   final int times;
+  final int timesEmployeeReceiveThisBenefit;
+  final String benefitType;
   final bool employeeCanRedeem;
-  final BenefitType benefitType;
 
   //Data to use in details screen
-  String? description;
-  List<String>? benefitConditions;
-  List<String>? benefitWorkflows;
+  final String? description;
+  final List<String>? benefitConditions;
+  final List<String>? benefitWorkflows;
 
   //Data to use in Redeem
   final bool isAgift;
   final int minParticipant;
   final int maxParticipant;
-  String? requiredDocuments;
-  int? numberOfDays;
-  String? dateToMatch;
-  String? certainDate;
+  final String? requiredDocuments;
+  final int? numberOfDays;
+  final String? dateToMatch;
+  final String? certainDate;
 
-  Benefit({
+  const Benefit({
     required this.id,
     required this.name,
     required this.benefitCard,
     required this.times,
+    required this.timesEmployeeReceiveThisBenefit,
     required this.employeeCanRedeem,
     required this.benefitType,
     this.description,
@@ -47,6 +49,7 @@ class Benefit extends Equatable {
         name,
         benefitCard,
         times,
+        timesEmployeeReceiveThisBenefit,
         employeeCanRedeem,
         benefitType,
         description,
@@ -60,13 +63,13 @@ class Benefit extends Equatable {
         certainDate,
       ];
 }
-
-class BenefitType extends Equatable {
-  final int id;
-  final String name;
-
-  const BenefitType({required this.id, required this.name});
-
-  @override
-  List<Object?> get props => [id, name];
-}
+//
+// class BenefitType extends Equatable {
+//   final int id;
+//   final String name;
+//
+//   const BenefitType({required this.id, required this.name});
+//
+//   @override
+//   List<Object?> get props => [id, name];
+// }

@@ -25,7 +25,7 @@ class AppRoutes {
           return _materialRoute(BenefitDetailedScreen(benefit: settings.arguments as Benefit), BenefitDetailedScreen.routeName);
 
           case BenefitRedeemScreen.routeName:
-          return _materialRoute(const BenefitRedeemScreen(), BenefitRedeemScreen.routeName);
+          return _materialRoute(BenefitRedeemScreen(benefit: settings.arguments as Benefit,), BenefitRedeemScreen.routeName);
 
 
       default:

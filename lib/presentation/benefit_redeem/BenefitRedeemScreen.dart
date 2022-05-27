@@ -4,11 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chips_input/flutter_chips_input.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
+import 'package:more4u/core/constants/constants.dart';
+import 'package:more4u/domain/usecases/get_participants.dart';
+
+import '../../domain/entities/benefit.dart';
+import '../../injection_container.dart';
 
 class BenefitRedeemScreen extends StatefulWidget {
   static const routeName = 'BenefitRedeemScreen';
 
-  const BenefitRedeemScreen({Key? key}) : super(key: key);
+  final Benefit benefit;
+
+  const BenefitRedeemScreen({Key? key, required this.benefit})
+      : super(key: key);
 
   @override
   _BenefitRedeemScreenState createState() => _BenefitRedeemScreenState();
@@ -16,17 +24,62 @@ class BenefitRedeemScreen extends StatefulWidget {
 
 class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
   // List<String> list = ['Java', 'Flutter', 'Kotlin', 'Swift', 'Objective-C'],
-  var list =List.generate(500, (index) => '$index name');
+  var list = List.generate(500, (index) => '$index name');
 
-    var selected = [];
+  var selected = [];
   late TextEditingController tc;
   TextEditingController startDate = TextEditingController();
   TextEditingController endDate = TextEditingController();
 
+  late DateTime date,start,end;
   @override
   void initState() {
     super.initState();
     tc = TextEditingController();
+    redeemConfiguration();
+    getParticipants();
+  }
+  void getParticipants() async {
+    GetParticipantsUsecase usecase = sl<GetParticipantsUsecase>();
+    final result = await usecase();
+
+    result.fold((failure) {
+      print(failure);
+    }, (participants) {
+    print(participants);
+    });
+  }
+  void redeemConfiguration() {
+
+    switch (widget.benefit.dateToMatch) {
+      case 'Birth Date':
+        date = DateTime.parse(userData!.birthDate);
+        break;
+      case 'join Date':
+        date = DateTime.parse(userData!.joinDate);
+        break;
+      case 'Certain Date':
+        date = DateTime.parse(widget.benefit.certainDate!);
+        break;
+      default:
+        date = DateTime.now();
+        break;
+    }
+     start = DateTime(DateTime.now().year, date.month, date.day);
+     end = start.add(Duration(days: widget.benefit.numberOfDays! - 1));
+    print(start);
+    print(end);
+    startDate.text = formatDate(start);
+    endDate.text = formatDate(end);
+    // if(widget.benefit.dateToMatch!=null&&widget.benefit.dateToMatch=='Birth Date') {
+    //   startDate.text = formatDate(DateTime.parse(userData!.birthDate));
+    //   // endDate.text = formatDate(DateTime.parse(startDate.text).add(Duration(days: widget.benefit.numberOfDays!-1)));
+    // print(DateFormat("dd-MM-yyyy").parse(startDate.text));
+    // }
+  }
+
+  String formatDate(DateTime date) {
+    return DateFormat("dd-MM-yyyy").format(date);
   }
 
   @override
@@ -69,7 +122,6 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
           child: Column(
 //         mainAxisSize:MainAxisSize.min,
             children: [
-
               // ChipsInput<AppProfile>(
               //   initialValue: [
               //     AppProfile('John Doe', 'jdoe@flutter.io',
@@ -121,19 +173,17 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
               //     );
               //   },
               // ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               ChipsInput<String>(
                 decoration: InputDecoration(
-                  labelText: "Participants",
-                  border: OutlineInputBorder()
-                ),
+                    labelText: "Participants", border: OutlineInputBorder()),
                 findSuggestions: (String query) {
                   if (query.length > 0) {
                     var lowercaseQuery = query.toLowerCase();
                     return list.where((name) {
-                      return name
-                          .toLowerCase()
-                          .contains(query.toLowerCase());
+                      return name.toLowerCase().contains(query.toLowerCase());
                     }).toList(growable: false)
                       ..sort((a, b) => a
                           .toLowerCase()
@@ -151,7 +201,8 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                     key: ObjectKey(name),
                     label: Text(name),
                     avatar: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/profile_avatar_placeholder.png'),
+                      backgroundImage: AssetImage(
+                          'assets/images/profile_avatar_placeholder.png'),
                     ),
                     onDeleted: () => state.deleteChip(name),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -161,28 +212,32 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                   return ListTile(
                     key: ObjectKey(name),
                     leading: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/profile_avatar_placeholder.png'),
+                      backgroundImage: AssetImage(
+                          'assets/images/profile_avatar_placeholder.png'),
                     ),
                     title: Text(name),
                     onTap: () => state.selectSuggestion(name),
                   );
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               DateTimeField(
                 controller: startDate,
                 // validator: (value) => deliverDate == null ? translator.translate('required') : null,
                 decoration: InputDecoration(
                   hintText: 'Date From',
                   border: OutlineInputBorder(),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w600),                                              contentPadding: EdgeInsets.all(3.0),
+                  labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                  contentPadding: EdgeInsets.all(3.0),
                   prefixIcon: const Icon(
                     Icons.calendar_today,
                   ),
                 ),
-                format:  DateFormat("dd-MM-yyyy"),
+                format: DateFormat("dd-MM-yyyy"),
                 onShowPicker: (context, currentValue) async {
-                 return showDatePicker(
+                  return showDatePicker(
                       context: context,
                       firstDate: DateTime.now(),
                       initialDate: DateTime.now(),
@@ -198,27 +253,31 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                   //   return currentValue;
                   // }
                 },
-                onChanged: (value){
+                onChanged: (value) {
                   setState(() {
                     // deliverDate = value;
                   });
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               DateTimeField(
+                enabled: false,
                 controller: endDate,
                 // validator: (value) => deliverDate == null ? translator.translate('required') : null,
                 decoration: InputDecoration(
                   hintText: 'To',
                   border: OutlineInputBorder(),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w600),                                              contentPadding: EdgeInsets.all(3.0),
+                  labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                  contentPadding: EdgeInsets.all(3.0),
                   prefixIcon: const Icon(
                     Icons.calendar_today,
                   ),
                 ),
-                format:  DateFormat("dd-MM-yyyy"),
+                format: DateFormat("dd-MM-yyyy"),
                 onShowPicker: (context, currentValue) async {
-                 return showDatePicker(
+                  return showDatePicker(
                       context: context,
                       firstDate: DateTime.now(),
                       initialDate: DateTime.now(),
@@ -234,23 +293,24 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                   //   return currentValue;
                   // }
                 },
-                onChanged: (value){
+                onChanged: (value) {
                   setState(() {
                     // deliverDate = value;
                   });
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 maxLines: 4,
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
                   label: Text('Message'),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  labelStyle: TextStyle(
-                      fontWeight: FontWeight.bold),
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
                   // prefixText: 'Question: ',
-                 prefixIcon: const Icon(
+                  prefixIcon: const Icon(
                     Icons.article,
                     size: 26,
                   ),
@@ -261,10 +321,14 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                   // focusedBorder: InputBorder.none,
                 ),
               ),
-              SizedBox(height: 20,),
-              ElevatedButton(onPressed: (){
-                print(startDate.text);
-              }, child: Text('submit'))
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    print(startDate.text);
+                  },
+                  child: Text('submit'))
             ],
           ),
         ),

@@ -30,10 +30,10 @@ void main() async {
   CacheHelper.init();
 
 
-  String test = await rootBundle.loadString('assets/response.json');
+  String test = await rootBundle.loadString('assets/response3.json');
  var json = jsonDecode(test);
 
- UserModel user = UserModel.fromJson(json['user']);
+ UserModel user = UserModel.fromJson(json['data']['user']);
  print(user.email);
 }
 
