@@ -1,11 +1,14 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chips_input/flutter_chips_input.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:more4u/core/constants/constants.dart';
+import 'package:more4u/domain/entities/participant.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
+import 'package:more4u/presentation/benefit_redeem/cubits/redeem_cubit.dart';
 
 import '../../domain/entities/benefit.dart';
 import '../../injection_container.dart';
@@ -31,14 +34,19 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
   TextEditingController startDate = TextEditingController();
   TextEditingController endDate = TextEditingController();
 
-  late DateTime date,start,end;
+  late RedeemCubit _cubit;
+
+  late DateTime date, start, end;
+
   @override
   void initState() {
+    _cubit = sl<RedeemCubit>()..initRedeem(widget.benefit);
     super.initState();
     tc = TextEditingController();
     redeemConfiguration();
     getParticipants();
   }
+
   void getParticipants() async {
     GetParticipantsUsecase usecase = sl<GetParticipantsUsecase>();
     final result = await usecase();
@@ -46,11 +54,11 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
     result.fold((failure) {
       print(failure);
     }, (participants) {
-    print(participants);
+      print(participants);
     });
   }
-  void redeemConfiguration() {
 
+  void redeemConfiguration() {
     switch (widget.benefit.dateToMatch) {
       case 'Birth Date':
         date = DateTime.parse(userData!.birthDate);
@@ -65,8 +73,8 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
         date = DateTime.now();
         break;
     }
-     start = DateTime(DateTime.now().year, date.month, date.day);
-     end = start.add(Duration(days: widget.benefit.numberOfDays! - 1));
+    start = DateTime(DateTime.now().year, date.month, date.day);
+    end = start.add(Duration(days: widget.benefit.numberOfDays! - 1));
     print(start);
     print(end);
     startDate.text = formatDate(start);
@@ -111,228 +119,263 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
           'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
     ];
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Redeem Card'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-//         mainAxisSize:MainAxisSize.min,
-            children: [
-              // ChipsInput<AppProfile>(
-              //   initialValue: [
-              //     AppProfile('John Doe', 'jdoe@flutter.io',
-              //         'https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX4057996.jpg')
-              //   ],
-              //   // decoration: InputDecoration(
-              //   //   labelText: "Select People",
-              //   // ),
-              //   findSuggestions: (String query) {
-              //     if (query.length > 2) {
-              //       var lowercaseQuery = query.toLowerCase();
-              //       return mockResults.where((profile) {
-              //         return profile.name
-              //                 .toLowerCase()
-              //                 .contains(query.toLowerCase()) ||
-              //             profile.email.toLowerCase().contains(query.toLowerCase());
-              //       }).toList(growable: false)
-              //         ..sort((a, b) => a.name
-              //             .toLowerCase()
-              //             .indexOf(lowercaseQuery)
-              //             .compareTo(b.name.toLowerCase().indexOf(lowercaseQuery)));
-              //     } else {
-              //       return const <AppProfile>[];
-              //     }
-              //   },
-              //   onChanged: (data) {
-              //     print(data);
-              //   },
-              //   chipBuilder: (context, state, profile) {
-              //     return InputChip(
-              //       key: ObjectKey(profile),
-              //       label: Text(profile.name),
-              //       avatar: CircleAvatar(
-              //         backgroundImage: NetworkImage(profile.imageUrl),
-              //       ),
-              //       onDeleted: () => state.deleteChip(profile),
-              //       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              //     );
-              //   },
-              //   suggestionBuilder: (context, state, profile) {
-              //     return ListTile(
-              //       key: ObjectKey(profile),
-              //       leading: CircleAvatar(
-              //         backgroundImage: NetworkImage(profile.imageUrl),
-              //       ),
-              //       title: Text(profile.name),
-              //       subtitle: Text(profile.email),
-              //       onTap: () => state.selectSuggestion(profile),
-              //     );
-              //   },
-              // ),
-              SizedBox(
-                height: 20,
-              ),
-              ChipsInput<String>(
-                decoration: InputDecoration(
-                    labelText: "Participants", border: OutlineInputBorder()),
-                findSuggestions: (String query) {
-                  if (query.length > 0) {
-                    var lowercaseQuery = query.toLowerCase();
-                    return list.where((name) {
-                      return name.toLowerCase().contains(query.toLowerCase());
-                    }).toList(growable: false)
-                      ..sort((a, b) => a
-                          .toLowerCase()
-                          .indexOf(lowercaseQuery)
-                          .compareTo(b.toLowerCase().indexOf(lowercaseQuery)));
-                  } else {
-                    return [];
-                  }
-                },
-                onChanged: (data) {
-                  print(data);
-                },
-                chipBuilder: (context, state, name) {
-                  return InputChip(
-                    key: ObjectKey(name),
-                    label: Text(name),
-                    avatar: CircleAvatar(
-                      backgroundImage: AssetImage(
-                          'assets/images/profile_avatar_placeholder.png'),
-                    ),
-                    onDeleted: () => state.deleteChip(name),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  );
-                },
-                suggestionBuilder: (context, state, name) {
-                  return ListTile(
-                    key: ObjectKey(name),
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage(
-                          'assets/images/profile_avatar_placeholder.png'),
-                    ),
-                    title: Text(name),
-                    onTap: () => state.selectSuggestion(name),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              DateTimeField(
-                controller: startDate,
-                // validator: (value) => deliverDate == null ? translator.translate('required') : null,
-                decoration: InputDecoration(
-                  hintText: 'Date From',
-                  border: OutlineInputBorder(),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w600),
-                  contentPadding: EdgeInsets.all(3.0),
-                  prefixIcon: const Icon(
-                    Icons.calendar_today,
-                  ),
-                ),
-                format: DateFormat("dd-MM-yyyy"),
-                onShowPicker: (context, currentValue) async {
-                  return showDatePicker(
-                      context: context,
-                      firstDate: DateTime.now(),
-                      initialDate: DateTime.now(),
-                      lastDate: DateTime(2100));
-                  // if (date != null) {
-                  //   final time = await showTimePicker(
-                  //     context: context,
-                  //     initialTime:
-                  //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                  //   );
-                  //   return DateTimeField.combine(date, time);
-                  // } else {
-                  //   return currentValue;
-                  // }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    // deliverDate = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              DateTimeField(
-                enabled: false,
-                controller: endDate,
-                // validator: (value) => deliverDate == null ? translator.translate('required') : null,
-                decoration: InputDecoration(
-                  hintText: 'To',
-                  border: OutlineInputBorder(),
-                  labelStyle: TextStyle(fontWeight: FontWeight.w600),
-                  contentPadding: EdgeInsets.all(3.0),
-                  prefixIcon: const Icon(
-                    Icons.calendar_today,
-                  ),
-                ),
-                format: DateFormat("dd-MM-yyyy"),
-                onShowPicker: (context, currentValue) async {
-                  return showDatePicker(
-                      context: context,
-                      firstDate: DateTime.now(),
-                      initialDate: DateTime.now(),
-                      lastDate: DateTime(2100));
-                  // if (date != null) {
-                  //   final time = await showTimePicker(
-                  //     context: context,
-                  //     initialTime:
-                  //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                  //   );
-                  //   return DateTimeField.combine(date, time);
-                  // } else {
-                  //   return currentValue;
-                  // }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    // deliverDate = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                maxLines: 4,
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  label: Text('Message'),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  // prefixText: 'Question: ',
-                  prefixIcon: const Icon(
-                    Icons.article,
-                    size: 26,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                  // focusedBorder: InputBorder.none,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    print(startDate.text);
-                  },
-                  child: Text('submit'))
-            ],
+    return BlocConsumer<RedeemCubit, RedeemState>(
+      bloc: _cubit,
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: const Text('Redeem Card'),
           ),
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: Column(
+//         mainAxisSize:MainAxisSize.min,
+                children: [
+                  if (_cubit.benefit.benefitType == 'Group') ...[
+                    TextFormField(
+                      controller: _cubit.groupName,
+                      textAlignVertical: TextAlignVertical.center,
+                      decoration: InputDecoration(
+                        label: Text('Group Name'),
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                        contentPadding: EdgeInsets.all(3.0),
+                        prefixIcon: const Icon(
+                          Icons.group,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                  if (_cubit.showParticipantsField)
+                    ChipsInput<Participant>(
+                      enabled: _cubit.enableParticipantsField,
+                      decoration: InputDecoration(
+                          labelText: "Select People",
+                          border: OutlineInputBorder()),
+                      maxChips: _cubit.benefit.maxParticipant,
+                      findSuggestions: (String query) {
+                        if (query.length > 1) {
+                          var lowercaseQuery = query.toLowerCase();
+                          return _cubit.participants.where((profile) {
+                            return profile.fullName
+                                    .toLowerCase()
+                                    .contains(query.toLowerCase()) ||
+                                profile.employeeNumber
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(query.toLowerCase());
+                          }).toList(growable: false)
+                            ..sort((a, b) => a.fullName
+                                .toLowerCase()
+                                .indexOf(lowercaseQuery)
+                                .compareTo(b.fullName
+                                    .toLowerCase()
+                                    .indexOf(lowercaseQuery)));
+                        } else {
+                          return const <Participant>[];
+                        }
+                      },
+                      onChanged: _cubit.participantsOnChange,
+                      chipBuilder: (context, state, profile) {
+                        return InputChip(
+                          key: ObjectKey(profile),
+                          label: Text(profile.fullName),
+                          avatar: CircleAvatar(
+                            backgroundImage: AssetImage(
+                                'assets/images/profile_avatar_placeholder.png'),
+                          ),
+                          onDeleted: () => state.deleteChip(profile),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                        );
+                      },
+                      suggestionBuilder: (context, state, profile) {
+                        return ListTile(
+                          key: ObjectKey(profile),
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage(
+                                'assets/images/profile_avatar_placeholder.png'),
+                          ),
+                          title: Text(profile.fullName),
+                          subtitle: Text(profile.employeeNumber.toString()),
+                          onTap: () => state.selectSuggestion(profile),
+                        );
+                      },
+                    ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  // if (_cubit.showParticipantsField)
+                  //   ChipsInput<String>(
+                  //     decoration: InputDecoration(
+                  //         labelText: "Participants",
+                  //         border: OutlineInputBorder()),
+                  //     findSuggestions: (String query) {
+                  //       if (query.length > 0) {
+                  //         var lowercaseQuery = query.toLowerCase();
+                  //         return list.where((name) {
+                  //           return name
+                  //               .toLowerCase()
+                  //               .contains(query.toLowerCase());
+                  //         }).toList(growable: false)
+                  //           ..sort((a, b) => a
+                  //               .toLowerCase()
+                  //               .indexOf(lowercaseQuery)
+                  //               .compareTo(
+                  //                   b.toLowerCase().indexOf(lowercaseQuery)));
+                  //       } else {
+                  //         return [];
+                  //       }
+                  //     },
+                  //     onChanged: (data) {
+                  //       print(data);
+                  //     },
+                  //     chipBuilder: (context, state, name) {
+                  //       return InputChip(
+                  //         key: ObjectKey(name),
+                  //         label: Text(name),
+                  //         avatar: CircleAvatar(
+                  //           backgroundImage: AssetImage(
+                  //               'assets/images/profile_avatar_placeholder.png'),
+                  //         ),
+                  //         onDeleted: () => state.deleteChip(name),
+                  //         materialTapTargetSize:
+                  //             MaterialTapTargetSize.shrinkWrap,
+                  //       );
+                  //     },
+                  //     suggestionBuilder: (context, state, name) {
+                  //       return ListTile(
+                  //         key: ObjectKey(name),
+                  //         leading: CircleAvatar(
+                  //           backgroundImage: AssetImage(
+                  //               'assets/images/profile_avatar_placeholder.png'),
+                  //         ),
+                  //         title: Text(name),
+                  //         onTap: () => state.selectSuggestion(name),
+                  //       );
+                  //     },
+                  //   ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  DateTimeField(
+                      controller: _cubit.startDate,
+                      // validator: (value) => deliverDate == null ? translator.translate('required') : null,
+                      decoration: InputDecoration(
+                        label: Text('Date From'),
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                        contentPadding: EdgeInsets.all(3.0),
+                        prefixIcon: const Icon(
+                          Icons.calendar_today,
+                        ),
+                      ),
+                      format: DateFormat("dd-MM-yyyy"),
+                      onShowPicker: (context, currentValue) async {
+                        return showDatePicker(
+                            context: context,
+                            firstDate: DateTime.now(),
+                            initialDate: DateTime.now(),
+                            lastDate: DateTime(DateTime.now().year + 1).add(
+                                Duration(days: -1))); // if (date != null) {
+                        //   final time = await showTimePicker(
+                        //     context: context,
+                        //     initialTime:
+                        //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                        //   );
+                        //   return DateTimeField.combine(date, time);
+                        // } else {
+                        //   return currentValue;
+                        // }
+                      },
+                      onChanged: _cubit.changeStartDate),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  DateTimeField(
+                    enabled: false,
+                    controller: _cubit.endDate,
+                    // validator: (value) => deliverDate == null ? translator.translate('required') : null,
+                    decoration: InputDecoration(
+                      label: Text('To',style: TextStyle(color: Colors.black54),),
+                      border: InputBorder.none,
+                      disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black45)
+                      ),
+                      labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                      contentPadding: EdgeInsets.all(3.0),
+                      prefixIcon: const Icon(
+                        Icons.calendar_today,
+                      ),
+                    ),
+                    format: DateFormat("dd-MM-yyyy"),
+                    onShowPicker: (context, currentValue) async {
+                      // return showDatePicker(
+                      //     context: context,
+                      //     firstDate: DateTime.now(),
+                      //     initialDate: DateTime.now(),
+                      //     lastDate: DateTime(DateTime.now().year + 1));
+                      // if (date != null) {
+                      //   final time = await showTimePicker(
+                      //     context: context,
+                      //     initialTime:
+                      //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                      //   );
+                      //   return DateTimeField.combine(date, time);
+                      // } else {
+                      //   return currentValue;
+                      // }
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        // deliverDate = value;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: _cubit.message,
+                    maxLines: 4,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                      label: Text('Message'),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      // prefixText: 'Question: ',
+                      prefixIcon: const Icon(
+                        Icons.article,
+                        size: 26,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      isDense: true,
+                      border: OutlineInputBorder(),
+                      // focusedBorder: InputBorder.none,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        _cubit.redeemCard();
+                      },
+                      child: Text('submit'))
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

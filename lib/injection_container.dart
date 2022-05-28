@@ -19,6 +19,7 @@ import 'domain/repositories/login_repository.dart';
 import 'domain/repositories/redeem_repository.dart';
 import 'domain/usecases/get_benefit_details.dart';
 import 'domain/usecases/login_user.dart';
+import 'presentation/benefit_redeem/cubits/redeem_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -28,6 +29,7 @@ Future<void> init() async {
 // Cubits
   sl.registerFactory(() => LoginCubit(loginUser: sl()));
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
+  sl.registerFactory(() => RedeemCubit(getParticipantsUsecase: sl()));
 
 // Usecases
 
