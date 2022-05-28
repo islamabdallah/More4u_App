@@ -26,98 +26,18 @@ class BenefitRedeemScreen extends StatefulWidget {
 }
 
 class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
-  // List<String> list = ['Java', 'Flutter', 'Kotlin', 'Swift', 'Objective-C'],
-  var list = List.generate(500, (index) => '$index name');
-
-  var selected = [];
-  late TextEditingController tc;
-  TextEditingController startDate = TextEditingController();
-  TextEditingController endDate = TextEditingController();
 
   late RedeemCubit _cubit;
-
-  late DateTime date, start, end;
 
   @override
   void initState() {
     _cubit = sl<RedeemCubit>()..initRedeem(widget.benefit);
     super.initState();
-    tc = TextEditingController();
-    redeemConfiguration();
-    getParticipants();
-  }
 
-  void getParticipants() async {
-    GetParticipantsUsecase usecase = sl<GetParticipantsUsecase>();
-    final result = await usecase();
-
-    result.fold((failure) {
-      print(failure);
-    }, (participants) {
-      print(participants);
-    });
-  }
-
-  void redeemConfiguration() {
-    switch (widget.benefit.dateToMatch) {
-      case 'Birth Date':
-        date = DateTime.parse(userData!.birthDate);
-        break;
-      case 'join Date':
-        date = DateTime.parse(userData!.joinDate);
-        break;
-      case 'Certain Date':
-        date = DateTime.parse(widget.benefit.certainDate!);
-        break;
-      default:
-        date = DateTime.now();
-        break;
-    }
-    start = DateTime(DateTime.now().year, date.month, date.day);
-    end = start.add(Duration(days: widget.benefit.numberOfDays! - 1));
-    print(start);
-    print(end);
-    startDate.text = formatDate(start);
-    endDate.text = formatDate(end);
-    // if(widget.benefit.dateToMatch!=null&&widget.benefit.dateToMatch=='Birth Date') {
-    //   startDate.text = formatDate(DateTime.parse(userData!.birthDate));
-    //   // endDate.text = formatDate(DateTime.parse(startDate.text).add(Duration(days: widget.benefit.numberOfDays!-1)));
-    // print(DateFormat("dd-MM-yyyy").parse(startDate.text));
-    // }
-  }
-
-  String formatDate(DateTime date) {
-    return DateFormat("dd-MM-yyyy").format(date);
   }
 
   @override
   Widget build(BuildContext context) {
-    const mockResults = <AppProfile>[
-      AppProfile('John Doe', 'jdoe@flutter.io',
-          'https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX4057996.jpg'),
-      AppProfile('Paul', 'paul@google.com',
-          'https://mbtskoudsalg.com/images/person-stock-image-png.png'),
-      AppProfile('Fred', 'fred@google.com',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Brian', 'brian@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('John', 'john@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Thomas', 'thomas@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Nelly', 'nelly@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Marie', 'marie@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Charlie', 'charlie@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Diana', 'diana@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Ernie', 'ernie@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-      AppProfile('Gina', 'fred@flutter.io',
-          'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'),
-    ];
 
     return BlocConsumer<RedeemCubit, RedeemState>(
       bloc: _cubit,
@@ -153,11 +73,14 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                     ),
                   ],
                   if (_cubit.showParticipantsField)
+                    ...[
                     ChipsInput<Participant>(
                       enabled: _cubit.enableParticipantsField,
                       decoration: InputDecoration(
                           labelText: "Select People",
-                          border: OutlineInputBorder()),
+                          border: OutlineInputBorder(),
+                        errorText: _cubit.lowParticipantError,
+                      ),
                       maxChips: _cubit.benefit.maxParticipant,
                       findSuggestions: (String query) {
                         if (query.length > 1) {
@@ -211,6 +134,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                   SizedBox(
                     height: 20,
                   ),
+                  ],
                   // if (_cubit.showParticipantsField)
                   //   ChipsInput<String>(
                   //     decoration: InputDecoration(
@@ -261,10 +185,6 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                   //       );
                   //     },
                   //   ),
-
-                  SizedBox(
-                    height: 20,
-                  ),
                   DateTimeField(
                       controller: _cubit.startDate,
                       // validator: (value) => deliverDate == null ? translator.translate('required') : null,

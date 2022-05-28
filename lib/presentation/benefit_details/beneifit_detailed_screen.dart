@@ -134,7 +134,7 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen> {
                               ? (_cubit.benefit!.employeeCanRedeem
                                   ? () {
                                       Navigator.pushNamed(context,
-                                          BenefitRedeemScreen.routeName);
+                                          BenefitRedeemScreen.routeName,arguments: widget.benefit);
                                     }
                                   : null)
                               : null,

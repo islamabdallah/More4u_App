@@ -107,6 +107,7 @@ class RedeemCubit extends Cubit<RedeemState> {
   }
 
   redeemCard() {
+    _validateInputs();
     var request = RedeemRequest(
       participants: benefit.benefitType == 'Group' ? participantsIds : null,
       sendTo: benefit.isAgift ? participantsIds.first : null,
@@ -120,7 +121,15 @@ class RedeemCubit extends Cubit<RedeemState> {
 
     print(request);
   }
-  _validateInputs(){
 
+  String? lowParticipantError;
+
+  _validateInputs() {
+    if(participantsIds.length<benefit.minParticipant){
+    lowParticipantError = 'Participants should be between ${benefit.minParticipant} and ${benefit.maxParticipant}';
+    } else{
+      lowParticipantError = null;
+    }
+    emit(ErrorValidationState());
   }
 }

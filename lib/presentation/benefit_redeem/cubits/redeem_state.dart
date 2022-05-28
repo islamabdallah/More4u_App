@@ -19,3 +19,5 @@ class DateChangeState extends RedeemState {}
 
 class ParticipantsChangedState extends RedeemState {}
 
+class ErrorValidationState extends RedeemState {}
+
