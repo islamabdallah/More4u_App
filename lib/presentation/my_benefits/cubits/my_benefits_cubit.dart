@@ -20,8 +20,7 @@ class MyBenefitsCubit extends Cubit<MyBenefitsState> {
 
   getMyBenefits() async {
     emit(GetMyBenefitsLoadingState());
-    // final result = await getMyBenefitsUsecase(employeeNumber: userData!.employeeNumber);
-    final result = await getMyBenefitsUsecase(employeeNumber: 5);
+    final result = await getMyBenefitsUsecase(employeeNumber: userData!.employeeNumber);
 
     result.fold((failure) {
       emit(GetMyBenefitsErrorState(failure.message));
