@@ -5,6 +5,7 @@ import '../../../presentation/Login/login_screen.dart';
 import '../../../presentation/benefit_details/beneifit_detailed_screen.dart';
 import '../../../presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import '../../../presentation/home/home_screen.dart';
+import '../../../presentation/my_benefits/my_benefits_screen.dart';
 import '../../../presentation/pages/profile.dart';
 
 
@@ -20,8 +21,10 @@ class AppRoutes {
 
         case HomeScreen.routeName:
           return _materialRoute(const HomeScreen(), HomeScreen.routeName);
+      case MyBenefitsScreen.routeName:
+        return _materialRoute(const MyBenefitsScreen(), MyBenefitsScreen.routeName);
 
-          case BenefitDetailedScreen.routeName:
+      case BenefitDetailedScreen.routeName:
           return _materialRoute(BenefitDetailedScreen(benefit: settings.arguments as Benefit), BenefitDetailedScreen.routeName);
 
           case BenefitRedeemScreen.routeName:

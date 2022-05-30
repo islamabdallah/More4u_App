@@ -9,6 +9,11 @@ import 'package:more4u/data/models/user_model.dart';
 import 'helpers/json_reader.dart';
 
 main() {
+
+  setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+  });
+
   group('from json', () {
     final Map<String, dynamic> jsonMap = json.decode(
       readJson('helpers/dummy_responses/response.json'),

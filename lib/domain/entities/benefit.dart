@@ -23,6 +23,9 @@ class Benefit extends Equatable {
   final String? dateToMatch;
   final String? certainDate;
 
+  //other
+  final String? lastStatus;
+
   const Benefit({
     required this.id,
     required this.name,
@@ -41,6 +44,7 @@ class Benefit extends Equatable {
     this.numberOfDays,
     this.dateToMatch,
     this.certainDate,
+    this.lastStatus,
   });
 
   @override
@@ -61,6 +65,7 @@ class Benefit extends Equatable {
         requiredDocuments,
         dateToMatch,
         certainDate,
+        lastStatus,
       ];
 }
 //

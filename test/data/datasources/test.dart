@@ -53,4 +53,17 @@ main() {
       },
     );
 
+    test(
+      'test FakeMyBenefitsRemoteDataSourceImpl',
+          () async {
+        //arrange
+        TestWidgetsFlutterBinding.ensureInitialized();
+        BenefitRemoteDataSource remoteDataSource = FakeBenefitRemoteDataSourceImpl();
+        //act
+        final result = await remoteDataSource.getMyBenefits(employeeNumber: 15);
+        //assert
+        print(result);
+      },
+    );
+
 }

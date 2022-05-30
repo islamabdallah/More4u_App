@@ -18,8 +18,10 @@ import 'data/datasources/redeem_remote_data_source.dart';
 import 'domain/repositories/login_repository.dart';
 import 'domain/repositories/redeem_repository.dart';
 import 'domain/usecases/get_benefit_details.dart';
+import 'domain/usecases/get_my_benefits.dart';
 import 'domain/usecases/login_user.dart';
 import 'presentation/benefit_redeem/cubits/redeem_cubit.dart';
+import 'presentation/my_benefits/cubits/my_benefits_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -30,12 +32,14 @@ Future<void> init() async {
   sl.registerFactory(() => LoginCubit(loginUser: sl()));
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
   sl.registerFactory(() => RedeemCubit(getParticipantsUsecase: sl()));
+  sl.registerFactory(() => MyBenefitsCubit(getMyBenefitsUsecase: sl()));
 
 // Usecases
 
   sl.registerLazySingleton(() => LoginUserUsecase(sl()));
   sl.registerLazySingleton(() => GetBenefitDetailsUsecase(sl()));
   sl.registerLazySingleton(() => GetParticipantsUsecase(sl()));
+  sl.registerLazySingleton(() => GetMyBenefitsUsecase(sl()));
 
 // Repository
 

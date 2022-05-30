@@ -29,4 +29,19 @@ class BenefitRepositoryImpl extends BenefitRepository {
       return const Left(ConnectionFailure('No internet Connection'));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Benefit>>> getMyBenefits({required int employeeNumber}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        List<Benefit> result =
+            await remoteDataSource.getMyBenefits(employeeNumber: employeeNumber);
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
 }

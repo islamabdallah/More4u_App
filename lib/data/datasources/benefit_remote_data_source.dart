@@ -8,8 +8,9 @@ import '../models/benefit_model.dart';
 import '../models/login_response_model.dart';
 
 abstract class BenefitRemoteDataSource {
-  Future<BenefitModel> getBenefitDetails(
-      {required int benefitId});
+  Future<BenefitModel> getBenefitDetails({required int benefitId});
+
+  Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
 }
 
 // class BenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
@@ -49,11 +50,25 @@ abstract class BenefitRemoteDataSource {
 
 class FakeBenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
   @override
-  Future<BenefitModel> getBenefitDetails(
-      {required int benefitId}) async {
-
-    String response = await rootBundle.loadString('assets/benefit_details.json');
+  Future<BenefitModel> getBenefitDetails({required int benefitId}) async {
+    String response =
+        await rootBundle.loadString('assets/benefit_details.json');
     var json = jsonDecode(response);
     return BenefitModel.fromJson(json['data']);
+  }
+
+  @override
+  Future<List<BenefitModel>> getMyBenefits(
+      {required int employeeNumber}) async {
+    String response =
+        await rootBundle.loadString('assets/mybenefits_response.json');
+    var json = jsonDecode(response);
+    List<BenefitModel> myBenefits = [];
+    for (Map<String, dynamic> benefit in json['data']) {
+      print(benefit);
+      myBenefits.add(BenefitModel.fromJson(benefit));
+    }
+    print(myBenefits);
+    return myBenefits;
   }
 }

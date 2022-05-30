@@ -2,7 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_chips_input/flutter_chips_input.dart';
+// import 'package:flutter_chips_input/flutter_chips_input.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:more4u/core/constants/constants.dart';
@@ -10,6 +10,7 @@ import 'package:more4u/domain/entities/participant.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
 import 'package:more4u/presentation/benefit_redeem/cubits/redeem_cubit.dart';
 
+import '../../core/utils/flutter_chips/src/chips_input.dart';
 import '../../domain/entities/benefit.dart';
 import '../../injection_container.dart';
 
@@ -76,6 +77,8 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                     ...[
                     ChipsInput<Participant>(
                       enabled: _cubit.enableParticipantsField,
+                      // enabled: false,
+                      allowChipEditing: true,
                       decoration: InputDecoration(
                           labelText: "Select People",
                           border: OutlineInputBorder(),
@@ -113,7 +116,10 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             backgroundImage: AssetImage(
                                 'assets/images/profile_avatar_placeholder.png'),
                           ),
-                          onDeleted: () => state.deleteChip(profile),
+                          onDeleted: (){
+                            _cubit.participantOnRemove(profile);
+                            state.forceDeleteChip(profile);
+                          },
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                         );

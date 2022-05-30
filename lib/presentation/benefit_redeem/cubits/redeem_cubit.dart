@@ -106,30 +106,47 @@ class RedeemCubit extends Cubit<RedeemState> {
     this.participantsIds = participantsIds;
   }
 
-  redeemCard() {
-    _validateInputs();
-    var request = RedeemRequest(
-      participants: benefit.benefitType == 'Group' ? participantsIds : null,
-      sendTo: benefit.isAgift ? participantsIds.first : null,
-      from: startDate.text,
-      to: endDate.text,
-      benefitId: benefit.id,
-      employeeNumber: userData!.employeeNumber,
-      groupName: groupName.text,
-      message: message.text,
-    );
+  participantOnRemove(Participant profile) {
+    participantsIds
+        .removeWhere((participant) => participant == profile.employeeNumber);
+    if (participantsIds.length < benefit.maxParticipant) {
+      enableParticipantsField = true;
+    }
+    print(enableParticipantsField);
+    emit(ParticipantsChangedState());
+  }
 
+  redeemCard() {
+    if (_validateParticipants()) {
+      var request = RedeemRequest(
+        participants: benefit.benefitType == 'Group' ? participantsIds : null,
+        sendTo: benefit.isAgift && participantsIds.isNotEmpty
+            ? participantsIds.first
+            : null,
+        from: startDate.text,
+        to: endDate.text,
+        benefitId: benefit.id,
+        employeeNumber: userData!.employeeNumber,
+        groupName: groupName.text,
+        message: message.text,
+      );
     print(request);
+    }
+
   }
 
   String? lowParticipantError;
 
-  _validateInputs() {
-    if(participantsIds.length<benefit.minParticipant){
-    lowParticipantError = 'Participants should be between ${benefit.minParticipant} and ${benefit.maxParticipant}';
-    } else{
+  bool _validateParticipants() {
+    if (participantsIds.length < benefit.minParticipant) {
+      lowParticipantError =
+          'Participants should be between ${benefit.minParticipant} and ${benefit.maxParticipant}';
+      emit(ErrorValidationState());
+      return false;
+    } else {
       lowParticipantError = null;
+      emit(ErrorValidationState());
     }
-    emit(ErrorValidationState());
+    return true;
   }
 }

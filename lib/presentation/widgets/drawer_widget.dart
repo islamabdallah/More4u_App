@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:more4u/core/constants/app_constants.dart';
+import 'package:more4u/presentation/home/home_screen.dart';
+import 'package:more4u/presentation/my_benefits/my_benefits_screen.dart';
 
 import '../../core/constants/constants.dart';
+import '../Login/login_screen.dart';
 
 
 class DrawerWidget extends StatelessWidget {
@@ -80,8 +83,8 @@ class DrawerWidget extends StatelessWidget {
                   style: style,
                 ),
                 onTap: () {
-                  // Navigator.popUntil(
-                  //     context, ModalRoute.withName(SearchScreen.routeName));
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(HomeScreen.routeName));
                 },
               ),
               ListTile(
@@ -95,15 +98,15 @@ class DrawerWidget extends StatelessWidget {
                   style: style,
                 ),
                 onTap: () {
-                  // if (ModalRoute.of(context)?.settings.name ==
-                  //     SearchScreen.routeName) {
-                  //   Navigator.pushNamed(context, MyQuestions.routeName);
-                  //   print('hhhhh');
-                  // } else {
-                  //   Navigator.pushReplacementNamed(
-                  //       context, MyQuestions.routeName);
-                  //   print('nnnnnn');
-                  // }
+                  if (ModalRoute.of(context)?.settings.name ==
+                      HomeScreen.routeName) {
+                    Navigator.pushNamed(context, MyBenefitsScreen.routeName);
+                    print('hhhhh');
+                  } else {
+                    Navigator.pushReplacementNamed(
+                        context, MyBenefitsScreen.routeName);
+                    print('nnnnnn');
+                  }
                   // Navigator.pushNamedAndRemoveUntil(context, MyQuestions.routeName, ModalRoute.withName(SearchScreen.routeName));
                 },
               ),
@@ -176,8 +179,8 @@ class DrawerWidget extends StatelessWidget {
                   style: style,
                 ),
                 onTap: () {
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //     LoginScreen.routeName, (Route<dynamic> route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      LoginScreen.routeName, (Route<dynamic> route) => false);
                 },
               ),
             ],
