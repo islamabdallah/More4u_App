@@ -9,7 +9,7 @@ class RedeemCardUsecase {
   BenefitRepository repository;
 
   RedeemCardUsecase(this.repository);
-
+//todo add call method
 // Future<Either<Failure, LoginResponse>> call({
 //   required String username,
 //   required String pass,
@@ -18,37 +18,37 @@ class RedeemCardUsecase {
 // }
 }
 
-class RedeemRequest extends Equatable {
-  final String? message;
-  final String? groupName;
-
-  final List<int>? participants;
-  final int? sendTo;
-  final int benefitId;
-  final int employeeNumber;
-  final String from;
-  final String to;
-
-  const RedeemRequest(
-      {this.message,
-      this.groupName,
-      this.participants,
-      this.sendTo,
-      required this.benefitId,
-      required this.employeeNumber,
-      required this.from,
-      required this.to});
-
-  @override
-  List<Object?> get props => [
-        benefitId,
-        employeeNumber,
-        message,
-        groupName,
-        participants,
-        sendTo,
-        from,
-        to,
-      ];
-
-}
+// class RedeemRequest extends Equatable {
+//   final String? message;
+//   final String? groupName;
+//
+//   final List<int>? participants;
+//   final int? sendTo;
+//   final int benefitId;
+//   final int employeeNumber;
+//   final String from;
+//   final String to;
+//
+//   const RedeemRequest(
+//       {this.message,
+//       this.groupName,
+//       this.participants,
+//       this.sendTo,
+//       required this.benefitId,
+//       required this.employeeNumber,
+//       required this.from,
+//       required this.to});
+//
+//   @override
+//   List<Object?> get props => [
+//         benefitId,
+//         employeeNumber,
+//         message,
+//         groupName,
+//         participants,
+//         sendTo,
+//         from,
+//         to,
+//       ];
+//
+// }

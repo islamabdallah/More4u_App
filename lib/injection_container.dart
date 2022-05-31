@@ -18,9 +18,11 @@ import 'data/datasources/redeem_remote_data_source.dart';
 import 'domain/repositories/login_repository.dart';
 import 'domain/repositories/redeem_repository.dart';
 import 'domain/usecases/get_benefit_details.dart';
+import 'domain/usecases/get_my_benefit_requests.dart';
 import 'domain/usecases/get_my_benefits.dart';
 import 'domain/usecases/login_user.dart';
 import 'presentation/benefit_redeem/cubits/redeem_cubit.dart';
+import 'presentation/my_benefit_requests/cubits/my_benefit_requests_cubit.dart';
 import 'presentation/my_benefits/cubits/my_benefits_cubit.dart';
 
 final sl = GetIt.instance;
@@ -33,6 +35,8 @@ Future<void> init() async {
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
   sl.registerFactory(() => RedeemCubit(getParticipantsUsecase: sl()));
   sl.registerFactory(() => MyBenefitsCubit(getMyBenefitsUsecase: sl()));
+  sl.registerFactory(
+      () => MyBenefitRequestsCubit(getMyBenefitRequestsUsecase: sl()));
 
 // Usecases
 
@@ -40,6 +44,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetBenefitDetailsUsecase(sl()));
   sl.registerLazySingleton(() => GetParticipantsUsecase(sl()));
   sl.registerLazySingleton(() => GetMyBenefitsUsecase(sl()));
+  sl.registerLazySingleton(() => GetMyBenefitRequestsUsecase(sl()));
 
 // Repository
 
@@ -47,10 +52,10 @@ Future<void> init() async {
       () => LoginRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
 
   sl.registerLazySingleton<BenefitRepository>(
-          () => BenefitRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
+      () => BenefitRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
 
   sl.registerLazySingleton<RedeemRepository>(
-          () => RedeemRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
+      () => RedeemRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
 
 // Datasources
 
@@ -65,7 +70,7 @@ Future<void> init() async {
       () => FakeBenefitRemoteDataSourceImpl());
 
   sl.registerLazySingleton<RedeemRemoteDataSource>(
-          () => FakeRedeemRemoteDataSourceImpl());
+      () => FakeRedeemRemoteDataSourceImpl());
 //! Core
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));

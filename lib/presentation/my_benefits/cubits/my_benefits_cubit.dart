@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:more4u/core/constants/constants.dart';
 import 'package:more4u/domain/entities/benefit.dart';
+import 'package:more4u/domain/usecases/get_my_benefit_requests.dart';
 import 'package:more4u/domain/usecases/get_my_benefits.dart';
 
 part 'my_benefits_state.dart';
@@ -11,16 +12,20 @@ class MyBenefitsCubit extends Cubit<MyBenefitsState> {
   static MyBenefitsCubit get(context) => BlocProvider.of(context);
   final GetMyBenefitsUsecase getMyBenefitsUsecase;
 
-  MyBenefitsCubit({required this.getMyBenefitsUsecase})
+  MyBenefitsCubit(
+      {required this.getMyBenefitsUsecase,})
       : super(MyBenefitsInitial());
 
   List<Benefit> myAllBenefits = [];
   List<Benefit> myPendingBenefits = [];
   List<Benefit> myInProgressBenefits = [];
 
+  List<Benefit> myBenefitRequests = [];
+
   getMyBenefits() async {
     emit(GetMyBenefitsLoadingState());
-    final result = await getMyBenefitsUsecase(employeeNumber: userData!.employeeNumber);
+    final result =
+        await getMyBenefitsUsecase(employeeNumber: userData!.employeeNumber);
 
     result.fold((failure) {
       emit(GetMyBenefitsErrorState(failure.message));

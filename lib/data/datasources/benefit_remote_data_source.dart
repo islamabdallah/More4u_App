@@ -2,15 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:more4u/domain/entities/my_benefit_request.dart';
 
 import '../../../../../core/errors/exceptions.dart';
 import '../models/benefit_model.dart';
 import '../models/login_response_model.dart';
+import '../models/my_benefit_request_model.dart';
 
 abstract class BenefitRemoteDataSource {
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
+
+  Future<List<MyBenefitRequest>> getMyBenefitRequests({
+    required int employeeNumber,
+    required int benefitId,
+  });
 }
 
 // class BenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
@@ -70,5 +77,19 @@ class FakeBenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
     }
     print(myBenefits);
     return myBenefits;
+  }
+
+  @override
+  Future<List<MyBenefitRequest>> getMyBenefitRequests(
+      {required int employeeNumber, required int benefitId}) async {
+    String response =
+        await rootBundle.loadString('assets/my_benefit_requests.json');
+    var json = jsonDecode(response);
+    List<MyBenefitRequestModel> myBenefitRequests = [];
+    for (Map<String, dynamic> myBenefitRequest in json['data']) {
+      myBenefitRequests.add(MyBenefitRequestModel.fromJson(myBenefitRequest));
+    }
+    print(myBenefitRequests);
+    return myBenefitRequests;
   }
 }

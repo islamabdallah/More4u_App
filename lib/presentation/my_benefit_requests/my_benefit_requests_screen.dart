@@ -1,35 +1,40 @@
 import 'package:badges/badges.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
-import 'package:more4u/presentation/my_benefit_requests/my_benefit_requests_screen.dart';
+import 'package:more4u/presentation/my_benefit_requests/cubits/my_benefit_requests_cubit.dart';
 
 import '../../core/constants/constants.dart';
 import '../../domain/entities/benefit.dart';
+import '../../domain/entities/my_benefit_request.dart';
 import '../../injection_container.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
-import 'cubits/my_benefits_cubit.dart';
+import '../my_benefits/cubits/my_benefits_cubit.dart';
 
-class MyBenefitsScreen extends StatefulWidget {
-  static const routeName = 'MyBenefitsScreen';
+class MyBenefitRequestsScreen extends StatefulWidget {
+  static const routeName = 'MyBenefitRequestsScreen';
 
-  const MyBenefitsScreen({Key? key}) : super(key: key);
+  final int benefitId;
+
+  const MyBenefitRequestsScreen({Key? key, required this.benefitId})
+      : super(key: key);
 
   @override
-  State<MyBenefitsScreen> createState() => _MyBenefitsScreenState();
+  State<MyBenefitRequestsScreen> createState() =>
+      _MyBenefitRequestsScreenState();
 }
 
-class _MyBenefitsScreenState extends State<MyBenefitsScreen>
-    with TickerProviderStateMixin {
-  late MyBenefitsCubit _cubit;
+class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
+  late MyBenefitRequestsCubit _cubit;
 
   @override
   void initState() {
-    _cubit = sl<MyBenefitsCubit>()
-      ..getMyBenefits();
+    _cubit = sl<MyBenefitRequestsCubit>()
+      ..getMyBenefitRequests(widget.benefitId);
     super.initState();
   }
 
@@ -41,8 +46,6 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
 
   @override
   Widget build(BuildContext context) {
-    TabController _tabController = TabController(length: 3, vsync: this);
-
     return BlocConsumer(
       bloc: _cubit,
       listener: (context, state) {},
@@ -116,74 +119,12 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 25.h),
-                  Theme(
-                    data: ThemeData(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                    ),
-                    child: TabBar(
-                      controller: _tabController,
-                      labelColor: mainColor,
-                      unselectedLabelColor: Colors.grey,
-                      isScrollable: true,
-                      // indicatorPadding:  EdgeInsets.only(right: 20),
-                      labelPadding: EdgeInsets.only(right: 25.w),
-                      indicator: BoxDecoration(),
-                      // indicator: CircleTabIndicator(color: Colors.black,radius:2.5),
-                      tabs: [
-                        Tab(
-                          text: 'All',
-                        ),
-                        Tab(
-                          text: 'Pending',
-                        ),
-                        Tab(
-                          text: 'InProgress',
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        _cubit.myAllBenefits.isNotEmpty
-                            ? ListView.builder(
-                          itemBuilder: (context, index) =>
-                              myBenefitCard(
-                                  benefit: _cubit.myAllBenefits[index]),
-                          itemCount: _cubit.myAllBenefits.length,
-                        )
-                            : const Center(child: Text('No Benefit available')),
-                        _cubit.myPendingBenefits.isNotEmpty
-                            ? ListView.builder(
-                          itemBuilder: (context, index) =>
-                              myBenefitCard(
-                                  benefit:
-                                  _cubit.myPendingBenefits[index]),
-                          itemCount: _cubit.myPendingBenefits.length,
-                        )
-                            : const Center(
-                            child: Text('No Pending Benefit available')),
-                        _cubit.myInProgressBenefits.isNotEmpty
-                            ? ListView.builder(
-                          itemBuilder: (context, index) =>
-                              myBenefitCard(
-                                  benefit:
-                                  _cubit.myInProgressBenefits[index]),
-                          itemCount: _cubit.myInProgressBenefits.length,
-                        )
-                            : const Center(
-                            child: Text('No InProgress Benefit available')),
-                      ],
-                    ),
-                  ),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemBuilder: (context, index) =>
-                  //       MyBenefitRequestCard(_cubit.myAllBenefits[index]),
-                  //   itemCount: _cubit.myAllBenefits.length,
-                  // )
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => myBenefitRequestCard(
+                        myBenefitRequest: _cubit.myBenefitRequests[index]),
+                    itemCount: _cubit.myBenefitRequests.length,
+                  )
                 ],
               ),
             ),
@@ -193,22 +134,101 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
     );
   }
 
-  Card myBenefitCard({required Benefit benefit}) {
+  Card myBenefitRequestCard({required MyBenefitRequest myBenefitRequest}) {
     return Card(
       elevation: 5,
       clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(
-              context, MyBenefitRequestsScreen.routeName, arguments: benefit.id);
+          showDialog(
+              context: context,
+              builder: (_) {
+                return Dialog(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ...[
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(20),
+                          color: Colors.blue[900],
+                          child: const Center(
+                            child: Text(
+                              'Request Information',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListTile(
+                                dense: true,
+                                leading: Icon(Icons.hourglass_bottom),
+                                title: Text(myBenefitRequest.from),
+                              ),
+                              ListTile(
+                                dense: true,
+                                leading: Icon(Icons.calendar_today_outlined),
+                                title: Text(myBenefitRequest.to),
+                              ),
+                              ListTile(
+                                dense: true,
+                                leading: Icon(Icons.messenger),
+                                title: Text(myBenefitRequest.message??''),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ],
+                      if (myBenefitRequest.requestWorkFlowAPIs != null &&
+                          myBenefitRequest.requestWorkFlowAPIs!.isNotEmpty) ...[
+                        const SizedBox(height: 20),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(16),
+                          color: Colors.blue[900],
+                          child: const Center(
+                            child: Text(
+                              'Request WorkFlow',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                        for (var x in myBenefitRequest.requestWorkFlowAPIs!)
+                          Container(
+                            width: double.infinity,
+                            color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(x.employeeName!),
+                                Text(x.statusString),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ],
+                  ),
+                );
+              });
         },
         child: Container(
           decoration: BoxDecoration(
             border: Border(
               left: BorderSide(
                   width: 5.0,
-                  color: getBenefitStatusColor(benefit.lastStatus ?? '')),
+                  color: getBenefitStatusColor(myBenefitRequest.statusString)),
             ),
           ),
           child: Padding(
@@ -222,7 +242,7 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                       Row(
                         children: <Widget>[
                           Text(
-                            benefit.name,
+                            'Number',
                             style: TextStyle(
                               fontSize: 18,
                               color: mainColor,
@@ -231,15 +251,13 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                             overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(
-                            width: 8,
+                            width: 16,
                           ),
                           Text(
-                            '(${benefit.lastStatus})',
+                            '100',
                             style: TextStyle(
                               fontSize: 13.0,
                               fontWeight: FontWeight.w600,
-                              color: getBenefitStatusColor(
-                                  benefit.lastStatus ?? ''),
                             ),
                           ),
                         ],
@@ -259,18 +277,10 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                           ),
                           Text(
                             // benefit.benefitType,
-                            benefit.benefitType,
+                            myBenefitRequest.statusString,
                             style: TextStyle(color: mainColor),
                           ),
                         ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        '${benefit.timesEmployeeReceiveThisBenefit}/${benefit
-                            .times}',
-                        style: TextStyle(fontSize: 18, color: mainColor),
                       ),
                     ],
                   ),
@@ -293,6 +303,8 @@ Color getBenefitStatusColor(String status) {
     case 'Pending':
       return Colors.indigo;
     case 'InProgress':
+      return Colors.green;
+    case 'Approved':
       return Colors.green;
 
     default:

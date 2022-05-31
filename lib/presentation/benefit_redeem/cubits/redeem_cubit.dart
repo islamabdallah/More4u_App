@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:more4u/domain/entities/my_benefit_request.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
 
 import '../../../core/constants/constants.dart';
@@ -118,7 +119,7 @@ class RedeemCubit extends Cubit<RedeemState> {
 
   redeemCard() {
     if (_validateParticipants()) {
-      var request = RedeemRequest(
+      var request = MyBenefitRequest(
         participants: benefit.benefitType == 'Group' ? participantsIds : null,
         sendTo: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first
@@ -130,15 +131,15 @@ class RedeemCubit extends Cubit<RedeemState> {
         groupName: groupName.text,
         message: message.text,
       );
-    print(request);
+      print(request);
     }
-
   }
 
   String? lowParticipantError;
 
   bool _validateParticipants() {
-    if (participantsIds.length < benefit.minParticipant) {
+    if ((benefit.benefitType == 'Group' || benefit.isAgift) &&
+        participantsIds.length < benefit.minParticipant) {
       lowParticipantError =
           'Participants should be between ${benefit.minParticipant} and ${benefit.maxParticipant}';
       emit(ErrorValidationState());
