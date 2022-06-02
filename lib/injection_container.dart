@@ -7,6 +7,7 @@ import 'package:more4u/domain/repositories/benefit_repository.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
 import 'package:more4u/presentation/Login/cubits/login_cubit.dart';
 import 'package:more4u/presentation/benefit_details/cubits/benefit_details_cubit.dart';
+import 'package:more4u/presentation/manage_requests/cubits/manage_requests_cubit.dart';
 
 import 'core/network/network_info.dart';
 import 'package:get_it/get_it.dart';
@@ -37,6 +38,8 @@ Future<void> init() async {
   sl.registerFactory(() => MyBenefitsCubit(getMyBenefitsUsecase: sl()));
   sl.registerFactory(
       () => MyBenefitRequestsCubit(getMyBenefitRequestsUsecase: sl()));
+  sl.registerFactory(
+      () => ManageRequestsCubit());
 
 // Usecases
 

@@ -16,6 +16,7 @@ import 'core/config/bloc_observer.dart';
 import 'core/config/routes/routes.dart';
 import 'core/utils/services/local_storage/local_storage_service.dart';
 import 'injection_container.dart' as di;
+import 'presentation/manage_requests/manage_requests_screen.dart';
 import 'presentation/my_benefits/my_benefits_screen.dart';
 
 
@@ -61,7 +62,8 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             onGenerateRoute: AppRoutes.onGenerateRoutes,
-            initialRoute: LoginScreen.routeName,
+            // initialRoute: LoginScreen.routeName,
+            initialRoute: ManageRequestsScreen.routeName,
             // initialRoute: MyBenefitsScreen.routeName,
             // initialRoute: HomeScreen.routeName,
             // initialRoute: BenefitDetailedScreen.routeName,

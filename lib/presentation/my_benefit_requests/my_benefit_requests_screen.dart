@@ -183,9 +183,8 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                               ListTile(
                                 dense: true,
                                 leading: Icon(Icons.messenger),
-                                title: Text(myBenefitRequest.message??''),
+                                title: Text(myBenefitRequest.message ?? ''),
                               ),
-
                             ],
                           ),
                         ),
@@ -285,9 +284,83 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                     ],
                   ),
                 ),
-                Icon(
-                  Icons.visibility,
-                  color: Colors.grey,
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Icon(
+                        Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    if (myBenefitRequest.canEdit != null &&
+                        myBenefitRequest.canEdit!)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: Center(
+                            child: IconButton(
+                              padding: EdgeInsets.all(0.0),
+                              onPressed: () {},
+                              splashRadius: 22,
+                              icon: Icon(
+                                Icons.edit,
+                                size: 22,
+                              ),
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (myBenefitRequest.canCancel != null &&
+                        myBenefitRequest.canCancel!)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: Center(
+                            child: IconButton(
+                              padding: EdgeInsets.all(0.0),
+                              onPressed: () {
+                                AlertDialog alert = AlertDialog(
+                                  title: Text("Cancel Request"),
+                                  content: Text("Are you sure you want to cancel this request?"),
+                                  actions: [
+                                    TextButton(
+                                      child: Text("Cancel"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text("Ok"),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                );
+
+                                // show the dialog
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return alert;
+                                  },
+                                );
+                              },
+                              splashRadius: 22,
+                              icon: Icon(
+                                Icons.delete,
+                                size: 22,
+                              ),
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ),

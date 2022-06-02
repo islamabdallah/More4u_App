@@ -6,6 +6,7 @@ import '../../../presentation/Login/login_screen.dart';
 import '../../../presentation/benefit_details/beneifit_detailed_screen.dart';
 import '../../../presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import '../../../presentation/home/home_screen.dart';
+import '../../../presentation/manage_requests/manage_requests_screen.dart';
 import '../../../presentation/my_benefits/my_benefits_screen.dart';
 import '../../../presentation/pages/profile.dart';
 
@@ -23,6 +24,11 @@ class AppRoutes {
       case MyBenefitsScreen.routeName:
         return _materialRoute(
             const MyBenefitsScreen(), MyBenefitsScreen.routeName);
+
+      case ManageRequestsScreen.routeName:
+        return _materialRoute(
+            const ManageRequestsScreen(), ManageRequestsScreen.routeName);
+
       case MyBenefitRequestsScreen.routeName:
         return _materialRoute(
             MyBenefitRequestsScreen(
