@@ -1,48 +1,88 @@
 import 'package:equatable/equatable.dart';
 import 'package:more4u/domain/entities/participant.dart';
+import 'package:more4u/domain/entities/user.dart';
 
-class MyBenefitRequest extends Equatable {
+class BenefitRequest extends Equatable {
+  final int? requestNumber;
+  final String? from;
+  final String? to;
   final String? message;
   final String? groupName;
   final List<int>? participants;
-  final int? sendTo;
-  final int benefitId;
-  final int employeeNumber;
-  final String from;
-  final String to;
   final List<Participant>? participantsData;
+  final List<User>? fullParticipantsData;
+  final int? sendTo;
+  final User? sendToModel;
+  final int? employeeNumber;
+  final String? requestedAt;
+
+  //benefit data
+  final int? benefitId;
   final String? benefitName;
+  final String? benefitType;
+
+  //my request
+  final String? status;
   final int? requestStatusId;
   final bool? canCancel;
   final bool? canEdit;
   final List<RequestWorkFlowAPIs>? requestWorkFlowAPIs;
 
-  const MyBenefitRequest(
-      {this.message,
+  //manage request
+  final User? createdBy;
+  final String? warningMessage;
+  final bool? employeeCanResponse;
+
+  const BenefitRequest(
+      {this.requestNumber,
+      this.from,
+      this.to,
+      this.message,
       this.groupName,
       this.participants,
-      this.sendTo,
-      required this.benefitId,
-      required this.employeeNumber,
-      required this.from,
-      required this.to,
       this.participantsData,
+      this.fullParticipantsData,
+      this.sendTo,
+      this.sendToModel,
+      this.employeeNumber,
+      this.requestedAt,
+      this.benefitId,
       this.benefitName,
+      this.benefitType,
+      this.status,
       this.requestStatusId,
       this.canCancel,
       this.canEdit,
-      this.requestWorkFlowAPIs});
+      this.requestWorkFlowAPIs,
+      this.createdBy,
+      this.warningMessage,
+      this.employeeCanResponse});
 
   @override
   List<Object?> get props => [
-        benefitId,
-        employeeNumber,
+        requestNumber,
+        from,
+        to,
         message,
         groupName,
         participants,
+        participantsData,
+        fullParticipantsData,
         sendTo,
-        from,
-        to,
+        sendToModel,
+        employeeNumber,
+        requestedAt,
+        benefitId,
+        benefitName,
+        benefitType,
+        status,
+        requestStatusId,
+        canCancel,
+        canEdit,
+        requestWorkFlowAPIs,
+        createdBy,
+    warningMessage,
+        employeeCanResponse,
       ];
 
   String get statusString {

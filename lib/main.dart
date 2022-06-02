@@ -9,6 +9,7 @@ import 'package:more4u/data/models/user_model.dart';
 import 'package:more4u/presentation/Login/login_screen.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
+import 'core/constants/constants.dart';
 import 'data/datasources/benefit_remote_data_source.dart';
 import 'presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import 'presentation/home/home_screen.dart';
@@ -58,7 +59,15 @@ class MyApp extends StatelessWidget {
               create: (context) => HomeCubit(),
             ),
           ],
-          child: const MaterialApp(
+          child: MaterialApp(
+            color: mainColor,
+
+            theme: ThemeData(
+              primaryColor: mainColor,
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                primary: mainColor,
+              ),
+            ),
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             onGenerateRoute: AppRoutes.onGenerateRoutes,

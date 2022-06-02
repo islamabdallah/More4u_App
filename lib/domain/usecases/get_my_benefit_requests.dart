@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:more4u/domain/entities/my_benefit_request.dart';
+import 'package:more4u/domain/entities/benefit_request.dart';
 import 'package:more4u/domain/repositories/benefit_repository.dart';
 
 import '../../core/errors/failures.dart';
@@ -10,7 +10,7 @@ class GetMyBenefitRequestsUsecase {
 
   GetMyBenefitRequestsUsecase(this.repository);
 
-  Future<Either<Failure, List<MyBenefitRequest>>> call({
+  Future<Either<Failure, List<BenefitRequest>>> call({
     required int employeeNumber,
     required int benefitId,
   }) {

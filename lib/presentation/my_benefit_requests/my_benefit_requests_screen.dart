@@ -9,7 +9,7 @@ import 'package:more4u/presentation/my_benefit_requests/cubits/my_benefit_reques
 
 import '../../core/constants/constants.dart';
 import '../../domain/entities/benefit.dart';
-import '../../domain/entities/my_benefit_request.dart';
+import '../../domain/entities/benefit_request.dart';
 import '../../injection_container.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
@@ -134,7 +134,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
     );
   }
 
-  Card myBenefitRequestCard({required MyBenefitRequest myBenefitRequest}) {
+  Card myBenefitRequestCard({required BenefitRequest myBenefitRequest}) {
     return Card(
       elevation: 5,
       clipBehavior: Clip.antiAlias,
@@ -173,12 +173,12 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                               ListTile(
                                 dense: true,
                                 leading: Icon(Icons.hourglass_bottom),
-                                title: Text(myBenefitRequest.from),
+                                title: Text(myBenefitRequest.from??''),
                               ),
                               ListTile(
                                 dense: true,
                                 leading: Icon(Icons.calendar_today_outlined),
-                                title: Text(myBenefitRequest.to),
+                                title: Text(myBenefitRequest.to??''),
                               ),
                               ListTile(
                                 dense: true,

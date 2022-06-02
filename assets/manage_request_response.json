@@ -1,0 +1,257 @@
+{
+  "message": "Sucessful Process",
+  "data": {
+    "requests": [
+      {
+        "requestNumber": 30155,
+        "from": "2022-09-15",
+        "to": "2022-09-15",
+        "requestedAt": "2022-06-02",
+        "message": "yyyyy",
+        "groupName": null,
+        "participants": null,
+        "participantsData": null,
+        "sendTo": null,
+        "benefitId": 47,
+        "benefitName": "Birth Date",
+        "benefitType": "Individual",
+        "status": "Pending",
+        "createdBy": {
+          "employeeName": "Doaa Mohamed",
+          "email": null,
+          "employeeNumber": 100,
+          "positionName": "Software Engineer",
+          "departmentName": "Planning",
+          "birthDate": "1990-09-15",
+          "joinDate": "2021-12-01",
+          "hasRequests": false,
+          "gender": null,
+          "maritalStatus": null,
+          "company": "test",
+          "nationality": null,
+          "phoneNumber": "01142054636",
+          "address": null,
+          "collar": "White Collar",
+          "sapNumber": 101,
+          "id": null,
+          "supervisorName": null,
+          "profilePicture": null,
+          "workDuration": 4043
+        },
+        "wariningMessage": null,
+        "employeeCanResponse": true
+      },
+      {
+        "requestNumber": 30156,
+        "from": "2022-06-02",
+        "to": "2022-06-02",
+        "requestedAt": "2022-06-02",
+        "message": "hhh",
+        "groupName": "jjj",
+        "participants": null,
+        "fullParticipantsData": [
+          {
+            "employeeName": "Doaa Mohamed",
+            "email": null,
+            "employeeNumber": 100,
+            "positionName": "Software Engineer",
+            "departmentName": "Planning",
+            "birthDate": "1990-09-15",
+            "joinDate": "2021-12-01",
+            "hasRequests": false,
+            "gender": null,
+            "maritalStatus": null,
+            "company": "test",
+            "nationality": null,
+            "phoneNumber": "01142054636",
+            "address": null,
+            "collar": "White Collar",
+            "sapNumber": 101,
+            "id": null,
+            "supervisorName": null,
+            "profilePicture": null,
+            "workDuration": 4043
+          },
+          {
+            "employeeName": "hend",
+            "email": null,
+            "employeeNumber": 101,
+            "positionName": "HR employee",
+            "departmentName": "HR",
+            "birthDate": "1990-09-15",
+            "joinDate": "2021-12-01",
+            "hasRequests": false,
+            "gender": null,
+            "maritalStatus": null,
+            "company": "test",
+            "nationality": null,
+            "phoneNumber": "01142054639",
+            "address": null,
+            "collar": "White Collar",
+            "sapNumber": 102,
+            "id": null,
+            "supervisorName": null,
+            "profilePicture": null,
+            "workDuration": 4043
+          },
+          {
+            "employeeName": "huda",
+            "email": null,
+            "employeeNumber": 103,
+            "positionName": "Software Engineer",
+            "departmentName": "Planning",
+            "birthDate": "1984-05-18",
+            "joinDate": "2014-05-18",
+            "hasRequests": false,
+            "gender": null,
+            "maritalStatus": null,
+            "company": "test",
+            "nationality": null,
+            "phoneNumber": "9876543211",
+            "address": null,
+            "collar": "White Collar",
+            "sapNumber": 104,
+            "id": null,
+            "supervisorName": null,
+            "profilePicture": null,
+            "workDuration": 4036
+          },
+          {
+            "employeeName": "sara",
+            "email": null,
+            "employeeNumber": 105,
+            "positionName": "Manager",
+            "departmentName": "Planning",
+            "birthDate": "1983-05-18",
+            "joinDate": "2013-05-18",
+            "hasRequests": false,
+            "gender": null,
+            "maritalStatus": null,
+            "company": "test",
+            "nationality": null,
+            "phoneNumber": "98765432112",
+            "address": null,
+            "collar": "White Collar",
+            "sapNumber": 106,
+            "id": null,
+            "supervisorName": null,
+            "profilePicture": null,
+            "workDuration": 4035
+          },
+          {
+            "employeeName": "mona",
+            "email": null,
+            "employeeNumber": 107,
+            "positionName": "Business Analyst",
+            "departmentName": "Planning",
+            "birthDate": "1979-05-18",
+            "joinDate": "2009-05-18",
+            "hasRequests": false,
+            "gender": null,
+            "maritalStatus": null,
+            "company": "test",
+            "nationality": null,
+            "phoneNumber": "45678900987",
+            "address": null,
+            "collar": "White Collar",
+            "sapNumber": 108,
+            "id": null,
+            "supervisorName": null,
+            "profilePicture": null,
+            "workDuration": 4031
+          }
+        ],
+        "sendTo": null,
+        "benefitId": 50,
+        "benefitName": "Sport Group ",
+        "benefitType": "Group",
+        "status": "Pending",
+        "createdBy": {
+          "employeeName": "Doaa Mohamed",
+          "email": null,
+          "employeeNumber": 100,
+          "positionName": "Software Engineer",
+          "departmentName": "Planning",
+          "birthDate": "1990-09-15",
+          "joinDate": "2021-12-01",
+          "hasRequests": false,
+          "gender": null,
+          "maritalStatus": null,
+          "company": "test",
+          "nationality": null,
+          "phoneNumber": "01142054636",
+          "address": null,
+          "collar": "White Collar",
+          "sapNumber": 101,
+          "id": null,
+          "supervisorName": null,
+          "profilePicture": null,
+          "workDuration": 4043
+        },
+        "wariningMessage": null,
+        "employeeCanResponse": true
+      }
+    ],
+    "benefitTypeModels": [
+      {
+        "id": -1,
+        "name": "Any"
+      },
+      {
+        "id": 2,
+        "name": "Individual"
+      },
+      {
+        "id": 3,
+        "name": "Group"
+      }
+    ],
+    "selectedBenefitType": -1,
+    "selectedTimingId": -1,
+    "requestStatusModels": [
+      {
+        "name": "Status",
+        "id": -1
+      },
+      {
+        "name": "Pending",
+        "id": 1
+      },
+      {
+        "name": "Approved",
+        "id": 3
+      },
+      {
+        "name": "Rejected",
+        "id": 4
+      }
+    ],
+    "selectedRequestStatus": -1,
+    "departmentModels": null,
+    "selectedDepartmentId": -1,
+    "employeeNumberSearch": 0,
+    "selectedAll": false,
+    "timingModels": [
+      {
+        "id": -1,
+        "name": "Date"
+      },
+      {
+        "id": 1,
+        "name": "Today"
+      },
+      {
+        "id": 2,
+        "name": "Last Day"
+      },
+      {
+        "id": 3,
+        "name": "Current Week"
+      },
+      {
+        "id": 4,
+        "name": "Current Month"
+      }
+    ]
+  }
+}

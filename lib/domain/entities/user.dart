@@ -1,46 +1,46 @@
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
-  final String employeeName;
-  final String email;
+  final String? employeeName;
+  final String? email;
   final int employeeNumber;
-  final String positionName;
-  final String departmentName;
+  final String? positionName;
+  final String? departmentName;
   final String birthDate;
   final String joinDate;
-  final bool hasRequests;
-  final int gender;
-  final int maritalStatus;
-  final String company;
-  final String nationality;
+  final bool? hasRequests;
+  final int? gender;
+  final int? maritalStatus;
+  final String? company;
+  final String? nationality;
   final String? phoneNumber;
-  final String address;
-  final int collar;
-  final int sapNumber;
-  final String id;
-  final String supervisorName;
-  final String profilePicture;
+  final String? address;
+  final String? collar;
+  final int? sapNumber;
+  final String? id;
+  final String? supervisorName;
+  final String? profilePicture;
 
   const User({
-    required this.employeeName,
-    required this.email,
+    this.employeeName,
+    this.email,
     required this.employeeNumber,
-    required this.positionName,
-    required this.departmentName,
+    this.positionName,
+    this.departmentName,
     required this.birthDate,
     required this.joinDate,
-    required this.hasRequests,
-    required this.gender,
-    required this.maritalStatus,
-    required this.company,
-    required this.nationality,
+    this.hasRequests,
+    this.gender,
+    this.maritalStatus,
+    this.company,
+    this.nationality,
     this.phoneNumber,
-    required this.address,
-    required this.collar,
-    required this.sapNumber,
-    required this.id,
-    required this.supervisorName,
-    required this.profilePicture,
+    this.address,
+    this.collar,
+    this.sapNumber,
+    this.id,
+    this.supervisorName,
+    this.profilePicture,
   });
 
   @override

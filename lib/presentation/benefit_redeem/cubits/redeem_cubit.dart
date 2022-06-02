@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
-import 'package:more4u/domain/entities/my_benefit_request.dart';
+import 'package:more4u/domain/entities/benefit_request.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
 
 import '../../../core/constants/constants.dart';
@@ -119,7 +119,7 @@ class RedeemCubit extends Cubit<RedeemState> {
 
   redeemCard() {
     if (_validateParticipants()) {
-      var request = MyBenefitRequest(
+      var request = BenefitRequest(
         participants: benefit.benefitType == 'Group' ? participantsIds : null,
         sendTo: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first

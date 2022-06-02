@@ -2,21 +2,27 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:more4u/domain/entities/my_benefit_request.dart';
+import 'package:more4u/domain/entities/benefit_request.dart';
+import 'package:more4u/domain/entities/filtered_search.dart';
 
 import '../../../../../core/errors/exceptions.dart';
 import '../models/benefit_model.dart';
 import '../models/login_response_model.dart';
-import '../models/my_benefit_request_model.dart';
+import '../models/benefit_request_model.dart';
 
 abstract class BenefitRemoteDataSource {
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
 
-  Future<List<MyBenefitRequest>> getMyBenefitRequests({
+  Future<List<BenefitRequest>> getMyBenefitRequests({
     required int employeeNumber,
     required int benefitId,
+  });
+
+  Future<List<BenefitRequest>> getBenefitsToManage({
+    required int employeeNumber,
+    FilteredSearch? search,
   });
 }
 
@@ -80,16 +86,29 @@ class FakeBenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
   }
 
   @override
-  Future<List<MyBenefitRequest>> getMyBenefitRequests(
+  Future<List<BenefitRequest>> getMyBenefitRequests(
       {required int employeeNumber, required int benefitId}) async {
     String response =
         await rootBundle.loadString('assets/my_benefit_requests.json');
     var json = jsonDecode(response);
-    List<MyBenefitRequestModel> myBenefitRequests = [];
+    List<BenefitRequestModel> myBenefitRequests = [];
     for (Map<String, dynamic> myBenefitRequest in json['data']) {
-      myBenefitRequests.add(MyBenefitRequestModel.fromJson(myBenefitRequest));
+      myBenefitRequests.add(BenefitRequestModel.fromJson(myBenefitRequest));
     }
     print(myBenefitRequests);
     return myBenefitRequests;
+  }
+
+  @override
+  Future<List<BenefitRequest>> getBenefitsToManage({required int employeeNumber, FilteredSearch? search}) async {
+    String response =
+        await rootBundle.loadString('assets/manage_request_response.json');
+    var json = jsonDecode(response);
+    List<BenefitRequestModel> benefitRequests = [];
+    for (Map<String, dynamic> benefitRequest in json['data']['requests']) {
+      benefitRequests.add(BenefitRequestModel.fromJson(benefitRequest));
+    }
+    print(benefitRequests);
+    return benefitRequests;
   }
 }
