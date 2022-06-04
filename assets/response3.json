@@ -16,7 +16,7 @@
       "nationality": "Egyptian",
       "phoneNumber": null,
       "address": "Assiut",
-      "collar": 1,
+      "collar": "test",
       "sapNumber": 101,
       "id": "12345678901100",
       "supervisorName": "sara",

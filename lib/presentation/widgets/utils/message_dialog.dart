@@ -35,12 +35,12 @@ showMessageDialog({
                               fontWeight: FontWeight.bold,
                               fontSize: 22.sp,
                               color:
-                                  isSucceeded ? Colors.lightGreen : Colors.red,
+                                  isSucceeded ? Colors.green : Colors.red,
                             ),
                           ),
                           SizedBox(height: 10.h),
                           Text(
-                            message??'Something went wrong!',
+                            message??'',
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 20.sp),
                             maxLines: 3,
@@ -82,7 +82,7 @@ showMessageDialog({
                                   },
                                   style: ElevatedButton.styleFrom(
                                     primary: isSucceeded
-                                        ? Colors.lightGreen
+                                        ? Colors.green
                                         : Colors.red,
                                   ),
                                   child: Text(
@@ -101,7 +101,7 @@ showMessageDialog({
                     top: -50.h,
                     child: isSucceeded
                         ? CircleAvatar(
-                            backgroundColor: Colors.lightGreen,
+                            backgroundColor: Colors.green,
                             radius: 50.r,
                             child: Icon(
                               Icons.verified_user,

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:more4u/core/constants/app_constants.dart';
 import 'package:more4u/presentation/home/home_screen.dart';
+import 'package:more4u/presentation/manage_requests/manage_requests_screen.dart';
 import 'package:more4u/presentation/my_benefits/my_benefits_screen.dart';
 
 import '../../core/constants/constants.dart';
@@ -160,12 +161,19 @@ class DrawerWidget extends StatelessWidget {
                     EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
                 leading: const Icon(Icons.event_note),
                 title: Text(
-                  'Requests',
+                  'Manage Requests',
                   style: style,
                 ),
                 onTap: () {
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //     LoginScreen.routeName, (Route<dynamic> route) => false);
+                  if (ModalRoute.of(context)?.settings.name ==
+                      HomeScreen.routeName) {
+                    Navigator.pushNamed(context, ManageRequestsScreen.routeName);
+
+                  } else {
+                    Navigator.pushReplacementNamed(
+                        context, ManageRequestsScreen.routeName);
+
+                  }
                 },
               ),
               ListTile(

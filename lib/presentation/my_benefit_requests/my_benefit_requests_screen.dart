@@ -11,9 +11,11 @@ import '../../core/constants/constants.dart';
 import '../../domain/entities/benefit.dart';
 import '../../domain/entities/benefit_request.dart';
 import '../../injection_container.dart';
+import '../home/home_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
 import '../my_benefits/cubits/my_benefits_cubit.dart';
+import '../widgets/utils/message_dialog.dart';
 
 class MyBenefitRequestsScreen extends StatefulWidget {
   static const routeName = 'MyBenefitRequestsScreen';
@@ -122,7 +124,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                   ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) => myBenefitRequestCard(
-                        myBenefitRequest: _cubit.myBenefitRequests[index]),
+                        request: _cubit.myBenefitRequests[index]),
                     itemCount: _cubit.myBenefitRequests.length,
                   )
                 ],
@@ -134,7 +136,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
     );
   }
 
-  Card myBenefitRequestCard({required BenefitRequest myBenefitRequest}) {
+  Card myBenefitRequestCard({required BenefitRequest request}) {
     return Card(
       elevation: 5,
       clipBehavior: Clip.antiAlias,
@@ -155,7 +157,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                         Container(
                           width: double.infinity,
                           padding: EdgeInsets.all(20),
-                          color: Colors.blue[900],
+                          color: mainColor,
                           child: const Center(
                             child: Text(
                               'Request Information',
@@ -173,29 +175,29 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                               ListTile(
                                 dense: true,
                                 leading: Icon(Icons.hourglass_bottom),
-                                title: Text(myBenefitRequest.from??''),
+                                title: Text(request.from ?? ''),
                               ),
                               ListTile(
                                 dense: true,
                                 leading: Icon(Icons.calendar_today_outlined),
-                                title: Text(myBenefitRequest.to??''),
+                                title: Text(request.to ?? ''),
                               ),
                               ListTile(
                                 dense: true,
                                 leading: Icon(Icons.messenger),
-                                title: Text(myBenefitRequest.message ?? ''),
+                                title: Text(request.message ?? ''),
                               ),
                             ],
                           ),
                         ),
                       ],
-                      if (myBenefitRequest.requestWorkFlowAPIs != null &&
-                          myBenefitRequest.requestWorkFlowAPIs!.isNotEmpty) ...[
+                      if (request.requestWorkFlowAPIs != null &&
+                          request.requestWorkFlowAPIs!.isNotEmpty) ...[
                         const SizedBox(height: 20),
                         Container(
                           width: double.infinity,
                           padding: EdgeInsets.all(16),
-                          color: Colors.blue[900],
+                          color: mainColor,
                           child: const Center(
                             child: Text(
                               'Request WorkFlow',
@@ -204,7 +206,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                             ),
                           ),
                         ),
-                        for (var x in myBenefitRequest.requestWorkFlowAPIs!)
+                        for (var x in request.requestWorkFlowAPIs!)
                           Container(
                             width: double.infinity,
                             color: Colors.white,
@@ -227,7 +229,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
             border: Border(
               left: BorderSide(
                   width: 5.0,
-                  color: getBenefitStatusColor(myBenefitRequest.statusString)),
+                  color: getBenefitStatusColor(request.statusString)),
             ),
           ),
           child: Padding(
@@ -253,7 +255,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                             width: 16,
                           ),
                           Text(
-                            '100',
+                            request.requestNumber.toString(),
                             style: TextStyle(
                               fontSize: 13.0,
                               fontWeight: FontWeight.w600,
@@ -276,8 +278,30 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                           ),
                           Text(
                             // benefit.benefitType,
-                            myBenefitRequest.statusString,
+                            request.benefitType ?? '',
                             style: TextStyle(color: mainColor),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Status:',
+                            style: TextStyle(
+                                color: mainColor, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            // benefit.benefitType,
+                            request.statusString,
+                            style: TextStyle(
+                                color: getBenefitStatusColor(
+                                    request.statusString)),
                           ),
                         ],
                       ),
@@ -293,8 +317,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                         color: Colors.grey,
                       ),
                     ),
-                    if (myBenefitRequest.canEdit != null &&
-                        myBenefitRequest.canEdit!)
+                    if (request.canEdit != null && request.canEdit!)
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: SizedBox(
@@ -314,8 +337,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                           ),
                         ),
                       ),
-                    if (myBenefitRequest.canCancel != null &&
-                        myBenefitRequest.canCancel!)
+                    if (request.canCancel != null && request.canCancel!)
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: SizedBox(
@@ -327,7 +349,8 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                               onPressed: () {
                                 AlertDialog alert = AlertDialog(
                                   title: Text("Cancel Request"),
-                                  content: Text("Are you sure you want to cancel this request?"),
+                                  content: Text(
+                                      "Are you sure you want to cancel this request?"),
                                   actions: [
                                     TextButton(
                                       child: Text("Cancel"),
@@ -337,7 +360,17 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                     ),
                                     TextButton(
                                       child: Text("Ok"),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        showMessageDialog(
+                                            context: context,
+                                            isSucceeded: true,
+                                            message: 'Request Cancled!',
+                                            onPressedOk: () {
+                                          Navigator.popUntil(
+                                              context, ModalRoute.withName(HomeScreen.routeName));
+                                        },
+                                        );
+                                      },
                                     ),
                                   ],
                                 );
