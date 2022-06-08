@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,
-      builder: (child) {
+      builder: (context,child) {
         return MultiBlocProvider(
           providers: [
             BlocProvider<HomeCubit>(

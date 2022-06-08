@@ -149,77 +149,151 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                 return Dialog(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ...[
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(20),
-                          color: mainColor,
-                          child: const Center(
-                            child: Text(
-                              'Request Information',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ...[
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(20),
+                            color: mainColor,
+                            child: const Center(
+                              child: Text(
+                                'Request Information',
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 18),
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ListTile(
-                                dense: true,
-                                leading: Icon(Icons.hourglass_bottom),
-                                title: Text(request.from ?? ''),
-                              ),
-                              ListTile(
-                                dense: true,
-                                leading: Icon(Icons.calendar_today_outlined),
-                                title: Text(request.to ?? ''),
-                              ),
-                              ListTile(
-                                dense: true,
-                                leading: Icon(Icons.messenger),
-                                title: Text(request.message ?? ''),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                      if (request.requestWorkFlowAPIs != null &&
-                          request.requestWorkFlowAPIs!.isNotEmpty) ...[
-                        const SizedBox(height: 20),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(16),
-                          color: mainColor,
-                          child: const Center(
-                            child: Text(
-                              'Request WorkFlow',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                          ),
-                        ),
-                        for (var x in request.requestWorkFlowAPIs!)
                           Container(
                             width: double.infinity,
                             color: Colors.white,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(x.employeeName!),
-                                Text(x.statusString),
+                                ListTile(
+                                  dense: true,
+                                  leading: Icon(Icons.hourglass_bottom),
+                                  title: Text(request.from ?? ''),
+                                ),
+                                ListTile(
+                                  dense: true,
+                                  leading: Icon(Icons.calendar_today_outlined),
+                                  title: Text(request.to ?? ''),
+                                ),
+                                ListTile(
+                                  dense: true,
+                                  leading: Icon(Icons.messenger),
+                                  title: Text(request.message ?? ''),
+                                ),
                               ],
                             ),
                           ),
+                        ],
+                        if (request.requestWorkFlowAPIs != null &&
+                            request.requestWorkFlowAPIs!.isNotEmpty) ...[
+                          const SizedBox(height: 20),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16),
+                            color: mainColor,
+                            child: const Center(
+                              child: Text(
+                                'Request WorkFlow',
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 18),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            color: Colors.white,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: getBenefitStatusColor(
+                                              request.requestWorkFlowAPIs![index]
+                                                  .statusString),
+                                          child: request
+                                                      .requestWorkFlowAPIs![index]
+                                                      .statusString ==
+                                                  'Pending'
+                                              ? Text(
+                                                  '${index + 1}',
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white),
+                                                )
+                                              : request
+                                                          .requestWorkFlowAPIs![
+                                                              index]
+                                                          .statusString ==
+                                                      'Approved'
+                                                  ? const Icon(Icons.check)
+                                                  : Icon(Icons.close),
+                                          radius: 15,
+                                        ),
+                                        if (index <
+                                            request.requestWorkFlowAPIs!.length -
+                                                1)
+                                          Container(
+                                            margin:
+                                                EdgeInsets.symmetric(vertical: 8),
+                                            height: 50,
+                                            width: 0.5,
+                                            color: Colors.black,
+                                          ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(request.requestWorkFlowAPIs![index]
+                                                .employeeName ??
+                                            ''),
+                                        Text(request.requestWorkFlowAPIs![index]
+                                                .statusString ??
+                                            ''),
+                                        Text(request.requestWorkFlowAPIs![index]
+                                                .notes ??
+                                            ''),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                              itemCount: request.requestWorkFlowAPIs!.length,
+                            ),
+                          ),
+                          for (var x in request.requestWorkFlowAPIs!)
+                            Container(
+                              width: double.infinity,
+                              color: Colors.white,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(x.employeeName!),
+                                  Text(x.statusString),
+                                ],
+                              ),
+                            ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 );
               });
@@ -362,13 +436,15 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                       child: Text("Ok"),
                                       onPressed: () {
                                         showMessageDialog(
-                                            context: context,
-                                            isSucceeded: true,
-                                            message: 'Request Cancled!',
-                                            onPressedOk: () {
-                                          Navigator.popUntil(
-                                              context, ModalRoute.withName(HomeScreen.routeName));
-                                        },
+                                          context: context,
+                                          isSucceeded: true,
+                                          message: 'Request Cancled!',
+                                          onPressedOk: () {
+                                            Navigator.popUntil(
+                                                context,
+                                                ModalRoute.withName(
+                                                    HomeScreen.routeName));
+                                          },
                                         );
                                       },
                                     ),
@@ -402,6 +478,46 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
       ),
     );
   }
+
+// Widget horizontalWorkStepper(int index) {
+//   return IntrinsicWidth (
+//     child: Column(
+//       // mainAxisSize: MainAxisSize.min,
+//       crossAxisAlignment: CrossAxisAlignment.stretch,
+//
+//       children: [
+//         Row(
+//           // mainAxisSize: MainAxisSize.min,
+//           children: [
+//             CircleAvatar(
+//               backgroundColor: Colors.green,
+//               child: Text('${index + 1}',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+//               radius: 15,
+//             ),
+//             if (index < _cubit.myBenefitRequests[1].requestWorkFlowAPIs!.length)
+//               Expanded(
+//                 child: Container(
+//                   margin: EdgeInsets.symmetric(horizontal: 8),
+//                   height: 0.5,
+//                   width: 50,
+//                   color: Colors.black,
+//                 ),
+//               ),
+//           ],
+//         ),
+//         SizedBox(
+//           height: 8,
+//         ),
+//
+//         Padding(
+//           padding: const EdgeInsets.only(right: 16),
+//           child: Text(_cubit.benefit!.benefitWorkflows![index]),
+//         ),
+//       ],
+//     ),
+//   );
+// }
+
 }
 
 Color getBenefitStatusColor(String status) {

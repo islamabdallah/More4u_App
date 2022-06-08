@@ -70,9 +70,12 @@
         "certainDate": "0001-01-01T00:00:00",
         "timesEmployeeReceiveThisBenefit": 0,
         "benefitWorkflows": [
-          "2:Department Manager",
-          "1:Supervisor",
-          "3:HR"
+          "Department Manager",
+          "Supervisor",
+          "HR",
+          "Department Manager",
+          "Supervisor",
+          "HR"
         ],
         "benefitConditions": [
           "Age : Any",
