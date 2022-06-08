@@ -29,8 +29,11 @@ class BenefitCard extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16)),
-                child: Image.asset(
-                  'assets/images/hbd.png',
+                child: Hero(
+                  tag: benefit.id,
+                  child: Image.asset(
+                    'assets/images/hbd.png',
+                  ),
                 ),
               ),
               Padding(

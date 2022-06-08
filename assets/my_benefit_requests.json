@@ -70,7 +70,7 @@
       "employeeNumber": 100,
       "requestStatusId": 1,
       "canCancel": true,
-      "canEdit": true,
+      "canEdit": false,
       "requestWorkFlowAPIs": [
         {
           "employeeNumber": 105,

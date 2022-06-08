@@ -11,13 +11,13 @@ import '../../../domain/entities/benefit.dart';
 import '../../../domain/entities/participant.dart';
 import '../../../domain/usecases/redeem_card.dart';
 
-part 'redeem_state.dart';
+part 'edit_request_state.dart';
 
-class RedeemCubit extends Cubit<RedeemState> {
-  static RedeemCubit get(context) => BlocProvider.of(context);
+class EditRequestCubit extends Cubit<EditRequestState> {
+  static EditRequestCubit get(context) => BlocProvider.of(context);
   final GetParticipantsUsecase getParticipantsUsecase;
 
-  RedeemCubit({required this.getParticipantsUsecase}) : super(RedeemInitial());
+  EditRequestCubit({required this.getParticipantsUsecase}) : super(EditRequestInitial());
 
   late Benefit benefit;
   List<Participant> participants = [];
@@ -80,15 +80,15 @@ class RedeemCubit extends Cubit<RedeemState> {
   }
 
   void getParticipants() async {
-    emit(RedeemLoadingState());
+    emit(EditRequestLoadingState());
     final result = await getParticipantsUsecase();
 
     result.fold((failure) {
-      emit(RedeemGetParticipantsErrorState(failure.message));
+      emit(EditRequestGetParticipantsErrorState(failure.message));
     }, (participants) {
       print(participants);
       this.participants = participants;
-      emit(RedeemGetParticipantsSuccessState());
+      emit(EditRequestGetParticipantsSuccessState());
     });
   }
 
@@ -132,7 +132,6 @@ class RedeemCubit extends Cubit<RedeemState> {
         message: message.text,
       );
       print(request);
-      emit(RedeemSuccessState());
     }
   }
 

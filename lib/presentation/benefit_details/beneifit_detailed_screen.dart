@@ -44,7 +44,9 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset('assets/images/hbd.png'),
+                  Hero(
+                      tag: widget.benefit.id,
+                      child: Image.asset('assets/images/hbd.png')),
                   SizedBox(height: 50.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 23.w),
@@ -134,7 +136,8 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen> {
                               ? (_cubit.benefit!.employeeCanRedeem
                                   ? () {
                                       Navigator.pushNamed(context,
-                                          BenefitRedeemScreen.routeName,arguments: widget.benefit);
+                                          BenefitRedeemScreen.routeName,
+                                          arguments: widget.benefit);
                                     }
                                   : null)
                               : null,

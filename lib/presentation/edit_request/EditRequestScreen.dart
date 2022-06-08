@@ -2,56 +2,48 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 // import 'package:flutter_chips_input/flutter_chips_input.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:more4u/core/constants/constants.dart';
+import 'package:more4u/domain/entities/benefit_request.dart';
 import 'package:more4u/domain/entities/participant.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
-import 'package:more4u/presentation/benefit_redeem/cubits/redeem_cubit.dart';
-import 'package:more4u/presentation/home/home_screen.dart';
+import '../benefit_redeem/cubits/redeem_cubit.dart';
 
 import '../../core/utils/flutter_chips/src/chips_input.dart';
 import '../../domain/entities/benefit.dart';
 import '../../injection_container.dart';
-import '../widgets/utils/message_dialog.dart';
 
-class BenefitRedeemScreen extends StatefulWidget {
-  static const routeName = 'BenefitRedeemScreen';
+class EditRequestScreen extends StatefulWidget {
+  static const routeName = 'EditRequestScreen';
 
-  final Benefit benefit;
+  final BenefitRequest request;
 
-  const BenefitRedeemScreen({Key? key, required this.benefit})
+  const EditRequestScreen({Key? key, required this.request})
       : super(key: key);
 
   @override
-  _BenefitRedeemScreenState createState() => _BenefitRedeemScreenState();
+  _EditRequestScreenState createState() => _EditRequestScreenState();
 }
 
-class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
+class _EditRequestScreenState extends State<EditRequestScreen> {
+
   late RedeemCubit _cubit;
 
   @override
   void initState() {
-    _cubit = sl<RedeemCubit>()..initRedeem(widget.benefit);
+    // _cubit = sl<RedeemCubit>()..initRedeem(widget.request);
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return BlocConsumer<RedeemCubit, RedeemState>(
       bloc: _cubit,
-      listener: (context, state) {
-        if (state is RedeemSuccessState) {
-          showMessageDialog(
-              context: context,
-              isSucceeded: true,
-              message: 'Card Redeem succeeded!',
-              onPressedOk: () => Navigator.popUntil(
-                  context, ModalRoute.withName(HomeScreen.routeName)));
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.white,
@@ -82,14 +74,15 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                       height: 20,
                     ),
                   ],
-                  if (_cubit.showParticipantsField) ...[
+                  if (_cubit.showParticipantsField)
+                    ...[
                     ChipsInput<Participant>(
                       enabled: _cubit.enableParticipantsField,
                       // enabled: false,
                       allowChipEditing: true,
                       decoration: InputDecoration(
-                        labelText: "Select People",
-                        border: OutlineInputBorder(),
+                          labelText: "Select People",
+                          border: OutlineInputBorder(),
                         errorText: _cubit.lowParticipantError,
                       ),
                       maxChips: _cubit.benefit.maxParticipant,
@@ -124,7 +117,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             backgroundImage: AssetImage(
                                 'assets/images/profile_avatar_placeholder.png'),
                           ),
-                          onDeleted: () {
+                          onDeleted: (){
                             _cubit.participantOnRemove(profile);
                             state.forceDeleteChip(profile);
                           },
@@ -145,9 +138,9 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   ],
                   // if (_cubit.showParticipantsField)
                   //   ChipsInput<String>(
@@ -238,13 +231,11 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                     controller: _cubit.endDate,
                     // validator: (value) => deliverDate == null ? translator.translate('required') : null,
                     decoration: InputDecoration(
-                      label: Text(
-                        'To',
-                        style: TextStyle(color: Colors.black54),
-                      ),
+                      label: Text('To',style: TextStyle(color: Colors.black54),),
                       border: InputBorder.none,
                       disabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black45)),
+                          borderSide: BorderSide(color: Colors.black45)
+                      ),
                       labelStyle: TextStyle(fontWeight: FontWeight.w600),
                       contentPadding: EdgeInsets.all(3.0),
                       prefixIcon: const Icon(

@@ -7,6 +7,8 @@ class RedeemInitial extends RedeemState {}
 
 class RedeemLoadingState extends RedeemState {}
 
+class RedeemSuccessState extends RedeemState {}
+
 class RedeemGetParticipantsSuccessState extends RedeemState {}
 
 class RedeemGetParticipantsErrorState extends RedeemState {
