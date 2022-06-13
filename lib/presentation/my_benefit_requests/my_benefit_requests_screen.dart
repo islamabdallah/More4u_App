@@ -149,6 +149,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                 return Dialog(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
+                  insetPadding:EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.0) ,
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,86 +212,97 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                             padding: EdgeInsets.all(8),
                             color: Colors.white,
                             child: ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                return Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: getBenefitStatusColor(
-                                              request.requestWorkFlowAPIs![index]
-                                                  .statusString),
-                                          child: request
-                                                      .requestWorkFlowAPIs![index]
-                                                      .statusString ==
-                                                  'Pending'
-                                              ? Text(
-                                                  '${index + 1}',
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white),
-                                                )
-                                              : request
-                                                          .requestWorkFlowAPIs![
-                                                              index]
-                                                          .statusString ==
-                                                      'Approved'
-                                                  ? const Icon(Icons.check)
-                                                  : Icon(Icons.close),
-                                          radius: 15,
-                                        ),
-                                        if (index <
-                                            request.requestWorkFlowAPIs!.length -
-                                                1)
-                                          Container(
-                                            margin:
-                                                EdgeInsets.symmetric(vertical: 8),
-                                            height: 50,
-                                            width: 0.5,
-                                            color: Colors.black,
+                                return IntrinsicHeight(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundColor: getBenefitStatusColor(
+                                                request.requestWorkFlowAPIs![index]
+                                                    .statusString),
+                                            radius: 15,
+                                            child: request
+                                                        .requestWorkFlowAPIs![index]
+                                                        .statusString ==
+                                                    'Pending'
+                                                ? Text(
+                                                    '${index + 1}',
+                                                    style: const TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.white),
+                                                  )
+                                                : request
+                                                            .requestWorkFlowAPIs![
+                                                                index]
+                                                            .statusString ==
+                                                        'Approved'
+                                                    ? const Icon(Icons.check)
+                                                    : const Icon(Icons.close),
                                           ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(request.requestWorkFlowAPIs![index]
-                                                .employeeName ??
-                                            ''),
-                                        Text(request.requestWorkFlowAPIs![index]
-                                                .statusString ??
-                                            ''),
-                                        Text(request.requestWorkFlowAPIs![index]
-                                                .notes ??
-                                            ''),
-                                      ],
-                                    ),
-                                  ],
+                                          if (index <
+                                              request.requestWorkFlowAPIs!.length -
+                                                  1)
+                                            Expanded(
+                                              child: Container(
+                                                margin:
+                                                    EdgeInsets.symmetric(vertical: 8),
+                                                height: 50,
+                                                width: 0.5,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 8),
+                                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(request.requestWorkFlowAPIs![index]
+                                                    .employeeName ??
+                                                ''),
+                                            Text(request.requestWorkFlowAPIs![index]
+                                                    .statusString ??
+                                                ''),
+                                            SizedBox(height: 8,),
+                                            Text(request.requestWorkFlowAPIs![index]
+                                                    .notes ??
+                                                ''),
+                                            if(index==0)
+                                            Text('asdasdasdasdasdadadsada')
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               },
                               itemCount: request.requestWorkFlowAPIs!.length,
                             ),
                           ),
-                          for (var x in request.requestWorkFlowAPIs!)
-                            Container(
-                              width: double.infinity,
-                              color: Colors.white,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(x.employeeName!),
-                                  Text(x.statusString),
-                                ],
-                              ),
-                            ),
+                          // for (var x in request.requestWorkFlowAPIs!)
+                          //   Container(
+                          //     width: double.infinity,
+                          //     color: Colors.white,
+                          //     child: Column(
+                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                          //       children: [
+                          //         Text(x.employeeName!),
+                          //         Text(x.statusString),
+                          //       ],
+                          //     ),
+                          //   ),
                         ],
                       ],
                     ),
