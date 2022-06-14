@@ -25,6 +25,7 @@ class Benefit extends Equatable {
 
   //other
   final String? lastStatus;
+  //todo add benefitStatses to count requests
 
   const Benefit({
     required this.id,

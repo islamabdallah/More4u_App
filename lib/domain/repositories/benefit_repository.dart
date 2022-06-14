@@ -24,5 +24,9 @@ abstract class BenefitRepository {
     FilteredSearch? search,
   });
 
+ Future<Either<Failure, Unit>> redeemCard({
+    required BenefitRequest request,
+  });
+
 
 }

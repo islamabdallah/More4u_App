@@ -24,7 +24,7 @@ class LoginResponseModel extends LoginResponse {
     return LoginResponseModel(
         message: json['message'],
         user: UserModel.fromJson(json['data']['user']),
-        benefitModels: List<BenefitModel>.from(json['data']['benefitModels']
+        benefitModels: List<BenefitModel>.from(json['data']['allBenefitModels']
             .map((x) => BenefitModel.fromJson(x))
             .toList()),
         availableBenefitModels: json['data']['availableBenefitModels'] != null

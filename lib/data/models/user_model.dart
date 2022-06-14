@@ -9,7 +9,6 @@ class UserModel extends User {
     departmentName,
     required birthDate,
     required joinDate,
-    hasRequests,
     gender,
     maritalStatus,
     company,
@@ -21,6 +20,9 @@ class UserModel extends User {
     id,
     supervisorName,
     profilePicture,
+    workDuration,
+    hasRequests,
+    pendingRequestsCount,
   }) : super(
           employeeName: employeeName,
           email: email,
@@ -29,7 +31,6 @@ class UserModel extends User {
           departmentName: departmentName,
           birthDate: birthDate,
           joinDate: joinDate,
-          hasRequests: hasRequests,
           gender: gender,
           maritalStatus: maritalStatus,
           company: company,
@@ -41,6 +42,9 @@ class UserModel extends User {
           id: id,
           supervisorName: supervisorName,
           profilePicture: profilePicture,
+          workDuration: workDuration,
+          hasRequests: hasRequests,
+          pendingRequestsCount: pendingRequestsCount,
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -52,7 +56,6 @@ class UserModel extends User {
       departmentName: json['departmentName'],
       birthDate: json['birthDate'],
       joinDate: json['joinDate'],
-      hasRequests: json['hasRequests'],
       gender: json['gender'],
       maritalStatus: json['maritalStatus'],
       company: json['company'],
@@ -64,6 +67,9 @@ class UserModel extends User {
       id: json['id'],
       supervisorName: json['supervisorName'],
       profilePicture: json['profilePicture'],
+      workDuration: json['workDuration'],
+      hasRequests: json['hasRequests'],
+      pendingRequestsCount: json['pendingRequestsCount'],
     );
   }
 }

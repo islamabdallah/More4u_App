@@ -16,8 +16,11 @@ part 'redeem_state.dart';
 class RedeemCubit extends Cubit<RedeemState> {
   static RedeemCubit get(context) => BlocProvider.of(context);
   final GetParticipantsUsecase getParticipantsUsecase;
+  final RedeemCardUsecase redeemCardUsecase;
 
-  RedeemCubit({required this.getParticipantsUsecase}) : super(RedeemInitial());
+  RedeemCubit(
+      {required this.getParticipantsUsecase, required this.redeemCardUsecase})
+      : super(RedeemInitial());
 
   late Benefit benefit;
   List<Participant> participants = [];
@@ -117,11 +120,11 @@ class RedeemCubit extends Cubit<RedeemState> {
     emit(ParticipantsChangedState());
   }
 
-  redeemCard() {
+  redeemCard() async {
     if (_validateParticipants()) {
       var request = BenefitRequest(
         participants: benefit.benefitType == 'Group' ? participantsIds : null,
-        sendTo: benefit.isAgift && participantsIds.isNotEmpty
+        sendToID: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first
             : null,
         from: startDate.text,
@@ -132,7 +135,12 @@ class RedeemCubit extends Cubit<RedeemState> {
         message: message.text,
       );
       print(request);
-      emit(RedeemSuccessState());
+      final result = await redeemCardUsecase(request: request);
+      result.fold((failure) {
+        emit(RedeemErrorState(failure.message));
+      }, (success) {
+        emit(RedeemSuccessState());
+      });
     }
   }
 

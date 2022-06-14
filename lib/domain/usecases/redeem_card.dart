@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:more4u/domain/entities/benefit_request.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../entities/login_response.dart';
@@ -9,13 +10,10 @@ class RedeemCardUsecase {
   BenefitRepository repository;
 
   RedeemCardUsecase(this.repository);
-//todo add call method
-// Future<Either<Failure, LoginResponse>> call({
-//   required String username,
-//   required String pass,
-// }) {
-//   return repository.loginUser(username: username, pass: pass);
-// }
+
+  Future<Either<Failure, Unit>> call({required BenefitRequest request}) {
+    return repository.redeemCard(request: request);
+  }
 }
 
 // class RedeemRequest extends Equatable {

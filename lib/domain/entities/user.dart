@@ -8,9 +8,8 @@ class User extends Equatable {
   final String? departmentName;
   final String birthDate;
   final String joinDate;
-  final bool? hasRequests;
-  final int? gender;
-  final int? maritalStatus;
+  final String? gender;
+  final String? maritalStatus;
   final String? company;
   final String? nationality;
   final String? phoneNumber;
@@ -20,28 +19,32 @@ class User extends Equatable {
   final String? id;
   final String? supervisorName;
   final String? profilePicture;
+  final String? workDuration;
+  final bool? hasRequests;
+  final int? pendingRequestsCount;
 
-  const User({
-    this.employeeName,
-    this.email,
-    required this.employeeNumber,
-    this.positionName,
-    this.departmentName,
-    required this.birthDate,
-    required this.joinDate,
-    this.hasRequests,
-    this.gender,
-    this.maritalStatus,
-    this.company,
-    this.nationality,
-    this.phoneNumber,
-    this.address,
-    this.collar,
-    this.sapNumber,
-    this.id,
-    this.supervisorName,
-    this.profilePicture,
-  });
+  const User(
+      {this.employeeName,
+      this.email,
+      required this.employeeNumber,
+      this.positionName,
+      this.departmentName,
+      required this.birthDate,
+      required this.joinDate,
+      this.gender,
+      this.maritalStatus,
+      this.company,
+      this.nationality,
+      this.phoneNumber,
+      this.address,
+      this.collar,
+      this.sapNumber,
+      this.id,
+      this.supervisorName,
+      this.profilePicture,
+      this.workDuration,
+      this.hasRequests,
+      this.pendingRequestsCount});
 
   @override
   List<Object?> get props => [
@@ -52,7 +55,6 @@ class User extends Equatable {
         departmentName,
         birthDate,
         joinDate,
-        hasRequests,
         gender,
         maritalStatus,
         company,
@@ -64,40 +66,32 @@ class User extends Equatable {
         id,
         supervisorName,
         profilePicture,
+        workDuration,
+        hasRequests,
+        pendingRequestsCount,
       ];
 
-  String get genderString {
-    switch (gender) {
-      case 1:
-        return 'Male';
-      case 2:
-        return 'Female';
-      default:
-        return 'Any';
-    }
-  }
-
-  String get maritalStatusString {
-    switch (gender) {
-      case 1:
-        return 'Single';
-      case 2:
-        return 'Married';
-      case 3:
-        return 'Divorced';
-      default:
-        return 'Any';
-    }
-  }
-
-  String get collarString {
-    switch (gender) {
-      case 1:
-        return 'WhiteCollar';
-      case 2:
-        return 'blueCollar';
-      default:
-        return 'Any';
-    }
-  }
+// String get genderString {
+//   switch (gender) {
+//     case 1:
+//       return 'Male';
+//     case 2:
+//       return 'Female';
+//     default:
+//       return 'Any';
+//   }
+// }
+//
+// String get maritalStatusString {
+//   switch (gender) {
+//     case 1:
+//       return 'Single';
+//     case 2:
+//       return 'Married';
+//     case 3:
+//       return 'Divorced';
+//     default:
+//       return 'Any';
+//   }
+// }
 }

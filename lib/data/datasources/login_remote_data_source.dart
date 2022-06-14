@@ -52,7 +52,8 @@ class FakeLoginRemoteDataSourceImpl extends LoginRemoteDataSource {
   Future<LoginResponseModel> loginUser(
       {required String username, required String pass}) async {
 
-    String response = await rootBundle.loadString('assets/response3.json');
+    // String response = await rootBundle.loadString('assets/response3.json');
+    String response = await rootBundle.loadString('assets/endpoints/loginEndPoint.json');
 
     return LoginResponseModel.fromJson(jsonDecode(response));
   }

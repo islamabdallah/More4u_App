@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:more4u/data/datasources/benefit_remote_data_source.dart';
+import 'package:more4u/data/models/benefit_request_model.dart';
 import 'package:more4u/domain/entities/benefit.dart';
 import 'package:more4u/domain/entities/benefit_request.dart';
 import 'package:more4u/domain/entities/filtered_search.dart';
@@ -22,7 +23,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
     if (await networkInfo.isConnected) {
       try {
         Benefit result =
-            await remoteDataSource.getBenefitDetails(benefitId: benefitId);
+        await remoteDataSource.getBenefitDetails(benefitId: benefitId);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
@@ -56,8 +57,8 @@ class BenefitRepositoryImpl extends BenefitRepository {
     if (await networkInfo.isConnected) {
       try {
         List<BenefitRequest> result =
-            await remoteDataSource.getMyBenefitRequests(
-                employeeNumber: employeeNumber, benefitId: benefitId);
+        await remoteDataSource.getMyBenefitRequests(
+            employeeNumber: employeeNumber, benefitId: benefitId);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
@@ -73,7 +74,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
     if (await networkInfo.isConnected) {
       try {
         List<BenefitRequest> result =
-            await remoteDataSource.getBenefitsToManage(
+        await remoteDataSource.getBenefitsToManage(
           employeeNumber: employeeNumber,
         );
         return Right(result);
@@ -82,6 +83,25 @@ class BenefitRepositoryImpl extends BenefitRepository {
       }
     } else {
       return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> redeemCard(
+      {required BenefitRequest request}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        BenefitRequestModel myBenefitRequestModel = BenefitRequestModel
+            .fromEntity(request);
+
+        await remoteDataSource.redeemCard(requestModel: myBenefitRequestModel);
+
+    return const Right(unit);
+    } on ServerException catch (e) {
+    return Left(ServerFailure(e.message));
+    }
+    } else {
+    return const Left(ConnectionFailure('No internet Connection'));
     }
   }
 }

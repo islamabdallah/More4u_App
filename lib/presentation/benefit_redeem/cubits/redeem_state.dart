@@ -8,6 +8,10 @@ class RedeemInitial extends RedeemState {}
 class RedeemLoadingState extends RedeemState {}
 
 class RedeemSuccessState extends RedeemState {}
+class RedeemErrorState extends RedeemState {
+  final String message;
+  RedeemErrorState(this.message);
+}
 
 class RedeemGetParticipantsSuccessState extends RedeemState {}
 

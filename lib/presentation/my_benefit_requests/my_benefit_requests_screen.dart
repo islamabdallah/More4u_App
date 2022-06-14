@@ -228,11 +228,11 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                           CircleAvatar(
                                             backgroundColor: getBenefitStatusColor(
                                                 request.requestWorkFlowAPIs![index]
-                                                    .statusString),
+                                                    .status??''),
                                             radius: 15,
                                             child: request
                                                         .requestWorkFlowAPIs![index]
-                                                        .statusString ==
+                                                        .status ==
                                                     'Pending'
                                                 ? Text(
                                                     '${index + 1}',
@@ -243,7 +243,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                                 : request
                                                             .requestWorkFlowAPIs![
                                                                 index]
-                                                            .statusString ==
+                                                            .status ==
                                                         'Approved'
                                                     ? const Icon(Icons.check)
                                                     : const Icon(Icons.close),
@@ -273,7 +273,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                                     .employeeName ??
                                                 ''),
                                             Text(request.requestWorkFlowAPIs![index]
-                                                    .statusString ??
+                                                    .status ??
                                                 ''),
                                             SizedBox(height: 8,),
                                             Text(request.requestWorkFlowAPIs![index]
@@ -315,7 +315,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
             border: Border(
               left: BorderSide(
                   width: 5.0,
-                  color: getBenefitStatusColor(request.statusString)),
+                  color: getBenefitStatusColor(request.status??'')),
             ),
           ),
           child: Padding(
@@ -384,10 +384,10 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                           ),
                           Text(
                             // benefit.benefitType,
-                            request.statusString,
+                            request.status??'',
                             style: TextStyle(
                                 color: getBenefitStatusColor(
-                                    request.statusString)),
+                                    request.status??'')),
                           ),
                         ],
                       ),

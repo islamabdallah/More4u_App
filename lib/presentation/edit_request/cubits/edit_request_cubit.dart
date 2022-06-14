@@ -121,7 +121,7 @@ class EditRequestCubit extends Cubit<EditRequestState> {
     if (_validateParticipants()) {
       var request = BenefitRequest(
         participants: benefit.benefitType == 'Group' ? participantsIds : null,
-        sendTo: benefit.isAgift && participantsIds.isNotEmpty
+        sendToID: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first
             : null,
         from: startDate.text,

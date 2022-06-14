@@ -11,7 +11,7 @@ class BenefitRequest extends Equatable {
   final List<int>? participants;
   final List<Participant>? participantsData;
   final List<User>? fullParticipantsData;
-  final int? sendTo;
+  final int? sendToID;
   final User? sendToModel;
   final int? employeeNumber;
   final String? requestedAt;
@@ -42,7 +42,7 @@ class BenefitRequest extends Equatable {
       this.participants,
       this.participantsData,
       this.fullParticipantsData,
-      this.sendTo,
+      this.sendToID,
       this.sendToModel,
       this.employeeNumber,
       this.requestedAt,
@@ -68,7 +68,7 @@ class BenefitRequest extends Equatable {
         participants,
         participantsData,
         fullParticipantsData,
-        sendTo,
+        sendToID,
         sendToModel,
         employeeNumber,
         requestedAt,
@@ -81,7 +81,7 @@ class BenefitRequest extends Equatable {
         canEdit,
         requestWorkFlowAPIs,
         createdBy,
-    warningMessage,
+        warningMessage,
         employeeCanResponse,
       ];
 
@@ -108,7 +108,7 @@ class BenefitRequest extends Equatable {
 class RequestWorkFlowAPIs {
   final int? employeeNumber;
   final String? employeeName;
-  final int? status;
+  final String? status;
   final String? replayDate;
   final String? notes;
 
@@ -119,22 +119,22 @@ class RequestWorkFlowAPIs {
       this.replayDate,
       this.notes});
 
-  String get statusString {
-    switch (status) {
-      case 1:
-        return 'Pending';
-      case 2:
-        return 'InProgress';
-      case 3:
-        return 'Approved';
-      case 4:
-        return 'Rejected';
-      case 5:
-        return 'Cancelled';
-      case 6:
-        return 'NotStartedYet';
-      default:
-        return 'Any';
-    }
-  }
+  // String get statusString {
+  //   switch (status) {
+  //     case 1:
+  //       return 'Pending';
+  //     case 2:
+  //       return 'InProgress';
+  //     case 3:
+  //       return 'Approved';
+  //     case 4:
+  //       return 'Rejected';
+  //     case 5:
+  //       return 'Cancelled';
+  //     case 6:
+  //       return 'NotStartedYet';
+  //     default:
+  //       return 'Any';
+  //   }
+  // }
 }

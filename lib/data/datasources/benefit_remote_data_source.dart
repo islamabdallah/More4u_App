@@ -24,6 +24,8 @@ abstract class BenefitRemoteDataSource {
     required int employeeNumber,
     FilteredSearch? search,
   });
+
+  Future<void> redeemCard({required BenefitRequestModel requestModel});
 }
 
 // class BenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
@@ -73,8 +75,10 @@ class FakeBenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
   @override
   Future<List<BenefitModel>> getMyBenefits(
       {required int employeeNumber}) async {
+    // String response =
+    //     await rootBundle.loadString('assets/mybenefits_response.json');
     String response =
-        await rootBundle.loadString('assets/mybenefits_response.json');
+        await rootBundle.loadString('assets/endpoints/Benefits_I_requested.json');
     var json = jsonDecode(response);
     List<BenefitModel> myBenefits = [];
     for (Map<String, dynamic> benefit in json['data']) {
@@ -88,8 +92,11 @@ class FakeBenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
   @override
   Future<List<BenefitRequest>> getMyBenefitRequests(
       {required int employeeNumber, required int benefitId}) async {
+    // String response =
+    //     await rootBundle.loadString('assets/my_benefit_requests.json');
+
     String response =
-        await rootBundle.loadString('assets/my_benefit_requests.json');
+        await rootBundle.loadString('assets/endpoints/BenefitRequests.json');
     var json = jsonDecode(response);
     List<BenefitRequestModel> myBenefitRequests = [];
     for (Map<String, dynamic> myBenefitRequest in json['data']) {
@@ -101,8 +108,10 @@ class FakeBenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
 
   @override
   Future<List<BenefitRequest>> getBenefitsToManage({required int employeeNumber, FilteredSearch? search}) async {
+    // String response =
+        // await rootBundle.loadString('assets/manage_request_response.json');
     String response =
-        await rootBundle.loadString('assets/manage_request_response.json');
+        await rootBundle.loadString('assets/endpoints/ManageRequestsDefault.json');
     var json = jsonDecode(response);
     List<BenefitRequestModel> benefitRequests = [];
     for (Map<String, dynamic> benefitRequest in json['data']['requests']) {
@@ -110,5 +119,10 @@ class FakeBenefitRemoteDataSourceImpl extends BenefitRemoteDataSource {
     }
     print(benefitRequests);
     return benefitRequests;
+  }
+
+  @override
+  Future<void> redeemCard({required BenefitRequestModel requestModel}) async {
+  print(requestModel.toJson());
   }
 }

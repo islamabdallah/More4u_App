@@ -1,0 +1,155 @@
+{
+  "message": "Sucessful Process",
+  "data": [
+    {
+      "id": 47,
+      "name": "Birth Date",
+      "description": "Birth Date Description",
+      "benefitCard": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_BD.png",
+      "times": 1,
+      "benefitType": "Individual",
+      "employeeCanRedeem": false,
+      "isAgift": false,
+      "minParticipant": 1,
+      "maxParticipant": 1,
+      "requiredDocuments": null,
+      "numberOfDays": 1,
+      "dateToMatch": "Birth Date",
+      "certainDate": "0001-01-01T00:00:00",
+      "lastStatus": "InProgress",
+      "timesEmployeeReceiveThisBenefit": 0,
+      "benefitWorkflows": null,
+      "benefitConditions": null,
+      "benefitStatses": [
+        {
+          "name": "Pending",
+          "count": 0
+        },
+        {
+          "name": "InProgress",
+          "count": 1
+        },
+        {
+          "name": "Approved",
+          "count": 0
+        },
+        {
+          "name": "Rejected",
+          "count": 0
+        },
+        {
+          "name": "Cancelled",
+          "count": 3
+        },
+        {
+          "name": "Closed",
+          "count": 3
+        },
+        {
+          "name": "ALL",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "id": 10055,
+      "name": "testttt4",
+      "description": "testttt4 Description",
+      "benefitCard": "0f83652b-9697-4f12-9dde-4871b21ef03b_rose1.jpg",
+      "times": 3,
+      "benefitType": "Individual",
+      "employeeCanRedeem": false,
+      "isAgift": false,
+      "minParticipant": 0,
+      "maxParticipant": 0,
+      "requiredDocuments": null,
+      "numberOfDays": 0,
+      "dateToMatch": "Any",
+      "certainDate": "0001-01-01T00:00:00",
+      "lastStatus": "Pending",
+      "timesEmployeeReceiveThisBenefit": 0,
+      "benefitWorkflows": null,
+      "benefitConditions": null,
+      "benefitStatses": [
+        {
+          "name": "Pending",
+          "count": 1
+        },
+        {
+          "name": "InProgress",
+          "count": 0
+        },
+        {
+          "name": "Approved",
+          "count": 0
+        },
+        {
+          "name": "Rejected",
+          "count": 0
+        },
+        {
+          "name": "Cancelled",
+          "count": 0
+        },
+        {
+          "name": "Closed",
+          "count": 0
+        },
+        {
+          "name": "ALL",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Sport Group ",
+      "description": "Sport Group Benefit",
+      "benefitCard": "6b29a5e8-beb7-4dce-8def-bcb34d931b53_ThankYou.png",
+      "times": 3,
+      "benefitType": "Group",
+      "employeeCanRedeem": false,
+      "isAgift": false,
+      "minParticipant": 5,
+      "maxParticipant": 10,
+      "requiredDocuments": null,
+      "numberOfDays": 1,
+      "dateToMatch": "Any",
+      "certainDate": "0001-01-01T00:00:00",
+      "lastStatus": "Pending",
+      "timesEmployeeReceiveThisBenefit": 0,
+      "benefitWorkflows": null,
+      "benefitConditions": null,
+      "benefitStatses": [
+        {
+          "name": "Pending",
+          "count": 1
+        },
+        {
+          "name": "InProgress",
+          "count": 0
+        },
+        {
+          "name": "Approved",
+          "count": 0
+        },
+        {
+          "name": "Rejected",
+          "count": 0
+        },
+        {
+          "name": "Cancelled",
+          "count": 0
+        },
+        {
+          "name": "Closed",
+          "count": 0
+        },
+        {
+          "name": "ALL",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
