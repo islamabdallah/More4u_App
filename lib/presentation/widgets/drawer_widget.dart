@@ -9,6 +9,7 @@ import 'package:more4u/presentation/manage_requests/manage_requests_screen.dart'
 import 'package:more4u/presentation/my_benefits/my_benefits_screen.dart';
 
 import '../../core/constants/constants.dart';
+import '../../core/firebase/push_notification_service.dart';
 import '../Login/login_screen.dart';
 
 
@@ -187,6 +188,7 @@ class DrawerWidget extends StatelessWidget {
                   style: style,
                 ),
                 onTap: () {
+                  PushNotificationService.deleteDeviceToken();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       LoginScreen.routeName, (Route<dynamic> route) => false);
                 },

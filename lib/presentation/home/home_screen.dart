@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
 import '../../core/constants/constants.dart';
+import '../../core/firebase/push_notification_service.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
 
@@ -20,6 +21,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
+  @override
+  void didChangeDependencies() {
+    PushNotificationService.init(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {

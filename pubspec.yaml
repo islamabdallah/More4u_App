@@ -59,6 +59,11 @@ dependencies:
   flutter_chips_input: ^2.0.0
   intl: ^0.17.0
   datetime_picker_formfield: ^2.0.0
+  flutter_staggered_animations: ^1.0.0
+  #notifications
+  firebase_core: ^1.18.0
+  firebase_messaging: ^11.4.2
+  flutter_local_notifications: ^9.6.1
 
 
 

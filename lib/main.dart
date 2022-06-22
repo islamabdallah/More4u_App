@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:more4u/presentation/Login/login_screen.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
 import 'core/constants/constants.dart';
+import 'core/firebase/push_notification_service.dart';
 import 'data/datasources/benefit_remote_data_source.dart';
 import 'presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import 'presentation/home/home_screen.dart';
@@ -20,10 +23,17 @@ import 'injection_container.dart' as di;
 import 'presentation/manage_requests/manage_requests_screen.dart';
 import 'presentation/my_benefits/my_benefits_screen.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
+
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   BlocOverrides.runZoned(
         () {

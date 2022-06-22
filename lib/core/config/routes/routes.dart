@@ -8,6 +8,7 @@ import '../../../presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import '../../../presentation/home/home_screen.dart';
 import '../../../presentation/manage_requests/manage_requests_screen.dart';
 import '../../../presentation/my_benefits/my_benefits_screen.dart';
+import '../../../presentation/notification/notification_screen.dart';
 import '../../../presentation/pages/profile.dart';
 
 class AppRoutes {
@@ -18,6 +19,9 @@ class AppRoutes {
 
       case ProfileWidget.routeName:
         return _materialRoute(const ProfileWidget(), ProfileWidget.routeName);
+
+      case NotificationScreen.routeName:
+        return _materialRoute(const NotificationScreen(), NotificationScreen.routeName);
 
       case HomeScreen.routeName:
         return _materialRoute(const HomeScreen(), HomeScreen.routeName);
