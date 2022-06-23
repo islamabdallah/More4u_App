@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:more4u/domain/entities/benefit_request.dart';
@@ -159,4 +164,37 @@ class RedeemCubit extends Cubit<RedeemState> {
     }
     return true;
   }
+
+  List<File> images = [];
+  static List<String> requiredDocs = ['d1','d2'];
+
+  Map<String,String?> myDocs = {
+    for(var doc in requiredDocs)
+      doc:null,
+  };
+
+
+  pickImage(String key) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery      // maxHeight: 200,
+      // maxWidth: 200,
+    );
+    if (image != null) {
+
+      File imageFile =File(image.path);
+      Uint8List bytes = imageFile.readAsBytesSync();
+      String img64 = base64Encode(bytes);
+      myDocs[key] = img64;
+        // images.add(File(image.path));
+
+      emit(ImagePickedSuccessState());
+    }
+  }
+
+  removeImage(index){
+    myDocs[myDocs.keys.elementAt(index)]=null;
+    emit(ImageRemoveSuccessState());
+
+  }
+
 }

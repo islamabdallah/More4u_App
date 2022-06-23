@@ -60,6 +60,7 @@ dependencies:
   intl: ^0.17.0
   datetime_picker_formfield: ^2.0.0
   flutter_staggered_animations: ^1.0.0
+  image_picker: ^0.8.5+3
   #notifications
   firebase_core: ^1.18.0
   firebase_messaging: ^11.4.2

@@ -27,3 +27,6 @@ class ParticipantsChangedState extends RedeemState {}
 
 class ErrorValidationState extends RedeemState {}
 
+class ImagePickedSuccessState extends RedeemState {}
+class ImageRemoveSuccessState extends RedeemState {}
+
