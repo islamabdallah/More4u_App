@@ -6,7 +6,7 @@ import '../entities/login_response.dart';
 
 abstract class LoginRepository {
   Future<Either<Failure,LoginResponse>> loginUser({
-    required String username,
+    required String employeeNumber,
     required String pass,
   });
 }

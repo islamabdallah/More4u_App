@@ -1,17 +1,18 @@
 import 'package:dartz/dartz.dart';
-import 'package:more4u/data/datasources/benefit_remote_data_source.dart';
 import 'package:more4u/data/models/benefit_request_model.dart';
 import 'package:more4u/domain/entities/benefit.dart';
 import 'package:more4u/domain/entities/benefit_request.dart';
 import 'package:more4u/domain/entities/filtered_search.dart';
+import 'package:more4u/domain/entities/notification.dart';
 
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
 import '../../domain/repositories/benefit_repository.dart';
+import '../datasources/remote_data_source.dart';
 
 class BenefitRepositoryImpl extends BenefitRepository {
-  final BenefitRemoteDataSource remoteDataSource;
+  final RemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
   BenefitRepositoryImpl(
@@ -102,6 +103,21 @@ class BenefitRepositoryImpl extends BenefitRepository {
     }
     } else {
     return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Notification>>> getNotifications({required int employeeNumber}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        List<Notification> notifications =  await remoteDataSource.getNotifications(employeeNumber: employeeNumber);
+
+        return Right(notifications);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
     }
   }
 }

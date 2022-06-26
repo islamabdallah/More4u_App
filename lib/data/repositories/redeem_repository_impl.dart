@@ -6,10 +6,10 @@ import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
 import '../../domain/repositories/redeem_repository.dart';
-import '../datasources/redeem_remote_data_source.dart';
+import '../datasources/remote_data_source.dart';
 
 class RedeemRepositoryImpl extends RedeemRepository {
-  final RedeemRemoteDataSource remoteDataSource;
+  final RemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
   RedeemRepositoryImpl(

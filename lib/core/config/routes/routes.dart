@@ -10,10 +10,14 @@ import '../../../presentation/manage_requests/manage_requests_screen.dart';
 import '../../../presentation/my_benefits/my_benefits_screen.dart';
 import '../../../presentation/notification/notification_screen.dart';
 import '../../../presentation/pages/profile.dart';
+import '../../../presentation/splash/splash_screen.dart';
 
 class AppRoutes {
   static Route onGenerateRoutes(RouteSettings settings) {
     switch (settings.name) {
+      case SplashScreen.routeName:
+        return _materialRoute(const SplashScreen(), SplashScreen.routeName);
+
       case LoginScreen.routeName:
         return _materialRoute(const LoginScreen(), LoginScreen.routeName);
 

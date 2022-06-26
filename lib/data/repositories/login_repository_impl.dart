@@ -5,23 +5,28 @@ import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
 import '../../domain/entities/login_response.dart';
 import '../../domain/repositories/login_repository.dart';
-import '../datasources/login_remote_data_source.dart';
+import '../datasources/remote_data_source.dart';
+import '../datasources/local_data_source.dart';
 import '../models/login_response_model.dart';
 
 class LoginRepositoryImpl extends LoginRepository {
-  final LoginRemoteDataSource remoteDataSource;
+  final LocalDataSource localDataSource;
+  final RemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
   LoginRepositoryImpl(
-      {required this.remoteDataSource, required this.networkInfo});
+      {required this.localDataSource,
+      required this.remoteDataSource,
+      required this.networkInfo});
 
   @override
   Future<Either<Failure, LoginResponse>> loginUser(
-      {required String username, required String pass}) async {
+      {required String employeeNumber, required String pass}) async {
     if (await networkInfo.isConnected) {
       try {
-        LoginResponseModel result =
-            await remoteDataSource.loginUser(username: username, pass: pass);
+        LoginResponseModel result = await remoteDataSource.loginUser(
+            employeeNumber: employeeNumber, pass: pass);
+        localDataSource.cacheUser(employeeNumber, pass);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));

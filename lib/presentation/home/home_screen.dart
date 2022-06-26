@@ -7,6 +7,7 @@ import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/firebase/push_notification_service.dart';
+import '../notification/notification_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
 
@@ -81,8 +82,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: Colors.transparent,
                           child: IconButton(
                             onPressed: () {
-                              // Navigator.pushNamed(context,
-                              //     NotificationScreen.routeName);
+                              Navigator.pushNamed(context,
+                                  NotificationScreen.routeName);
                             },
                             iconSize: 35,
                             icon: Icon(

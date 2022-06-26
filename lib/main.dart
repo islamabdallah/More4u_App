@@ -13,7 +13,6 @@ import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
 import 'core/constants/constants.dart';
 import 'core/firebase/push_notification_service.dart';
-import 'data/datasources/benefit_remote_data_source.dart';
 import 'presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import 'presentation/home/home_screen.dart';
 import 'core/config/bloc_observer.dart';
@@ -22,6 +21,7 @@ import 'core/utils/services/local_storage/local_storage_service.dart';
 import 'injection_container.dart' as di;
 import 'presentation/manage_requests/manage_requests_screen.dart';
 import 'presentation/my_benefits/my_benefits_screen.dart';
+import 'presentation/splash/splash_screen.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -81,7 +81,8 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             onGenerateRoute: AppRoutes.onGenerateRoutes,
-            initialRoute: LoginScreen.routeName,
+            initialRoute: SplashScreen.routeName,
+            // initialRoute: LoginScreen.routeName,
             // initialRoute: ManageRequestsScreen.routeName,
             // initialRoute: MyBenefitsScreen.routeName,
             // initialRoute: HomeScreen.routeName,

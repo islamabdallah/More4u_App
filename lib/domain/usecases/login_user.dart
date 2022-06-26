@@ -13,6 +13,6 @@ class LoginUserUsecase {
     required String username,
     required String pass,
   }) {
-    return repository.loginUser(username: username, pass: pass);
+    return repository.loginUser(employeeNumber: username, pass: pass);
   }
 }

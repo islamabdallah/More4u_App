@@ -1,0 +1,45 @@
+{
+  "message": "Sucessful Process",
+  "data": [
+    {
+      "employeeNumber": 103,
+      "employeeFullName": "heida aly",
+      "employeeProfilePicture": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_Test.png",
+      "notificationType": "heida aly added you to new group for Sport Group  benefit",
+      "message": null,
+      "requestStatus": "Pending",
+      "date": "2022-06-14",
+      "time": "03-17"
+    },
+    {
+      "employeeNumber": 103,
+      "employeeFullName": "heida aly",
+      "employeeProfilePicture": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_Test.png",
+      "notificationType": "heida aly added new request for Birth Date benefit",
+      "message": null,
+      "requestStatus": "Pending",
+      "date": "2022-06-14",
+      "time": "03-15"
+    },
+    {
+      "employeeNumber": 103,
+      "employeeFullName": "heida aly",
+      "employeeProfilePicture": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_Test.png",
+      "notificationType": "heida aly added new request for Birth Date benefit",
+      "message": null,
+      "requestStatus": "Cancelled",
+      "date": "2022-06-14",
+      "time": "03-02"
+    },
+    {
+      "employeeNumber": 103,
+      "employeeFullName": "heida aly",
+      "employeeProfilePicture": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_Test.png",
+      "notificationType": "heida aly added new request for Birth Date benefit",
+      "message": null,
+      "requestStatus": "Cancelled",
+      "date": "2022-06-14",
+      "time": "03-01"
+    }
+  ]
+}
