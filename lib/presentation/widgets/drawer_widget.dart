@@ -7,11 +7,12 @@ import 'package:more4u/core/constants/app_constants.dart';
 import 'package:more4u/presentation/home/home_screen.dart';
 import 'package:more4u/presentation/manage_requests/manage_requests_screen.dart';
 import 'package:more4u/presentation/my_benefits/my_benefits_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/firebase/push_notification_service.dart';
+import '../../data/datasources/local_data_source.dart';
 import '../Login/login_screen.dart';
-
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -76,8 +77,8 @@ class DrawerWidget extends StatelessWidget {
               ),
               ListTile(
                 dense: true,
-                  minLeadingWidth:0,
-                  contentPadding:
+                minLeadingWidth: 0,
+                contentPadding:
                     EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
                 leading: Icon(Icons.home),
                 title: Text(
@@ -91,7 +92,7 @@ class DrawerWidget extends StatelessWidget {
               ),
               ListTile(
                 dense: true,
-                minLeadingWidth:0,
+                minLeadingWidth: 0,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
                 leading: Icon(Icons.insert_chart),
@@ -114,13 +115,14 @@ class DrawerWidget extends StatelessWidget {
               ),
               ListTile(
                 dense: true,
-                minLeadingWidth:0,
+                minLeadingWidth: 0,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
                 leading: Badge(
                     position: BadgePosition(top: -7, end: -6),
                     badgeColor: red,
-                    badgeContent: Text('5', style: TextStyle(fontSize: 12,color: Colors.white)),
+                    badgeContent: Text('5',
+                        style: TextStyle(fontSize: 12, color: Colors.white)),
                     child: Icon(Icons.notifications)),
                 title: Text(
                   "Notifications",
@@ -138,11 +140,9 @@ class DrawerWidget extends StatelessWidget {
                   // }
                 },
               ),
-
-
               ListTile(
                 dense: true,
-                minLeadingWidth:0,
+                minLeadingWidth: 0,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
                 leading: const Icon(Icons.person),
@@ -157,7 +157,7 @@ class DrawerWidget extends StatelessWidget {
               ),
               ListTile(
                 dense: true,
-                minLeadingWidth:0,
+                minLeadingWidth: 0,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
                 leading: const Icon(Icons.event_note),
@@ -168,27 +168,29 @@ class DrawerWidget extends StatelessWidget {
                 onTap: () {
                   if (ModalRoute.of(context)?.settings.name ==
                       HomeScreen.routeName) {
-                    Navigator.pushNamed(context, ManageRequestsScreen.routeName);
-
+                    Navigator.pushNamed(
+                        context, ManageRequestsScreen.routeName);
                   } else {
                     Navigator.pushReplacementNamed(
                         context, ManageRequestsScreen.routeName);
-
                   }
                 },
               ),
               ListTile(
                 dense: true,
-                minLeadingWidth:0,
+                minLeadingWidth: 0,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
-                leading: RotatedBox(quarterTurns: 2,child: const Icon(Icons.logout)),
+                leading: RotatedBox(
+                    quarterTurns: 2, child: const Icon(Icons.logout)),
                 title: Text(
                   'Logout',
                   style: style,
                 ),
                 onTap: () {
                   PushNotificationService.deleteDeviceToken();
+                  SharedPreferences.getInstance()
+                      .then((value) => value.remove(CACHED_USER));
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       LoginScreen.routeName, (Route<dynamic> route) => false);
                 },
