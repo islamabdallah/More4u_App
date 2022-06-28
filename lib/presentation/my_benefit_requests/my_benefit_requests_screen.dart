@@ -1,13 +1,16 @@
 import 'package:badges/badges.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 import 'package:more4u/presentation/my_benefit_requests/cubits/my_benefit_requests_cubit.dart';
+import 'package:more4u/presentation/widgets/banner.dart';
 
 import '../../core/constants/constants.dart';
+import '../../custom_icons.dart';
 import '../../domain/entities/benefit.dart';
 import '../../domain/entities/benefit_request.dart';
 import '../../injection_container.dart';
@@ -20,9 +23,9 @@ import '../widgets/utils/message_dialog.dart';
 class MyBenefitRequestsScreen extends StatefulWidget {
   static const routeName = 'MyBenefitRequestsScreen';
 
-  final int benefitId;
+  final Benefit benefit;
 
-  const MyBenefitRequestsScreen({Key? key, required this.benefitId})
+  const MyBenefitRequestsScreen({Key? key, required this.benefit})
       : super(key: key);
 
   @override
@@ -36,7 +39,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
   @override
   void initState() {
     _cubit = sl<MyBenefitRequestsCubit>()
-      ..getMyBenefitRequests(widget.benefitId);
+      ..getMyBenefitRequests(widget.benefit.id);
     super.initState();
   }
 
@@ -55,74 +58,24 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
         return Scaffold(
           drawer: const DrawerWidget(),
           body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(16),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Builder(builder: (context) {
-                        return Material(
-                          borderRadius: BorderRadius.circular(100),
-                          clipBehavior: Clip.antiAlias,
-                          color: Colors.transparent,
-                          child: IconButton(
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            iconSize: 35.h,
-                            icon: SvgPicture.asset(
-                              'assets/images/menu.svg',
-                              // fit: BoxFit.cover,
-                              width: 30.h,
-                              height: 30.h,
-                              color: mainColor,
-                            ),
-                          ),
-                        );
-                      }),
-                      Badge(
-                        position: BadgePosition(top: 10, end: 10),
-                        badgeColor: redColor,
-                        badgeContent: SizedBox(
-                          width: 7.h,
-                          height: 7.h,
-                        ),
-                        // badgeContent: Text('',style: TextStyle(fontSize: 12),),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(100),
-                          clipBehavior: Clip.antiAlias,
-                          color: Colors.transparent,
-                          child: IconButton(
-                            onPressed: () {
-                              // Navigator.pushNamed(context,
-                              //     NotificationScreen.routeName);
-                            },
-                            iconSize: 35,
-                            icon: Icon(
-                              Icons.notifications,
-                              color: mainColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  Image.asset('assets/images/hbd.png'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.benefit.name,
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: mainColor,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  Text(
-                    'Hi Abanob',
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: mainColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 25.h),
                   ListView.builder(
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => myBenefitRequestCard(
                         request: _cubit.myBenefitRequests[index]),
                     itemCount: _cubit.myBenefitRequests.length,
@@ -140,356 +93,642 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
     return Card(
       elevation: 5,
       clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
       child: InkWell(
         onTap: () {
           showDialog(
               context: context,
               builder: (_) {
-                return Dialog(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  insetPadding:EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.0) ,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ...[
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(20),
-                            color: mainColor,
-                            child: const Center(
-                              child: Text(
-                                'Request Information',
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 18),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: double.infinity,
-                            color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  dense: true,
-                                  leading: Icon(Icons.hourglass_bottom),
-                                  title: Text(request.from ?? ''),
+                return dialog(request);
+              });
+        },
+        child: MyBanner(
+          message: '${request.status}',
+          textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
+          location: BannerLocation.topEnd,
+          color: getBenefitStatusColor(request.status ?? ''),
+          child: Stack(
+            children: [
+              Positioned(
+                  right: 5,
+                  top: 2,
+                  child: Icon(request.benefitType == 'Group'
+                      ? CustomIcons.users_alt
+                      : CustomIcons.user)),
+              Container(
+                height: 100.h,
+                decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(
+                        width: 5.0,
+                        color: getBenefitStatusColor(request.status ?? '')),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  'Number',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: greyColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                ListTile(
-                                  dense: true,
-                                  leading: Icon(Icons.calendar_today_outlined),
-                                  title: Text(request.to ?? ''),
+                                SizedBox(
+                                  width: 16,
                                 ),
-                                ListTile(
-                                  dense: true,
-                                  leading: Icon(Icons.messenger),
-                                  title: Text(request.message ?? ''),
+                                Text(
+                                  request.requestNumber.toString(),
+                                  style: TextStyle(
+                                    color: greyColor,
+                                    fontSize: 14.sp,
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                        if (request.requestWorkFlowAPIs != null &&
-                            request.requestWorkFlowAPIs!.isNotEmpty) ...[
-                          const SizedBox(height: 20),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(16),
-                            color: mainColor,
-                            child: const Center(
-                              child: Text(
-                                'Request WorkFlow',
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 18),
-                              ),
+                            SizedBox(
+                              height: 8,
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            color: Colors.white,
-                            child: ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return IntrinsicHeight(
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: [
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: getBenefitStatusColor(
-                                                request.requestWorkFlowAPIs![index]
-                                                    .status??''),
-                                            radius: 15,
-                                            child: request
-                                                        .requestWorkFlowAPIs![index]
-                                                        .status ==
-                                                    'Pending'
-                                                ? Text(
-                                                    '${index + 1}',
-                                                    style: const TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Colors.white),
-                                                  )
-                                                : request
-                                                            .requestWorkFlowAPIs![
-                                                                index]
-                                                            .status ==
-                                                        'Approved'
-                                                    ? const Icon(Icons.check)
-                                                    : const Icon(Icons.close),
-                                          ),
-                                          if (index <
-                                              request.requestWorkFlowAPIs!.length -
-                                                  1)
-                                            Expanded(
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.symmetric(vertical: 8),
-                                                height: 50,
-                                                width: 0.5,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(bottom: 8),
-                                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(request.requestWorkFlowAPIs![index]
-                                                    .employeeName ??
-                                                ''),
-                                            Text(request.requestWorkFlowAPIs![index]
-                                                    .status ??
-                                                ''),
-                                            SizedBox(height: 8,),
-                                            Text(request.requestWorkFlowAPIs![index]
-                                                    .notes ??
-                                                ''),
-                                            if(index==0)
-                                            Text('asdasdasdasdasdadadsada')
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              itemCount: request.requestWorkFlowAPIs!.length,
+                            Row(
+                              children: [
+                                Icon(CustomIcons.clock),
+                                SizedBox(
+                                  width: 6.w,
+                                ),
+                                Text(
+                                  //todo chahe to time ago
+                                  '1 hour ago',
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontFamily: "Roboto",
+                                      color: greyColor),
+                                ),
+                                Spacer(),
+                                Icon(Icons.arrow_circle_right, size: 30.r),
+                                SizedBox(
+                                  width: 10,
+                                )
+                              ],
                             ),
-                          ),
-                          // for (var x in request.requestWorkFlowAPIs!)
-                          //   Container(
-                          //     width: double.infinity,
-                          //     color: Colors.white,
-                          //     child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         Text(x.employeeName!),
-                          //         Text(x.statusString),
-                          //       ],
-                          //     ),
-                          //   ),
-                        ],
-                      ],
-                    ),
-                  ),
-                );
-              });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(
-                  width: 5.0,
-                  color: getBenefitStatusColor(request.status??'')),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            'Number',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: mainColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Text(
-                            request.requestNumber.toString(),
-                            style: TextStyle(
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.token,
-                            size: 18,
-                            color: mainColor,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            // benefit.benefitType,
-                            request.benefitType ?? '',
-                            style: TextStyle(color: mainColor),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Status:',
-                            style: TextStyle(
-                                color: mainColor, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            // benefit.benefitType,
-                            request.status??'',
-                            style: TextStyle(
-                                color: getBenefitStatusColor(
-                                    request.status??'')),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Icon(
-                        Icons.visibility,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    if (request.canEdit != null && request.canEdit!)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: Center(
-                            child: IconButton(
-                              padding: EdgeInsets.all(0.0),
-                              onPressed: () {},
-                              splashRadius: 22,
-                              icon: Icon(
-                                Icons.edit,
-                                size: 22,
-                              ),
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    if (request.canCancel != null && request.canCancel!)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: Center(
-                            child: IconButton(
-                              padding: EdgeInsets.all(0.0),
-                              onPressed: () {
-                                AlertDialog alert = AlertDialog(
-                                  title: Text("Cancel Request"),
-                                  content: Text(
-                                      "Are you sure you want to cancel this request?"),
-                                  actions: [
-                                    TextButton(
-                                      child: Text("Cancel"),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: Text("Ok"),
-                                      onPressed: () {
-                                        showMessageDialog(
-                                          context: context,
-                                          isSucceeded: true,
-                                          message: 'Request Cancled!',
-                                          onPressedOk: () {
-                                            Navigator.popUntil(
-                                                context,
-                                                ModalRoute.withName(
-                                                    HomeScreen.routeName));
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-
-                                // show the dialog
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return alert;
-                                  },
-                                );
-                              },
-                              splashRadius: 22,
-                              icon: Icon(
-                                Icons.delete,
-                                size: 22,
-                              ),
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  Widget dialog(BenefitRequest request) {
+    return BlocBuilder(
+      bloc: _cubit,
+      builder: (context, state) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Center(
+              child: ClipPath(
+            clipper: MyClipper(),
+            child: MeasureSize(
+              onChange: (Size size) {
+                _cubit.setChildSized(size);
+              },
+              child: MyBanner(
+                message: '${request.status}',
+                textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
+                location: BannerLocation.topEnd,
+                color: getBenefitStatusColor(request.status ?? ''),
+                child: Container(
+                  width: 500.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 12.h, horizontal: 14.w),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                    border: Border.all(
+                                      color: Color(0xFFE7E7E7),
+                                    )),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6.r),
+                                  child: Image.asset('assets/images/hbd.png'),
+                                ),
+                              ),
+                              Text(
+                                widget.benefit.name,
+                                style: TextStyle(
+                                    fontSize: 20.sp,
+                                    color: mainColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Name: ',
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: greyColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    request.createdBy?.employeeName ?? '',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    'Type: ',
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: greyColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    request.benefitType ?? '',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'From: ',
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: greyColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    request.from ?? '',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    'To: ',
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: greyColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    request.to ?? '',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              if (request.requestWorkFlowAPIs != null &&
+                                  request.requestWorkFlowAPIs!.isNotEmpty)
+                                ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return IntrinsicHeight(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                child: request
+                                                            .requestWorkFlowAPIs![
+                                                                index]
+                                                            .status ==
+                                                        'Pending'
+                                                    ? Container(
+                                                        width: 30,
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          border: Border.all(
+                                                            color: whiteGreyColor,
+                                                            width: 3.0,
+                                                          ),
+                                                        ),
+                                                        child: Icon(
+                                                          CustomIcons
+                                                              .hourglass_end,
+                                                          color: whiteGreyColor,
+                                                          size: 15,
+                                                        ),
+                                                      )
+                                                    : request
+                                                                .requestWorkFlowAPIs![
+                                                                    index]
+                                                                .status ==
+                                                            'Approved'
+                                                        ? Icon(
+                                                            CustomIcons
+                                                                .circle_check_regular,
+                                                            color:
+                                                                Color(0xFF00ED51),
+                                                            size: 30,
+                                                          )
+                                                        : request
+                                                                    .requestWorkFlowAPIs![
+                                                                        index]
+                                                                    .status ==
+                                                                'Rejected'
+                                                            ? const Icon(
+                                                                CustomIcons
+                                                                    .circle_xmark_regular,
+                                                                color: Color(
+                                                                    0xFFE01B2B),
+                                                                size: 30,
+                                                              )
+                                                            : Container(
+                                                                width: 30,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  border:
+                                                                      Border.all(
+                                                                    color:
+                                                                        whiteGreyColor,
+                                                                    width: 3.0,
+                                                                  ),
+                                                                ),
+                                                                child: Text(
+                                                                  '${index + 1}',
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color:
+                                                                          whiteGreyColor),
+                                                                ),
+                                                              ),
+                                              ),
+                                              if (index <
+                                                  request.requestWorkFlowAPIs!
+                                                          .length -
+                                                      1)
+                                                Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.symmetric(
+                                                        vertical: 2.h),
+                                                    height: 30.h,
+                                                    width: 2.w,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                      gradient: LinearGradient(
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                        colors: [
+                                                          request
+                                                                      .requestWorkFlowAPIs![
+                                                                          index]
+                                                                      .status ==
+                                                                  'Approved'
+                                                              ? Colors.green
+                                                              : request
+                                                                          .requestWorkFlowAPIs![
+                                                                              index]
+                                                                          .status ==
+                                                                      'Rejected'
+                                                                  ? Colors.red
+                                                                  : whiteGreyColor,
+                                                          request
+                                                                      .requestWorkFlowAPIs![
+                                                                          index +
+                                                                              1]
+                                                                      .status ==
+                                                                  'Approved'
+                                                              ? Colors.green
+                                                              : request
+                                                                          .requestWorkFlowAPIs![
+                                                                              index +
+                                                                                  1]
+                                                                          .status ==
+                                                                      'Rejected'
+                                                                  ? Colors.red
+                                                                  : whiteGreyColor,
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(bottom: 8),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(request
+                                                        .requestWorkFlowAPIs![
+                                                            index]
+                                                        .employeeName ??
+                                                    ''),
+                                                Row(
+                                                  children: [
+                                                    Text(request
+                                                            .requestWorkFlowAPIs![
+                                                                index]
+                                                            .status ??
+                                                        ''),
+                                                    //todo fix this
+                                                    // Text('at ${request.requestWorkFlowAPIs![index].replayDate}'),
+                                                  ],
+                                                ),
+                                                Text(request
+                                                        .requestWorkFlowAPIs![
+                                                            index]
+                                                        .notes ??
+                                                    ''),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  itemCount: request.requestWorkFlowAPIs!.length,
+                                ),
+                              SizedBox(
+                                height: 100,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: _cubit.myChildSize.height / 1.2,
+                        left: 0,
+                        right: 0,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            width: 300,
+                            child: DottedLine(
+                              dashLength: 10,
+                              dashGapLength: 5,
+                              lineThickness: 2,
+                              dashColor: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: _cubit.myChildSize.height/1.18,
+                        left: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                              'Follow up your request to know if aproved or not, Good luck',
+                              style: TextStyle(color: Colors.pinkAccent),
+                              textAlign: TextAlign.center),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )),
+        );
+      },
+    );
+  }
+
+// Dialog dialog(BenefitRequest request) {
+//   return Dialog(
+//               backgroundColor: Colors.transparent,
+//               elevation: 0,
+//               insetPadding:
+//                   EdgeInsets.symmetric(horizontal: 40.0, vertical: 0.0),
+//               child: SingleChildScrollView(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     ...[
+//                       Container(
+//                         width: double.infinity,
+//                         padding: EdgeInsets.all(20),
+//                         color: mainColor,
+//                         child: const Center(
+//                           child: Text(
+//                             'Request Information',
+//                             style: TextStyle(
+//                                 color: Colors.white, fontSize: 18),
+//                           ),
+//                         ),
+//                       ),
+//                       Container(
+//                         width: double.infinity,
+//                         color: Colors.white,
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             ListTile(
+//                               dense: true,
+//                               leading: Icon(Icons.hourglass_bottom),
+//                               title: Text(request.from ?? ''),
+//                             ),
+//                             ListTile(
+//                               dense: true,
+//                               leading: Icon(Icons.calendar_today_outlined),
+//                               title: Text(request.to ?? ''),
+//                             ),
+//                             ListTile(
+//                               dense: true,
+//                               leading: Icon(Icons.messenger),
+//                               title: Text(request.message ?? ''),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ],
+//                     if (request.requestWorkFlowAPIs != null &&
+//                         request.requestWorkFlowAPIs!.isNotEmpty) ...[
+//                       const SizedBox(height: 20),
+//                       Container(
+//                         width: double.infinity,
+//                         padding: EdgeInsets.all(16),
+//                         color: mainColor,
+//                         child: const Center(
+//                           child: Text(
+//                             'Request WorkFlow',
+//                             style: TextStyle(
+//                                 color: Colors.white, fontSize: 18),
+//                           ),
+//                         ),
+//                       ),
+//                       Container(
+//                         padding: EdgeInsets.all(8),
+//                         color: Colors.white,
+//                         child: ListView.builder(
+//                           physics: NeverScrollableScrollPhysics(),
+//                           shrinkWrap: true,
+//                           itemBuilder: (context, index) {
+//                             return IntrinsicHeight(
+//                               child: Row(
+//                                 mainAxisSize: MainAxisSize.min,
+//                                 crossAxisAlignment:
+//                                     CrossAxisAlignment.stretch,
+//                                 children: [
+//                                   Column(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     crossAxisAlignment:
+//                                         CrossAxisAlignment.center,
+//                                     children: [
+//                                       CircleAvatar(
+//                                         backgroundColor:
+//                                             getBenefitStatusColor(request
+//                                                     .requestWorkFlowAPIs![
+//                                                         index]
+//                                                     .status ??
+//                                                 ''),
+//                                         radius: 15,
+//                                         child: request
+//                                                     .requestWorkFlowAPIs![
+//                                                         index]
+//                                                     .status ==
+//                                                 'Pending'
+//                                             ? Text(
+//                                                 '${index + 1}',
+//                                                 style: const TextStyle(
+//                                                     fontWeight:
+//                                                         FontWeight.bold,
+//                                                     color: Colors.white),
+//                                               )
+//                                             : request
+//                                                         .requestWorkFlowAPIs![
+//                                                             index]
+//                                                         .status ==
+//                                                     'Approved'
+//                                                 ? const Icon(Icons.check)
+//                                                 : const Icon(Icons.close),
+//                                       ),
+//                                       if (index <
+//                                           request.requestWorkFlowAPIs!
+//                                                   .length -
+//                                               1)
+//                                         Expanded(
+//                                           child: Container(
+//                                             margin: EdgeInsets.symmetric(
+//                                                 vertical: 8),
+//                                             height: 50,
+//                                             width: 0.5,
+//                                             color: Colors.black,
+//                                           ),
+//                                         ),
+//                                     ],
+//                                   ),
+//                                   SizedBox(
+//                                     width: 8,
+//                                   ),
+//                                   Padding(
+//                                     padding:
+//                                         const EdgeInsets.only(bottom: 8),
+//                                     child: Column(
+//                                       crossAxisAlignment:
+//                                           CrossAxisAlignment.start,
+//                                       children: [
+//                                         Text(request
+//                                                 .requestWorkFlowAPIs![index]
+//                                                 .employeeName ??
+//                                             ''),
+//                                         Text(request
+//                                                 .requestWorkFlowAPIs![index]
+//                                                 .status ??
+//                                             ''),
+//                                         SizedBox(
+//                                           height: 8,
+//                                         ),
+//                                         Text(request
+//                                                 .requestWorkFlowAPIs![index]
+//                                                 .notes ??
+//                                             ''),
+//                                         if (index == 0)
+//                                           Text('asdasdasdasdasdadadsada')
+//                                       ],
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             );
+//                           },
+//                           itemCount: request.requestWorkFlowAPIs!.length,
+//                         ),
+//                       ),
+//                       // for (var x in request.requestWorkFlowAPIs!)
+//                       //   Container(
+//                       //     width: double.infinity,
+//                       //     color: Colors.white,
+//                       //     child: Column(
+//                       //       crossAxisAlignment: CrossAxisAlignment.start,
+//                       //       children: [
+//                       //         Text(x.employeeName!),
+//                       //         Text(x.statusString),
+//                       //       ],
+//                       //     ),
+//                       //   ),
+//                     ],
+//                   ],
+//                 ),
+//               ),
+//             );
+// }
 
 // Widget horizontalWorkStepper(int index) {
 //   return IntrinsicWidth (
@@ -543,5 +782,62 @@ Color getBenefitStatusColor(String status) {
 
     default:
       return Colors.red;
+  }
+}
+
+class MyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    print(size.height);
+    Path path = Path();
+    path.lineTo(0.0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0.0);
+    path.addOval(
+        Rect.fromCircle(center: Offset(0.0, size.height / 1.2), radius: 15.0));
+    path.addOval(Rect.fromCircle(
+        center: Offset(size.width, size.height / 1.2), radius: 15.0));
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+typedef void OnWidgetSizeChange(Size size);
+
+class MeasureSizeRenderObject extends RenderProxyBox {
+  Size? oldSize;
+  final OnWidgetSizeChange onChange;
+
+  MeasureSizeRenderObject(this.onChange);
+
+  @override
+  void performLayout() {
+    super.performLayout();
+
+    Size newSize = child!.size;
+    if (oldSize == newSize) return;
+
+    oldSize = newSize;
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      onChange(newSize);
+    });
+  }
+}
+
+class MeasureSize extends SingleChildRenderObjectWidget {
+  final OnWidgetSizeChange onChange;
+
+  const MeasureSize({
+    Key? key,
+    required this.onChange,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return MeasureSizeRenderObject(onChange);
   }
 }

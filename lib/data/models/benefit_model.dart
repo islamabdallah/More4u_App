@@ -12,7 +12,8 @@ class BenefitModel extends Benefit {
     //Data to use in details screen
     String? description,
     List<String>? benefitWorkflows,
-    List<String>? benefitConditions,
+    BenefitConditionsModel? benefitConditions,
+    BenefitApplicable? benefitApplicable,
     //Data to use in Redeem
     required bool isAgift,
     required int minParticipant,
@@ -33,6 +34,7 @@ class BenefitModel extends Benefit {
           description: description,
           benefitWorkflows: benefitWorkflows,
           benefitConditions: benefitConditions,
+          benefitApplicable: benefitApplicable,
           isAgift: isAgift,
           minParticipant: minParticipant,
           maxParticipant: maxParticipant,
@@ -54,7 +56,10 @@ class BenefitModel extends Benefit {
       benefitType: json['benefitType'],
       description: json['description'],
       benefitWorkflows: json['benefitWorkflows']?.cast<String>(),
-      benefitConditions: json['benefitConditions']?.cast<String>(),
+      benefitConditions:json["benefitConditions"]!=null?
+          BenefitConditionsModel.fromJson(json["benefitConditions"]):null,
+      benefitApplicable:json["benefitApplicable"]!=null?
+          BenefitApplicableModel.fromJson(json["benefitApplicable"]):null,
       isAgift: json['isAgift'],
       minParticipant: json['minParticipant'],
       maxParticipant: json['maxParticipant'],
@@ -65,6 +70,83 @@ class BenefitModel extends Benefit {
       lastStatus: json['lastStatus'],
     );
   }
+}
+
+class BenefitConditionsModel extends BenefitConditions {
+  const BenefitConditionsModel({
+    final String? type,
+    final String? workDuration,
+    final String? dateToMatch,
+    final String? gender,
+    final String? maritalStatus,
+    final String? requiredDocuments,
+    final String? age,
+    final String? minParticipant,
+    final String? maxParticipant,
+    final String? payrollArea,
+  }) : super(
+            type: type,
+            workDuration: workDuration,
+            dateToMatch: dateToMatch,
+            gender: gender,
+            maritalStatus: maritalStatus,
+            requiredDocuments: requiredDocuments,
+            age: age,
+            minParticipant: minParticipant,
+            maxParticipant: maxParticipant,
+            payrollArea: payrollArea);
+
+  factory BenefitConditionsModel.fromJson(Map<String, dynamic> json) =>
+      BenefitConditionsModel(
+        type: json["Type"],
+        workDuration: json["WorkDuration"],
+        dateToMatch: json["DateToMatch"],
+        gender: json["Gender"],
+        maritalStatus: json["MaritalStatus"],
+        requiredDocuments: json["RequiredDocuments"],
+        age: json["Age"],
+        minParticipant: json["MinParticipant"],
+        maxParticipant: json["MaxParticipant"],
+        payrollArea: json["PayrollArea"],
+      );
+}
+
+class BenefitApplicableModel extends BenefitApplicable {
+  const BenefitApplicableModel({
+    final bool? type,
+    final bool? workDuration,
+    final bool? dateToMatch,
+    final bool? gender,
+    final bool? maritalStatus,
+    final bool? requiredDocuments,
+    final bool? age,
+    final bool? minParticipant,
+    final bool? maxParticipant,
+    final bool? payrollArea,
+  }) : super(
+            type: type,
+            workDuration: workDuration,
+            dateToMatch: dateToMatch,
+            gender: gender,
+            maritalStatus: maritalStatus,
+            age: age,
+            minParticipant: minParticipant,
+            maxParticipant: maxParticipant,
+            payrollArea: payrollArea);
+
+  factory BenefitApplicableModel.fromJson(Map<String, dynamic> json) =>
+      BenefitApplicableModel(
+        type: json["Type"],
+        workDuration: json["WorkDuration"],
+        dateToMatch: json["DateToMatch"],
+        gender: json["Gender"],
+        maritalStatus: json["MaritalStatus"],
+        requiredDocuments: json["RequiredDocuments"],
+        age: json["Age"],
+        minParticipant: json["MinParticipant"],
+        maxParticipant: json["MaxParticipant"],
+        payrollArea: json["PayrollArea"],
+      );
 }
 //
 // class BenefitTypeModel extends BenefitType {

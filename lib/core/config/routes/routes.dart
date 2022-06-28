@@ -40,7 +40,7 @@ class AppRoutes {
       case MyBenefitRequestsScreen.routeName:
         return _materialRoute(
             MyBenefitRequestsScreen(
-              benefitId: settings.arguments as int,
+              benefit: settings.arguments as Benefit,
             ),
             MyBenefitRequestsScreen.routeName);
 

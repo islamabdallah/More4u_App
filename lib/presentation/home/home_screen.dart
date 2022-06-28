@@ -2,11 +2,13 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/firebase/push_notification_service.dart';
+import '../../custom_icons.dart';
 import '../notification/notification_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
@@ -21,7 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-
   @override
   void didChangeDependencies() {
     PushNotificationService.init(context);
@@ -39,121 +40,154 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       builder: (context, state) {
         return Scaffold(
           drawer: const DrawerWidget(),
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Builder(builder: (context) {
-                        return Material(
-                          borderRadius: BorderRadius.circular(100),
-                          clipBehavior: Clip.antiAlias,
-                          color: Colors.transparent,
-                          child: IconButton(
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            iconSize: 35.h,
-                            icon: SvgPicture.asset(
-                              'assets/images/menu.svg',
-                              // fit: BoxFit.cover,
-                              width: 30.h,
-                              height: 30.h,
-                              color: mainColor,
-                            ),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 50.h,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Builder(builder: (context) {
+                      return Material(
+                        borderRadius: BorderRadius.circular(100),
+                        clipBehavior: Clip.antiAlias,
+                        color: Colors.transparent,
+                        child: IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          iconSize: 45.w,
+                          icon: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset('assets/images/cadeau.png'),
+                              Padding(
+                                padding: EdgeInsets.only(top:24.0.h),
+                                child: SvgPicture.asset(
+                                  'assets/images/menu.svg',
+                                  // fit: BoxFit.cover,
+                                  width: 25.h,
+                                  height: 25.h,
+                                  color: mainColor,
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      }),
-                      Badge(
-                        position: BadgePosition(top: 10, end: 10),
-                        badgeColor: redColor,
-                        badgeContent: SizedBox(
-                          width: 7.h,
-                          height: 7.h,
                         ),
-                        // badgeContent: Text('',style: TextStyle(fontSize: 12),),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(100),
-                          clipBehavior: Clip.antiAlias,
-                          color: Colors.transparent,
-                          child: IconButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context,
-                                  NotificationScreen.routeName);
-                            },
-                            iconSize: 35,
-                            icon: Icon(
-                              Icons.notifications,
-                              color: mainColor,
-                            ),
-                          ),
+                      );
+                    }),
+                    Badge(
+                      position: BadgePosition(bottom: -2, end: 3),
+                      badgeColor: redColor,
+                      // badgeContent: SizedBox(
+                      //   width: 12.h,
+                      //   height: 12.h,
+                      // ),
+                      padding: EdgeInsets.all(8.r),
+                      badgeContent: Text(
+                        '3',
+                        style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.bold),
+                      ),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(150.r),
+                        clipBehavior: Clip.antiAlias,
+                        color: Colors.transparent,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, NotificationScreen.routeName);
+                          },
+                          iconSize: 30.w,
+                          icon: SimpleShadow(
+                              offset: Offset(0, 4),
+                              color: Colors.black.withOpacity(0.25),
+                              child: Icon(
+                                CustomIcons.bell,
+                                color: mainColor,
+                              )),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  Text(
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.zero,
+                  child: Text(
                     'Hi Abanob',
                     style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 24.sp,
+                        fontFamily: 'Joti',
                         color: mainColor,
                         fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    'Chose your benifit card',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: mainColor,
-                    ),
+                ),
+                Text(
+                  'Chose your benifit card',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: greyColor,
                   ),
-                  SizedBox(height: 25.h),
-                  Theme(
-                    data: ThemeData(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                    ),
-                    child: TabBar(
+                ),
+                SizedBox(height: 25.h),
+                Theme(
+                  data: ThemeData(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                  ),
+                  child: TabBar(
                       controller: _tabController,
-                      labelColor: mainColor,
-                      unselectedLabelColor: Colors.grey,
                       isScrollable: true,
-                      // indicatorPadding:  EdgeInsets.only(right: 20),
-                      labelPadding: EdgeInsets.only(right: 25.w),
-                      indicator: BoxDecoration(),
-                      // indicator: CircleTabIndicator(color: Colors.black,radius:2.5),
+                      unselectedLabelColor: Color(0xFF6D6D6D),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorPadding: EdgeInsets.symmetric(vertical: 14.h),
+                      indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          color: redColor),
+                      padding: EdgeInsets.zero,
+                      labelPadding: EdgeInsets.zero,
                       tabs: [
                         Tab(
-                          text: 'All',
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("All"),
+                            ),
+                          ),
                         ),
                         Tab(
-                          text: 'Available',
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("Avilable"),
+                            ),
+                          ),
                         ),
-                      ],
+                      ]),
+                ),
+                Expanded(
+                  child: TabBarView(controller: _tabController, children: [
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) =>
+                          BenefitCard(benefit: cubit.benefitModels[index]),
+                      itemCount: cubit.benefitModels.length,
                     ),
-                  ),
-                  Expanded(
-                    child: TabBarView(controller: _tabController, children: [
-                      ListView.builder(
-                        itemBuilder: (context, index) => BenefitCard(benefit: cubit.benefitModels[index]),
-                        itemCount: cubit.benefitModels.length,
-                      ),
-                      cubit.availableBenefitModels != null &&
-                              cubit.availableBenefitModels?.length != 0
-                          ? ListView.builder(
-                              itemBuilder: (context, index) => BenefitCard(benefit: cubit.availableBenefitModels![index]),
-                              itemCount: cubit.availableBenefitModels?.length,
-                            )
-                          : Center(child: Text('No Benefits available')),
-                    ]),
-                  ),
-                ],
-              ),
+                    cubit.availableBenefitModels != null &&
+                            cubit.availableBenefitModels?.length != 0
+                        ? ListView.builder(
+                            itemBuilder: (context, index) => BenefitCard(
+                                benefit:
+                                    cubit.availableBenefitModels![index]),
+                            itemCount: cubit.availableBenefitModels?.length,
+                          )
+                        : Center(child: Text('No Benefits available')),
+                  ]),
+                ),
+              ],
             ),
           ),
         );

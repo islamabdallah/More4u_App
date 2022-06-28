@@ -1,29 +1,6 @@
 {
   "message": "Sucessful login",
   "data": {
-    "user": {
-      "employeeName": "heida aly",
-      "email": "huda@gmail.com",
-      "employeeNumber": 103,
-      "positionName": "Software Engineer",
-      "departmentName": "Planning",
-      "birthDate": "1984-07-18",
-      "joinDate": "2002-05-18",
-      "gender": "Female",
-      "maritalStatus": "Married",
-      "company": "test",
-      "nationality": "Egyptian",
-      "phoneNumber": "9876543211",
-      "address": "Assiut",
-      "collar": "WhiteCollar",
-      "sapNumber": 104,
-      "id": "12345678901234",
-      "supervisorName": "sara",
-      "profilePicture": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_Test.png",
-      "workDuration": null,
-      "hasRequests": false,
-      "pendingRequestsCount": 0
-    },
     "allBenefitModels": [
       {
         "id": 47,
@@ -32,7 +9,7 @@
         "benefitCard": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_BD.png",
         "times": 1,
         "benefitType": "Individual",
-        "employeeCanRedeem": false,
+        "employeeCanRedeem": true,
         "isAgift": false,
         "minParticipant": 1,
         "maxParticipant": 1,
@@ -43,15 +20,20 @@
         "lastStatus": null,
         "timesEmployeeReceiveThisBenefit": 0,
         "benefitWorkflows": [
-          "HR",
-          "Supervisor"
+          "Supervisor",
+          "HR"
         ],
-        "benefitConditions": [
-          "Type : Individual",
-          "Work Duration >= 1",
-          "Benefit Redeemation date must match with your :Birth Date"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Type": "Individual",
+          "WorkDuration": "Work Duration >= 1",
+          "DateToMatch": "Benefit Redeemation date must match with your :Birth Date"
+        },
+        "benefitApplicable": {
+          "Type": true,
+          "WorkDuration": true,
+          "DateToMatch": true
+        }
       },
       {
         "id": 49,
@@ -60,7 +42,7 @@
         "benefitCard": "8328d45f-554a-4eb6-813a-36752411a790_Mom.png",
         "times": 1,
         "benefitType": "Individual",
-        "employeeCanRedeem": true,
+        "employeeCanRedeem": false,
         "isAgift": false,
         "minParticipant": 1,
         "maxParticipant": 1,
@@ -71,17 +53,23 @@
         "lastStatus": null,
         "timesEmployeeReceiveThisBenefit": 0,
         "benefitWorkflows": [
-          "HR",
+          "Supervisor",
           "Department Manager",
-          "Supervisor"
+          "HR"
         ],
-        "benefitConditions": [
-          "Type : Individual",
-          "Gender : Female",
-          "MaritalStatus : Married",
-          "Required Documents are 1- Birth Certificate for child"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Type": "Individual",
+          "Gender": "Female",
+          "MaritalStatus": "Married",
+          "RequiredDocuments": "Required Documents are Birth Certificate for child; your ID"
+        },
+        "benefitApplicable": {
+          "Type": true,
+          "Gender": true,
+          "MaritalStatus": false,
+          "RequiredDocuments": true
+        }
       },
       {
         "id": 50,
@@ -103,14 +91,21 @@
         "benefitWorkflows": [
           "HR"
         ],
-        "benefitConditions": [
-          "Age <60",
-          "Type : Group",
-          "Work Duration >= 1",
-          "Min Participant : 5",
-          "Max Participant : 10"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Age": "Age <60",
+          "Type": "Group",
+          "WorkDuration": "Work Duration >= 1",
+          "MinParticipant": "5",
+          "MaxParticipant": "10"
+        },
+        "benefitApplicable": {
+          "Age": true,
+          "Type": true,
+          "WorkDuration": true,
+          "MinParticipant": true,
+          "MaxParticipant": true
+        }
       },
       {
         "id": 51,
@@ -119,7 +114,7 @@
         "benefitCard": "e8323761-82a3-450a-aaf6-715be00ca507_Paternatity leave.png",
         "times": 1,
         "benefitType": "Individual",
-        "employeeCanRedeem": true,
+        "employeeCanRedeem": false,
         "isAgift": false,
         "minParticipant": 1,
         "maxParticipant": 1,
@@ -132,15 +127,23 @@
         "benefitWorkflows": [
           "HR"
         ],
-        "benefitConditions": [
-          "Age >30",
-          "Type : Individual",
-          "Work Duration >= 3",
-          "MaritalStatus : Married",
-          "Payroll Area : WhiteCollar",
-          "Required Documents are 1- Birth Certificate for child"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Age": "Age >30",
+          "Type": "Individual",
+          "WorkDuration": "Work Duration >= 3",
+          "MaritalStatus": "Married",
+          "PayrollArea": "WhiteCollar",
+          "RequiredDocuments": "Required Documents are 1- Birth Certificate for child"
+        },
+        "benefitApplicable": {
+          "Age": true,
+          "Type": true,
+          "WorkDuration": false,
+          "MaritalStatus": false,
+          "PayrollArea": true,
+          "RequiredDocuments": true
+        }
       },
       {
         "id": 52,
@@ -160,16 +163,22 @@
         "lastStatus": null,
         "timesEmployeeReceiveThisBenefit": 0,
         "benefitWorkflows": [
-          "HR",
-          "Supervisor"
+          "Supervisor",
+          "HR"
         ],
-        "benefitConditions": [
-          "Type : Individual",
-          "Work Duration >= 1",
-          "Gender : Male",
-          "Payroll Area : WhiteCollar"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Type": "Individual",
+          "WorkDuration": "Work Duration >= 1",
+          "Gender": "Male",
+          "PayrollArea": "WhiteCollar"
+        },
+        "benefitApplicable": {
+          "Type": true,
+          "WorkDuration": true,
+          "Gender": false,
+          "PayrollArea": true
+        }
       },
       {
         "id": 10053,
@@ -178,7 +187,7 @@
         "benefitCard": "58c1c72b-18dd-46a5-9378-7f1e6096e877_download.png",
         "times": 1,
         "benefitType": "Individual",
-        "employeeCanRedeem": true,
+        "employeeCanRedeem": false,
         "isAgift": false,
         "minParticipant": 0,
         "maxParticipant": 0,
@@ -189,13 +198,19 @@
         "lastStatus": null,
         "timesEmployeeReceiveThisBenefit": 0,
         "benefitWorkflows": [],
-        "benefitConditions": [
-          "Type : Individual",
-          "Work Duration >= 3",
-          "Payroll Area : WhiteCollar",
-          "Required Documents are Birth Certificate"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Type": "Individual",
+          "WorkDuration": "Work Duration >= 3",
+          "PayrollArea": "WhiteCollar",
+          "RequiredDocuments": "Required Documents are Birth Certificate"
+        },
+        "benefitApplicable": {
+          "Type": true,
+          "WorkDuration": false,
+          "PayrollArea": true,
+          "RequiredDocuments": true
+        }
       },
       {
         "id": 10054,
@@ -204,25 +219,29 @@
         "benefitCard": "311b0692-cf8b-4e17-8ced-add7122e9427_main-qimg-f5c69911018d4ca62bd7a85a73ac7d5e (1).jfif",
         "times": 1,
         "benefitType": "Individual",
-        "employeeCanRedeem": true,
+        "employeeCanRedeem": false,
         "isAgift": false,
         "minParticipant": 0,
         "maxParticipant": 0,
         "requiredDocuments": null,
-        "numberOfDays": 0,
+        "numberOfDays": 1,
         "dateToMatch": "Any",
         "certainDate": "0001-01-01T00:00:00",
         "lastStatus": null,
         "timesEmployeeReceiveThisBenefit": 0,
         "benefitWorkflows": [
-          "HR",
-          "Department Manager"
+          "Department Manager",
+          "HR"
         ],
-        "benefitConditions": [
-          "Type : Individual",
-          "Required Documents are birthDate Certificate\r\npassport"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Type": "Individual",
+          "RequiredDocuments": "Required Documents are birthDate Certificate\r\npassport"
+        },
+        "benefitApplicable": {
+          "Type": true,
+          "RequiredDocuments": true
+        }
       },
       {
         "id": 10055,
@@ -231,37 +250,10 @@
         "benefitCard": "0f83652b-9697-4f12-9dde-4871b21ef03b_rose1.jpg",
         "times": 3,
         "benefitType": "Individual",
-        "employeeCanRedeem": false,
-        "isAgift": false,
+        "employeeCanRedeem": true,
+        "isAgift": true,
         "minParticipant": 0,
         "maxParticipant": 0,
-        "requiredDocuments": null,
-        "numberOfDays": 0,
-        "dateToMatch": "Any",
-        "certainDate": "0001-01-01T00:00:00",
-        "lastStatus": null,
-        "timesEmployeeReceiveThisBenefit": 0,
-        "benefitWorkflows": [
-          "HR"
-        ],
-        "benefitConditions": [
-          "Type : Individual"
-        ],
-        "benefitStatses": null
-      }
-    ],
-    "availableBenefitModels": [
-      {
-        "id": 49,
-        "name": "Working MoM",
-        "description": "Working MoM benefit",
-        "benefitCard": "8328d45f-554a-4eb6-813a-36752411a790_Mom.png",
-        "times": 1,
-        "benefitType": "Individual",
-        "employeeCanRedeem": true,
-        "isAgift": false,
-        "minParticipant": 1,
-        "maxParticipant": 1,
         "requiredDocuments": null,
         "numberOfDays": 60,
         "dateToMatch": "Any",
@@ -269,18 +261,18 @@
         "lastStatus": null,
         "timesEmployeeReceiveThisBenefit": 0,
         "benefitWorkflows": [
-          "HR",
-          "Department Manager",
-          "Supervisor"
+          "HR"
         ],
-        "benefitConditions": [
-          "Type : Individual",
-          "Gender : Female",
-          "MaritalStatus : Married",
-          "Required Documents are 1- Birth Certificate for child"
-        ],
-        "benefitStatses": null
-      },
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Type": "Individual"
+        },
+        "benefitApplicable": {
+          "Type": true
+        }
+      }
+    ],
+    "availableBenefitModels": [
       {
         "id": 50,
         "name": "Sport Group ",
@@ -301,28 +293,35 @@
         "benefitWorkflows": [
           "HR"
         ],
-        "benefitConditions": [
-          "Age <60",
-          "Type : Group",
-          "Work Duration >= 1",
-          "Min Participant : 5",
-          "Max Participant : 10"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Age": "Age <60",
+          "Type": "Group",
+          "WorkDuration": "Work Duration >= 1",
+          "MinParticipant": "5",
+          "MaxParticipant": "10"
+        },
+        "benefitApplicable": {
+          "Age": false,
+          "Type": true,
+          "WorkDuration": true,
+          "MinParticipant": true,
+          "MaxParticipant": true
+        }
       },
       {
-        "id": 51,
-        "name": "Parents Benefit",
-        "description": "Parents Benefit Description",
-        "benefitCard": "e8323761-82a3-450a-aaf6-715be00ca507_Paternatity leave.png",
-        "times": 1,
+        "id": 10055,
+        "name": "testttt4",
+        "description": "testttt4 Description",
+        "benefitCard": "0f83652b-9697-4f12-9dde-4871b21ef03b_rose1.jpg",
+        "times": 3,
         "benefitType": "Individual",
         "employeeCanRedeem": true,
-        "isAgift": false,
-        "minParticipant": 1,
-        "maxParticipant": 1,
+        "isAgift": true,
+        "minParticipant": 0,
+        "maxParticipant": 0,
         "requiredDocuments": null,
-        "numberOfDays": 1,
+        "numberOfDays": 60,
         "dateToMatch": "Any",
         "certainDate": "0001-01-01T00:00:00",
         "lastStatus": null,
@@ -330,69 +329,38 @@
         "benefitWorkflows": [
           "HR"
         ],
-        "benefitConditions": [
-          "Age >30",
-          "Type : Individual",
-          "Work Duration >= 3",
-          "MaritalStatus : Married",
-          "Payroll Area : WhiteCollar",
-          "Required Documents are 1- Birth Certificate for child"
-        ],
-        "benefitStatses": null
-      },
-      {
-        "id": 10053,
-        "name": "test222",
-        "description": "test222",
-        "benefitCard": "58c1c72b-18dd-46a5-9378-7f1e6096e877_download.png",
-        "times": 1,
-        "benefitType": "Individual",
-        "employeeCanRedeem": true,
-        "isAgift": false,
-        "minParticipant": 0,
-        "maxParticipant": 0,
-        "requiredDocuments": null,
-        "numberOfDays": 3,
-        "dateToMatch": "certain Date",
-        "certainDate": "0001-01-01T00:00:00",
-        "lastStatus": null,
-        "timesEmployeeReceiveThisBenefit": 0,
-        "benefitWorkflows": [],
-        "benefitConditions": [
-          "Type : Individual",
-          "Work Duration >= 3",
-          "Payroll Area : WhiteCollar",
-          "Required Documents are Birth Certificate"
-        ],
-        "benefitStatses": null
-      },
-      {
-        "id": 10054,
-        "name": "testttt3",
-        "description": "testttt3 Description",
-        "benefitCard": "311b0692-cf8b-4e17-8ced-add7122e9427_main-qimg-f5c69911018d4ca62bd7a85a73ac7d5e (1).jfif",
-        "times": 1,
-        "benefitType": "Individual",
-        "employeeCanRedeem": true,
-        "isAgift": false,
-        "minParticipant": 0,
-        "maxParticipant": 0,
-        "requiredDocuments": null,
-        "numberOfDays": 0,
-        "dateToMatch": "Any",
-        "certainDate": "0001-01-01T00:00:00",
-        "lastStatus": null,
-        "timesEmployeeReceiveThisBenefit": 0,
-        "benefitWorkflows": [
-          "HR",
-          "Department Manager"
-        ],
-        "benefitConditions": [
-          "Type : Individual",
-          "Required Documents are birthDate Certificate\r\npassport"
-        ],
-        "benefitStatses": null
+        "benefitStatses": null,
+        "benefitConditions": {
+          "Type": "Individual"
+        },
+        "benefitApplicable": {
+          "Type": true
+        }
       }
-    ]
+    ],
+    "user": {
+      "employeeName": "Doaa Mohamed",
+      "email": "doaa@gmail.com",
+      "employeeNumber": 100,
+      "positionName": "Software Engineer",
+      "departmentName": "Planning",
+      "birthDate": "1990-09-15",
+      "joinDate": "2021-12-01",
+      "gender": "Female",
+      "maritalStatus": "Single",
+      "company": "test",
+      "nationality": "Egyptian",
+      "phoneNumber": "01142054636",
+      "address": "Assiut",
+      "collar": "WhiteCollar",
+      "sapNumber": 101,
+      "id": "12345678901100",
+      "supervisorName": "sara",
+      "profilePicture": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_Test.png",
+      "workDuration": null,
+      "hasRequests": false,
+      "pendingRequestsCount": 0,
+      "isTheGroupCreator": false
+    }
   }
 }

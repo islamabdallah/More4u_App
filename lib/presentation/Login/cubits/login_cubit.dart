@@ -16,7 +16,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
   LoginCubit({required this.loginUser}) : super(InitialLoginState());
 
-  TextEditingController userNameController = TextEditingController();
+  TextEditingController userNameController = TextEditingController(text: '');
   TextEditingController passwordController = TextEditingController();
 
   bool isTextVisible = false;

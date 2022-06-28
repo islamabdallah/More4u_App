@@ -1,110 +1,149 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/constants.dart';
+import '../../custom_icons.dart';
 import '../../domain/entities/benefit.dart';
 import '../benefit_details/beneifit_detailed_screen.dart';
 import '../benefit_redeem/BenefitRedeemScreen.dart';
 
 class BenefitCard extends StatelessWidget {
   final Benefit benefit;
+
   const BenefitCard({Key? key, required this.benefit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: (){
-          Navigator.pushNamed(context, BenefitDetailedScreen.routeName,arguments: benefit);
-        },
-        child: Card(
-          elevation: 8,
-          shadowColor: Colors.black,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16)),
-                child: Hero(
-                  tag: benefit.id,
-                  child: Image.asset(
-                    'assets/images/hbd.png',
+      padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 20.h),
+      child: Container(
+        // padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(1, 2),
+                color: Colors.black.withOpacity(0.12),
+                blurRadius: 8),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, BenefitDetailedScreen.routeName,
+                arguments: benefit);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(width: 9.0.w, color: mainColor),
+              ),
+
+              color: Colors.white,
+              // borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.r),
+                      topRight: Radius.circular(10.r)),
+                  child: Hero(
+                    tag: benefit.id,
+                    child: Image.asset(
+                      'assets/images/hbd.png',
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 4),
-                child: Text(
-                  benefit.name,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: mainColor),
+                SizedBox(
+                  height: 9.h,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 14, vertical: 4),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.token,
-                      size: 18,
-                      color: mainColor,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      benefit.benefitType,
-                      style: TextStyle(color: mainColor),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 4),
-                child: Text(
-                  '${benefit.timesEmployeeReceiveThisBenefit}/${benefit.times}',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: mainColor),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 16,right: 16, bottom: 8),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SizedBox(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: mainColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        benefit.name,
+                        style: TextStyle(
+                            fontSize: 20.sp,
+                            fontFamily: "Cairo",
+                            fontWeight: FontWeight.w700,
+                            color: mainColor),
+                      ),
+                      Spacer(),
+                      benefit.benefitType == 'Group'
+                          ? Icon(
+                              CustomIcons.users_alt,
+                            )
+                          : Icon(
+                              CustomIcons.individual,
+                            ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Text(
+                        benefit.benefitType,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff6d6d6d),
+                          fontSize: 14.sp,
                         ),
                       ),
-                      onPressed: benefit != null
-                          ? (benefit.employeeCanRedeem
-                          ? () {
-                        Navigator.pushNamed(context,
-                            BenefitRedeemScreen.routeName,arguments: benefit);
-                      }
-                          : null)
-                          : null,
-                      child: Text('Redeem'),
-                    ),
+                    ],
                   ),
                 ),
-              ),
-            ],
+                Divider(
+                  indent: 16.w,
+                  endIndent: 16.w,
+                  color: Colors.black38,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 0),
+                  child: Row(
+                    children: [
+                      Icon(CustomIcons.ph_arrows_counter_clockwise_duotone),
+                      SizedBox(
+                        width: 4.w,
+                      ),
+                      Text(
+                        '${benefit.timesEmployeeReceiveThisBenefit}/${benefit.times}',
+                        style: TextStyle(fontSize: 14.sp, color: greyColor),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        height: 50.h,
+                        width: 88.w,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                          ),
+                          onPressed: benefit != null
+                              ? (benefit.employeeCanRedeem
+                                  ? () {
+                                      Navigator.pushNamed(context,
+                                          BenefitRedeemScreen.routeName,
+                                          arguments: benefit);
+                                    }
+                                  : null)
+                              : null,
+                          child: Text(
+                            'Redeem',
+                            style: TextStyle(fontSize: 14.sp),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 11.h,
+                ),
+              ],
+            ),
           ),
         ),
       ),

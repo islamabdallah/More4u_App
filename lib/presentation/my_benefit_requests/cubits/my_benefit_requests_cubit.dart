@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -26,5 +28,12 @@ class MyBenefitRequestsCubit extends Cubit<MyBenefitRequestsState> {
       this.myBenefitRequests = myBenefitRequests;
       emit(MyBenefitRequestsSuccessState());
     });
+  }
+
+  var myChildSize = Size.zero;
+
+  setChildSized(Size size) {
+    myChildSize = size;
+    Future.delayed(Duration.zero, () => emit(ChangeSizeState()));
   }
 }

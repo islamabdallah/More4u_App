@@ -5,10 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 import 'package:more4u/presentation/my_benefit_requests/my_benefit_requests_screen.dart';
+import 'package:more4u/presentation/widgets/banner.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 
 import '../../core/constants/constants.dart';
+import '../../custom_icons.dart';
 import '../../domain/entities/benefit.dart';
 import '../../injection_container.dart';
+import '../notification/notification_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
 import 'cubits/my_benefits_cubit.dart';
@@ -28,8 +32,7 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
 
   @override
   void initState() {
-    _cubit = sl<MyBenefitsCubit>()
-      ..getMyBenefits();
+    _cubit = sl<MyBenefitsCubit>()..getMyBenefits();
     super.initState();
   }
 
@@ -49,143 +52,183 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
       builder: (context, state) {
         return Scaffold(
           drawer: const DrawerWidget(),
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Builder(builder: (context) {
-                        return Material(
-                          borderRadius: BorderRadius.circular(100),
-                          clipBehavior: Clip.antiAlias,
-                          color: Colors.transparent,
-                          child: IconButton(
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            iconSize: 35.h,
-                            icon: SvgPicture.asset(
-                              'assets/images/menu.svg',
-                              // fit: BoxFit.cover,
-                              width: 30.h,
-                              height: 30.h,
-                              color: mainColor,
-                            ),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 50.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Builder(builder: (context) {
+                      return Material(
+                        borderRadius: BorderRadius.circular(100),
+                        clipBehavior: Clip.antiAlias,
+                        color: Colors.transparent,
+                        child: IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          iconSize: 45.w,
+                          icon: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset('assets/images/cadeau.png'),
+                              Padding(
+                                padding: EdgeInsets.only(top: 24.0.h),
+                                child: SvgPicture.asset(
+                                  'assets/images/menu.svg',
+                                  // fit: BoxFit.cover,
+                                  width: 25.h,
+                                  height: 25.h,
+                                  color: mainColor,
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      }),
-                      Badge(
-                        position: BadgePosition(top: 10, end: 10),
-                        badgeColor: redColor,
-                        badgeContent: SizedBox(
-                          width: 7.h,
-                          height: 7.h,
                         ),
-                        // badgeContent: Text('',style: TextStyle(fontSize: 12),),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(100),
-                          clipBehavior: Clip.antiAlias,
-                          color: Colors.transparent,
-                          child: IconButton(
-                            onPressed: () {
-                              // Navigator.pushNamed(context,
-                              //     NotificationScreen.routeName);
-                            },
-                            iconSize: 35,
-                            icon: Icon(
-                              Icons.notifications,
-                              color: mainColor,
-                            ),
+                      );
+                    }),
+                    Badge(
+                      position: BadgePosition(bottom: -2, end: 3),
+                      badgeColor: redColor,
+                      // badgeContent: SizedBox(
+                      //   width: 12.h,
+                      //   height: 12.h,
+                      // ),
+                      padding: EdgeInsets.all(8.r),
+                      badgeContent: Text(
+                        '3',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(150.r),
+                        clipBehavior: Clip.antiAlias,
+                        color: Colors.transparent,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, NotificationScreen.routeName);
+                          },
+                          iconSize: 30.w,
+                          icon: SimpleShadow(
+                              offset: Offset(0, 4),
+                              color: Colors.black.withOpacity(0.25),
+                              child: Icon(
+                                CustomIcons.bell,
+                                color: mainColor,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.zero,
+                  child: Text(
+                    'My Requests',
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontFamily: 'Joti',
+                        color: redColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+
+                SizedBox(height: 25.h),
+                Theme(
+                  data: ThemeData(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                  ),
+                  child: TabBar(
+                    controller: _tabController,
+                    isScrollable: true,
+                    unselectedLabelColor: Color(0xFF6D6D6D),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorPadding: EdgeInsets.symmetric(vertical: 14.h),
+                    indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                        color: redColor),
+                    padding: EdgeInsets.zero,
+                    labelPadding: EdgeInsets.zero,
+                    tabs: [
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("All"),
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("Pending"),
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("InProgress"),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  Text(
-                    'Hi Abanob',
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: mainColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 25.h),
-                  Theme(
-                    data: ThemeData(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                    ),
-                    child: TabBar(
-                      controller: _tabController,
-                      labelColor: mainColor,
-                      unselectedLabelColor: Colors.grey,
-                      isScrollable: true,
-                      // indicatorPadding:  EdgeInsets.only(right: 20),
-                      labelPadding: EdgeInsets.only(right: 25.w),
-                      indicator: BoxDecoration(),
-                      // indicator: CircleTabIndicator(color: Colors.black,radius:2.5),
-                      tabs: [
-                        Tab(
-                          text: 'All',
-                        ),
-                        Tab(
-                          text: 'Pending',
-                        ),
-                        Tab(
-                          text: 'InProgress',
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        _cubit.myAllBenefits.isNotEmpty
-                            ? ListView.builder(
-                          itemBuilder: (context, index) =>
-                              myBenefitCard(
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _cubit.myAllBenefits.isNotEmpty
+                          ? ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (context, index) => myBenefitCard(
                                   benefit: _cubit.myAllBenefits[index]),
-                          itemCount: _cubit.myAllBenefits.length,
-                        )
-                            : const Center(child: Text('No Benefit available')),
-                        _cubit.myPendingBenefits.isNotEmpty
-                            ? ListView.builder(
-                          itemBuilder: (context, index) =>
-                              myBenefitCard(
-                                  benefit:
-                                  _cubit.myPendingBenefits[index]),
-                          itemCount: _cubit.myPendingBenefits.length,
-                        )
-                            : const Center(
-                            child: Text('No Pending Benefit available')),
-                        _cubit.myInProgressBenefits.isNotEmpty
-                            ? ListView.builder(
-                          itemBuilder: (context, index) =>
-                              myBenefitCard(
-                                  benefit:
-                                  _cubit.myInProgressBenefits[index]),
-                          itemCount: _cubit.myInProgressBenefits.length,
-                        )
-                            : const Center(
-                            child: Text('No InProgress Benefit available')),
-                      ],
-                    ),
+                              itemCount: _cubit.myAllBenefits.length,
+                            )
+                          : const Center(child: Text('No Benefit available')),
+                      _cubit.myPendingBenefits.isNotEmpty
+                          ? ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (context, index) => myBenefitCard(
+                                  benefit: _cubit.myPendingBenefits[index]),
+                              itemCount: _cubit.myPendingBenefits.length,
+                            )
+                          : const Center(
+                              child: Text('No Pending Benefit available')),
+                      _cubit.myInProgressBenefits.isNotEmpty
+                          ? ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (context, index) => myBenefitCard(
+                                  benefit: _cubit.myInProgressBenefits[index]),
+                              itemCount: _cubit.myInProgressBenefits.length,
+                            )
+                          : const Center(
+                              child: Text('No InProgress Benefit available')),
+                    ],
                   ),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemBuilder: (context, index) =>
-                  //       MyBenefitRequestCard(_cubit.myAllBenefits[index]),
-                  //   itemCount: _cubit.myAllBenefits.length,
-                  // )
-                ],
-              ),
+                ),
+                // ListView.builder(
+                //   shrinkWrap: true,
+                //   itemBuilder: (context, index) =>
+                //       MyBenefitRequestCard(_cubit.myAllBenefits[index]),
+                //   itemCount: _cubit.myAllBenefits.length,
+                // )
+              ],
             ),
           ),
         );
@@ -193,91 +236,146 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
     );
   }
 
-  Card myBenefitCard({required Benefit benefit}) {
-    return Card(
-      elevation: 5,
-      clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-      child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(
-              context, MyBenefitRequestsScreen.routeName, arguments: benefit.id);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(
-                  width: 5.0,
-                  color: getBenefitStatusColor(benefit.lastStatus ?? '')),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
+  Widget myBenefitCard({required Benefit benefit}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: Card(
+        elevation: 5,
+        clipBehavior: Clip.antiAlias,
+        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0),
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, MyBenefitRequestsScreen.routeName,
+                arguments: benefit);
+          },
+          child: MyBanner(
+            message: '${benefit.lastStatus}',
+            textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
+            location: BannerLocation.topEnd,
+            color: getBenefitStatusColor(benefit.lastStatus ?? ''),
+            child: Stack(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Positioned(
+                    right: 5,
+                    top: 2,
+                    child: Icon(benefit.benefitType == 'Group'
+                        ? CustomIcons.users_alt
+                        : CustomIcons.user)),
+                Container(
+                  height: 100.h,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        width: 5.0,
+                        color: getBenefitStatusColor(benefit.lastStatus ?? ''),
+                      ),
+                      right: BorderSide(
+                        width: 2.0,
+                        color:Color(0xFFE7E7E7),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            benefit.name,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: mainColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              // border: Border.all()
+                              ),
+                          child: Image.asset(
+                            'assets/images/hbd.png',
+                            fit: BoxFit.fill,
+                            alignment: Alignment.centerLeft,
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            '(${benefit.lastStatus})',
-                            style: TextStyle(
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.w600,
-                              color: getBenefitStatusColor(
-                                  benefit.lastStatus ?? ''),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                       SizedBox(
-                        height: 8,
+                        width: 8,
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.token,
-                            size: 18,
-                            color: mainColor,
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  benefit.name,
+                                  style: TextStyle(
+                                    color: mainColor,
+                                    fontSize: 14.sp,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              // Row(
+                              //   children: [
+                              //     Icon(
+                              //       Icons.token,
+                              //       size: 18,
+                              //       color: mainColor,
+                              //     ),
+                              //     SizedBox(
+                              //       width: 4,
+                              //     ),
+                              //     Text(
+                              //       // benefit.benefitType,
+                              //       benefit.benefitType,
+                              //       style: TextStyle(color: mainColor),
+                              //     ),
+                              //   ],
+                              // ),
+
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Icon(CustomIcons
+                                        .ph_arrows_counter_clockwise_duotone),
+                                    SizedBox(
+                                      width: 4.w,
+                                    ),
+                                    Text(
+                                      '${benefit.timesEmployeeReceiveThisBenefit}/${benefit.times}',
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontFamily: "Roboto",
+                                          color: greyColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '7 Requests',
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontFamily: "Roboto",
+                                          color: greyColor),
+                                    ),
+                                    Spacer(),
+                                    Icon(Icons.arrow_circle_right, size: 30.r),
+                                    SizedBox(
+                                      width: 10,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            // benefit.benefitType,
-                            benefit.benefitType,
-                            style: TextStyle(color: mainColor),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        '${benefit.timesEmployeeReceiveThisBenefit}/${benefit
-                            .times}',
-                        style: TextStyle(fontSize: 18, color: mainColor),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                Icon(
-                  Icons.visibility,
-                  color: Colors.grey,
                 ),
               ],
             ),

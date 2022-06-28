@@ -36,21 +36,19 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   BlocOverrides.runZoned(
-        () {
+    () {
       runApp(const MyApp());
     },
     blocObserver: MyBlocObserver(),
   );
   CacheHelper.init();
 
-
-
- //  String test = await rootBundle.loadString('assets/mybenefits_response.json');
- // var json = jsonDecode(test);
- // print(json);
- //
- // UserModel user = UserModel.fromJson(json['data']['user']);
- // print(user.email);
+  //  String test = await rootBundle.loadString('assets/mybenefits_response.json');
+  // var json = jsonDecode(test);
+  // print(json);
+  //
+  // UserModel user = UserModel.fromJson(json['data']['user']);
+  // print(user.email);
 }
 
 class MyApp extends StatelessWidget {
@@ -61,36 +59,39 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize: const Size(375, 812),
-        minTextAdapt: true,
-      builder: (context,child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider<HomeCubit>(
-              create: (context) => HomeCubit(),
-            ),
-          ],
-          child: MaterialApp(
-            color: mainColor,
-
-            theme: ThemeData(
-              primaryColor: mainColor,
-              colorScheme: ColorScheme.fromSwatch().copyWith(
-                primary: mainColor,
+        minTextAdapt: false,
+        builder: (context, child) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<HomeCubit>(
+                create: (context) => HomeCubit(),
               ),
+            ],
+            child: MaterialApp(
+              color: mainColor,
+
+              theme: ThemeData(
+                primaryColor: mainColor,
+                colorScheme: ColorScheme.fromSwatch().copyWith(
+                  primary: mainColor,
+                ),
+                iconTheme: IconThemeData(color: greyColor, size: 20.h),
+                fontFamily: 'Cairo',
+drawerTheme: DrawerThemeData(scrimColor: Colors.black.withOpacity(0.2))
+                // textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
+              ),
+              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
+              onGenerateRoute: AppRoutes.onGenerateRoutes,
+              initialRoute: SplashScreen.routeName,
+              // initialRoute: LoginScreen.routeName,
+              // initialRoute: ManageRequestsScreen.routeName,
+              // initialRoute: MyBenefitsScreen.routeName,
+              // initialRoute: HomeScreen.routeName,
+              // initialRoute: BenefitDetailedScreen.routeName,
+              // initialRoute: BenefitRedeemScreen.routeName,
             ),
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: AppRoutes.onGenerateRoutes,
-            initialRoute: SplashScreen.routeName,
-            // initialRoute: LoginScreen.routeName,
-            // initialRoute: ManageRequestsScreen.routeName,
-            // initialRoute: MyBenefitsScreen.routeName,
-            // initialRoute: HomeScreen.routeName,
-            // initialRoute: BenefitDetailedScreen.routeName,
-            // initialRoute: BenefitRedeemScreen.routeName,
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 }

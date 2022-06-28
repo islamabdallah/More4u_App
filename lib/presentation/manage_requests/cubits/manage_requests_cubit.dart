@@ -13,7 +13,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   ManageRequestsCubit({required this.getBenefitsToManageUsecase})
       : super(ManageRequestsInitial());
 
-List<BenefitRequest> benefitRequests = [];
+  List<BenefitRequest> benefitRequests = [];
 
   getBenefitsToManage() async {
     emit(GetRequestsToManageLoadingState());
@@ -26,6 +26,20 @@ List<BenefitRequest> benefitRequests = [];
       this.benefitRequests = benefitRequests;
       emit(GetRequestsToManageSuccessState());
     });
-}
+  }
+
+  //filtration
+  int statusCurrentIndex = -1;
+  int typeCurrentIndex = -1;
+
+  selectStatus(int index){
+    statusCurrentIndex = index;
+    emit(ChangeFiltration());
+  }
+
+  selectType(int index){
+    typeCurrentIndex = index;
+    emit(ChangeFiltration());
+  }
 
 }

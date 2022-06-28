@@ -14,3 +14,5 @@ class GetRequestsToManageFailedState extends ManageRequestsState {
 
   GetRequestsToManageFailedState(this.message);
 }
+
+class ChangeFiltration extends ManageRequestsState {}

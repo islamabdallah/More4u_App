@@ -14,3 +14,5 @@ class MyBenefitRequestsErrorState extends MyBenefitRequestsState {
 }
 
 class MyBenefitRequestsSuccessState extends MyBenefitRequestsState {}
+
+class ChangeSizeState extends MyBenefitRequestsState {}
