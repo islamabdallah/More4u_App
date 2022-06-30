@@ -16,7 +16,7 @@ class LoginCubit extends Cubit<LoginStates> {
 
   LoginCubit({required this.loginUser}) : super(InitialLoginState());
 
-  TextEditingController userNameController = TextEditingController(text: '');
+  TextEditingController employeeNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   bool isTextVisible = false;
@@ -32,7 +32,7 @@ class LoginCubit extends Cubit<LoginStates> {
   void login() async {
     emit(LoginLoadingState());
     final result = await loginUser(
-        username: userNameController.text, pass: passwordController.text);
+        username: employeeNumberController.text, pass: passwordController.text);
 
     result.fold((failure) {
       emit(LoginErrorState(failure.message));

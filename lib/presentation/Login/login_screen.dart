@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,10 +84,13 @@ class LoginScreenState extends State<LoginScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Center(
                 child: Container(
-                    child: Image.asset(
-                  'assets/images/more4u_new.png',
-                  height: 170.h,
-                  width: 180.w,
+                    child: Hero(
+                  tag: 'logo',
+                  child: Image.asset(
+                    'assets/images/more4u_new.png',
+                    height: 170.h,
+                    width: 180.w,
+                  ),
                 )),
               ),
             ),
@@ -135,16 +139,19 @@ class LoginScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(),
                           labelText: 'Employee Number',
                           hintText: 'Enter Your Number',
-                          hintStyle: TextStyle(
-                              color: Color(0xffc1c1c1)),
+                          hintStyle: TextStyle(color: Color(0xffc1c1c1)),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         keyboardType: TextInputType.number,
-                        controller: _cubit.userNameController,
-                        validator: validateEmail,
-                        // onChanged: (String val) {
-                        //   // user.email = emailController.text.toString();
-                        // },
+                        controller: _cubit.employeeNumberController,
+                        inputFormatters:
+                         [
+                            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                        ],
+                        validator:  (String? value) {
+                          if (value!.isEmpty) return 'required';
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 40.h,
@@ -155,37 +162,45 @@ class LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          suffixIconConstraints:
-                              BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
+                          // suffixIconConstraints:
+                          //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
                           prefixIcon: Icon(CustomIcons.lock2),
-                          suffixIcon: IconButton(
-                            splashRadius: 20.r,
-                            splashColor: mainColor,
-                            padding: EdgeInsets.zero,
-                            onPressed: () {},
-                            icon: 5 > 6
-                                ? Icon(
-                                    Icons.visibility_off_outlined,
-                                    color: Colors.grey,
-                                    size: 30.r,
-                                  )
-                                : Icon(
-                                    Icons.remove_red_eye_outlined,
-                                    color: Colors.grey,
-                                    size: 30.r,
-                                  ),
+                          suffixIcon: Material(
+                            color: Colors.transparent,
+                            type: MaterialType.circle,
+                            clipBehavior: Clip.antiAlias,
+                            borderOnForeground: true,
+                            elevation: 0,
+                            child: IconButton(
+
+                                onPressed: () {
+                                  _cubit.changeTextVisibility(
+                                      !_cubit.isTextVisible);
+                                },
+                                icon: !_cubit.isTextVisible
+                                    ? Icon(
+                                        Icons.visibility_off_outlined,
+                                        size: 30.r,
+                                      )
+                                    : Icon(
+                                        Icons.remove_red_eye_outlined,
+                                        size: 30.r,
+                                      ),
+                            ),
                           ),
                           border: OutlineInputBorder(),
                           labelText: 'Password',
                           hintText: 'Enter Your Password',
-                          hintStyle: TextStyle(
-                              color: Color(0xffc1c1c1)),
+                          hintStyle: TextStyle(color: Color(0xffc1c1c1)),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
+                        obscureText: !_cubit.isTextVisible,
                         controller: _cubit.passwordController,
-                        validator: validatePassword,
+                        validator:  (String? value) {
+                          if (value!.isEmpty) return 'required';
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 55.h,
@@ -197,12 +212,10 @@ class LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             // _cubit.loginUser(User(
                             //     username: 'nabeh', pass: '123'));
-
-                            _cubit.login();
-
-                            // if (_formKey.currentState!.validate()) {
-                            //   _cubit.login();
-                            // }
+                            // _cubit.login();
+                            if (_formKey.currentState!.validate()) {
+                              _cubit.login();
+                            }
                           },
                           child: Text(
                             'Login',

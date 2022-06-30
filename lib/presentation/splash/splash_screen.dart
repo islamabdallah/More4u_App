@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:more4u/data/datasources/local_data_source.dart';
 import 'package:more4u/presentation/Login/login_screen.dart';
+import 'package:more4u/presentation/widgets/powered_by_cemex.dart';
 import 'package:more4u/presentation/widgets/utils/message_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -75,7 +77,45 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Center(
+              child: SizedBox(
+                  width: double.infinity,
+                  child: Image.asset(
+                    'assets/images/decoration.png',
+                    fit: BoxFit.fitWidth,
+                  )),
+            ),
+
+            Spacer(),
+            Center(
+                  child: Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'assets/images/more4u_new.png',
+                      height: 209.h,
+                      width: 275.w,
+                    ),
+                  ),
+
+            ),
+            Spacer(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50.w),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: LinearProgressIndicator(
+                ),
+              ),
+            ),
+            Spacer(),
+            PoweredByCemex(),
+            SizedBox(height: 40.h,)
+          ],
+        ),
+      ),
     );
   }
 }
