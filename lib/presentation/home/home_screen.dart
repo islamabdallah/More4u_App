@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Padding(
                   padding: EdgeInsets.zero,
                   child: Text(
-                    'Hi Abanob',
+                    userData!.employeeName??'',
                     style: TextStyle(
                         fontSize: 24.sp,
                         fontFamily: 'Joti',
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ),
                 Text(
-                  'Chose your benifit card',
+                  'Chose your benefit card',
                   style: TextStyle(
                     fontSize: 16.sp,
                     color: greyColor,

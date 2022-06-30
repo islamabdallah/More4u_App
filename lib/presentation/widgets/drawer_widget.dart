@@ -94,7 +94,7 @@ class DrawerWidget extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(top: 8.h),
                           child: Text(
-                            'Tire@cemex.com',
+                            userData!.email??'',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -155,20 +155,25 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () {
                     },
                   ),
-                  buildListTile(
-                    context,
-                    title: 'Manage Requests',
-                    leading: CustomIcons.business_time,
-                    onTap: () {
-                      if (ModalRoute.of(context)?.settings.name ==
-                          HomeScreen.routeName) {
-                        Navigator.pushNamed(
-                            context, ManageRequestsScreen.routeName);
-                      } else {
-                        Navigator.pushReplacementNamed(
-                            context, ManageRequestsScreen.routeName);
-                      }
-                    },
+                  Divider(),
+
+                  Visibility(
+                    visible: userData!.hasRequests!,
+                    child: buildListTile(
+                      context,
+                      title: 'Manage Requests',
+                      leading: CustomIcons.business_time,
+                      onTap: () {
+                        if (ModalRoute.of(context)?.settings.name ==
+                            HomeScreen.routeName) {
+                          Navigator.pushNamed(
+                              context, ManageRequestsScreen.routeName);
+                        } else {
+                          Navigator.pushReplacementNamed(
+                              context, ManageRequestsScreen.routeName);
+                        }
+                      },
+                    ),
                   ),
                   buildListTile(
                     context,

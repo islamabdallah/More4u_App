@@ -15,7 +15,7 @@ class BenefitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 20.h),
       child: Container(
         // padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -24,7 +24,7 @@ class BenefitCard extends StatelessWidget {
             BoxShadow(
                 offset: Offset(1, 2),
                 color: Colors.black.withOpacity(0.12),
-                blurRadius: 8),
+                blurRadius: 8.r),
           ],
         ),
         clipBehavior: Clip.antiAlias,
@@ -67,9 +67,9 @@ class BenefitCard extends StatelessWidget {
                         benefit.name,
                         style: TextStyle(
                             fontSize: 20.sp,
-                            fontFamily: "Cairo",
+                            fontFamily: 'Roboto',
                             fontWeight: FontWeight.w700,
-                            color: mainColor),
+                            color: greyColor),
                       ),
                       Spacer(),
                       benefit.benefitType == 'Group'
@@ -86,6 +86,7 @@ class BenefitCard extends StatelessWidget {
                         benefit.benefitType,
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontFamily: 'Roboto',
                           color: Color(0xff6d6d6d),
                           fontSize: 14.sp,
                         ),
@@ -108,7 +109,7 @@ class BenefitCard extends StatelessWidget {
                       ),
                       Text(
                         '${benefit.timesEmployeeReceiveThisBenefit}/${benefit.times}',
-                        style: TextStyle(fontSize: 14.sp, color: greyColor),
+                        style: TextStyle(fontSize: 14.sp, color: greyColor, fontFamily: 'Roboto',),
                       ),
                       const Spacer(),
                       SizedBox(
@@ -132,7 +133,10 @@ class BenefitCard extends StatelessWidget {
                               : null,
                           child: Text(
                             'Redeem',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontFamily: 'Roboto',
+                            ),
                           ),
                         ),
                       ),

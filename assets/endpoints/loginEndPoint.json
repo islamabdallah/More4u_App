@@ -358,7 +358,7 @@
       "supervisorName": "sara",
       "profilePicture": "0f9c0afa-419c-4a61-ad53-0a1ee182e6cd_Test.png",
       "workDuration": null,
-      "hasRequests": false,
+      "hasRequests": true,
       "pendingRequestsCount": 0,
       "isTheGroupCreator": false
     }
