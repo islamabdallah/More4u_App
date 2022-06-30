@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             padding: EdgeInsets.symmetric(horizontal: 8.w),
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("Avilable"),
+                              child: Text("Available"),
                             ),
                           ),
                         ),

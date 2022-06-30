@@ -18,6 +18,7 @@ import '../home/home_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
 import '../my_benefits/cubits/my_benefits_cubit.dart';
+import '../widgets/selection_chip.dart';
 import '../widgets/utils/message_dialog.dart';
 
 class MyBenefitRequestsScreen extends StatefulWidget {
@@ -200,350 +201,433 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
         return Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          insetPadding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Center(
-              child: ClipPath(
-            clipper: MyClipper(),
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+          child: SingleChildScrollView(
             child: MeasureSize(
               onChange: (Size size) {
+                print('MeasuredSize: $size');
                 _cubit.setChildSized(size);
               },
-              child: MyBanner(
-                message: '${request.status}',
-                textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
-                location: BannerLocation.topEnd,
-                color: getBenefitStatusColor(request.status ?? ''),
-                child: Container(
-                  width: 500.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Stack(
-                    children: [
-                      Padding(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ClipPath(
+                    clipper: MyClipper(),
+                    child: MyBanner(
+                      message: '${request.status}',
+                      textStyle: TextStyle(
+                          fontSize: 10.sp, fontWeight: FontWeight.w600),
+                      location: BannerLocation.topEnd,
+                      color: getBenefitStatusColor(request.status ?? ''),
+                      child: Container(
+                        width: 500.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         padding: EdgeInsets.symmetric(
                             vertical: 12.h, horizontal: 14.w),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6.r),
-                                    border: Border.all(
-                                      color: Color(0xFFE7E7E7),
-                                    )),
-                                child: ClipRRect(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6.r),
-                                  child: Image.asset('assets/images/hbd.png'),
-                                ),
+                                  border: Border.all(
+                                    color: Color(0xFFE7E7E7),
+                                  )),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6.r),
+                                child: Image.asset('assets/images/hbd.png'),
                               ),
+                            ),
+                            Text(
+                              widget.benefit.name,
+                              style: TextStyle(
+                                  fontSize: 20.sp,
+                                  color: mainColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Name: ',
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  request.createdBy?.employeeName ?? '',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: greyColor,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  'Type: ',
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  request.benefitType ?? '',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: greyColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'From: ',
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  request.from ?? '',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: greyColor,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  'To: ',
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  request.to ?? '',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: greyColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (request.message != null)
+                              RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                    text: 'Message: ',
+                                    style: TextStyle(
+                                        color: greyColor,
+                                        fontSize: 16.sp,
+                                        fontFamily: 'Cairo',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: request.message,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: greyColor,
+                                      fontFamily: 'Cairo',
+                                    ),
+                                  ),
+                                ]),
+                              ),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            if (request.participantsData?.isNotEmpty ??
+                                false) ...[
                               Text(
-                                widget.benefit.name,
+                                'Participants: ',
                                 style: TextStyle(
-                                    fontSize: 20.sp,
-                                    color: mainColor,
+                                    color: greyColor,
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Cairo',
                                     fontWeight: FontWeight.bold),
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Name: ',
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.createdBy?.employeeName ?? '',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    'Type: ',
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.benefitType ?? '',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'From: ',
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.from ?? '',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    'To: ',
-                                    style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.to ?? '',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (request.requestWorkFlowAPIs != null &&
-                                  request.requestWorkFlowAPIs!.isNotEmpty)
-                                ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return IntrinsicHeight(
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              CircleAvatar(
+                              Center(
+                                child: Wrap(
+                                  children: [
+                                    ...request.participantsData!
+                                        .map((participant) => Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2.w),
+                                              child: Chip(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  side: BorderSide(
+                                                      color: Color(0xFFC1C1C1)),
+                                                ),
                                                 backgroundColor:
                                                     Colors.transparent,
-                                                child: request
-                                                            .requestWorkFlowAPIs![
-                                                                index]
-                                                            .status ==
-                                                        'Pending'
-                                                    ? Container(
-                                                        width: 30,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
-                                                          border: Border.all(
-                                                            color: whiteGreyColor,
-                                                            width: 3.0,
-                                                          ),
-                                                        ),
-                                                        child: Icon(
-                                                          CustomIcons
-                                                              .hourglass_end,
+                                                label:
+                                                    Text(participant.fullName),
+                                                labelStyle: TextStyle(
+                                                    color: mainColor,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 13.sp),
+                                              ),
+                                            ))
+                                        .toList()
+                                  ],
+                                ),
+                              ),
+                            ],
+                            if (request.requestWorkFlowAPIs != null &&
+                                request.requestWorkFlowAPIs!.isNotEmpty)
+                              ListView.builder(
+                                padding: EdgeInsets.only(top: 14.h),
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              child: request
+                                                          .requestWorkFlowAPIs![
+                                                              index]
+                                                          .status ==
+                                                      'Pending'
+                                                  ? Container(
+                                                      width: 30,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
                                                           color: whiteGreyColor,
-                                                          size: 15,
+                                                          width: 3.0,
                                                         ),
-                                                      )
-                                                    : request
-                                                                .requestWorkFlowAPIs![
-                                                                    index]
-                                                                .status ==
-                                                            'Approved'
-                                                        ? Icon(
-                                                            CustomIcons
-                                                                .circle_check_regular,
-                                                            color:
-                                                                Color(0xFF00ED51),
-                                                            size: 30,
-                                                          )
-                                                        : request
+                                                      ),
+                                                      child: Icon(
+                                                        CustomIcons
+                                                            .hourglass_end,
+                                                        color: whiteGreyColor,
+                                                        size: 15,
+                                                      ),
+                                                    )
+                                                  : request
+                                                              .requestWorkFlowAPIs![
+                                                                  index]
+                                                              .status ==
+                                                          'Approved'
+                                                      ? Icon(
+                                                          CustomIcons
+                                                              .circle_check_regular,
+                                                          color:
+                                                              Color(0xFF00ED51),
+                                                          size: 30,
+                                                        )
+                                                      : request
+                                                                  .requestWorkFlowAPIs![
+                                                                      index]
+                                                                  .status ==
+                                                              'Rejected'
+                                                          ? const Icon(
+                                                              CustomIcons
+                                                                  .circle_xmark_regular,
+                                                              color: Color(
+                                                                  0xFFE01B2B),
+                                                              size: 30,
+                                                            )
+                                                          : Container(
+                                                              width: 30,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                border:
+                                                                    Border.all(
+                                                                  color:
+                                                                      whiteGreyColor,
+                                                                  width: 3.0,
+                                                                ),
+                                                              ),
+                                                              child: Text(
+                                                                '${index + 1}',
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color:
+                                                                        whiteGreyColor),
+                                                              ),
+                                                            ),
+                                            ),
+                                            if (index <
+                                                request.requestWorkFlowAPIs!
+                                                        .length -
+                                                    1)
+                                              Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 2.h),
+                                                  height: 30.h,
+                                                  width: 2.w,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                      colors: [
+                                                        request
                                                                     .requestWorkFlowAPIs![
                                                                         index]
                                                                     .status ==
-                                                                'Rejected'
-                                                            ? const Icon(
-                                                                CustomIcons
-                                                                    .circle_xmark_regular,
-                                                                color: Color(
-                                                                    0xFFE01B2B),
-                                                                size: 30,
-                                                              )
-                                                            : Container(
-                                                                width: 30,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  border:
-                                                                      Border.all(
-                                                                    color:
-                                                                        whiteGreyColor,
-                                                                    width: 3.0,
-                                                                  ),
-                                                                ),
-                                                                child: Text(
-                                                                  '${index + 1}',
-                                                                  style: const TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color:
-                                                                          whiteGreyColor),
-                                                                ),
-                                                              ),
-                                              ),
-                                              if (index <
-                                                  request.requestWorkFlowAPIs!
-                                                          .length -
-                                                      1)
-                                                Expanded(
-                                                  child: Container(
-                                                    margin: EdgeInsets.symmetric(
-                                                        vertical: 2.h),
-                                                    height: 30.h,
-                                                    width: 2.w,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                      gradient: LinearGradient(
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomCenter,
-                                                        colors: [
-                                                          request
-                                                                      .requestWorkFlowAPIs![
-                                                                          index]
-                                                                      .status ==
-                                                                  'Approved'
-                                                              ? Colors.green
-                                                              : request
-                                                                          .requestWorkFlowAPIs![
-                                                                              index]
-                                                                          .status ==
-                                                                      'Rejected'
-                                                                  ? Colors.red
-                                                                  : whiteGreyColor,
-                                                          request
-                                                                      .requestWorkFlowAPIs![
-                                                                          index +
-                                                                              1]
-                                                                      .status ==
-                                                                  'Approved'
-                                                              ? Colors.green
-                                                              : request
-                                                                          .requestWorkFlowAPIs![
-                                                                              index +
-                                                                                  1]
-                                                                          .status ==
-                                                                      'Rejected'
-                                                                  ? Colors.red
-                                                                  : whiteGreyColor,
-                                                        ],
-                                                      ),
+                                                                'Approved'
+                                                            ? Colors.green
+                                                            : request
+                                                                        .requestWorkFlowAPIs![
+                                                                            index]
+                                                                        .status ==
+                                                                    'Rejected'
+                                                                ? Colors.red
+                                                                : whiteGreyColor,
+                                                        request
+                                                                    .requestWorkFlowAPIs![
+                                                                        index +
+                                                                            1]
+                                                                    .status ==
+                                                                'Approved'
+                                                            ? Colors.green
+                                                            : request
+                                                                        .requestWorkFlowAPIs![
+                                                                            index +
+                                                                                1]
+                                                                        .status ==
+                                                                    'Rejected'
+                                                                ? Colors.red
+                                                                : whiteGreyColor,
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(bottom: 8),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(request
+                                              ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 8),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                request
                                                         .requestWorkFlowAPIs![
                                                             index]
                                                         .employeeName ??
-                                                    ''),
-                                                Row(
-                                                  children: [
-                                                    Text(request
-                                                            .requestWorkFlowAPIs![
-                                                                index]
-                                                            .status ??
-                                                        ''),
-                                                    //todo fix this
-                                                    // Text('at ${request.requestWorkFlowAPIs![index].replayDate}'),
-                                                  ],
-                                                ),
-                                                Text(request
-                                                        .requestWorkFlowAPIs![
-                                                            index]
-                                                        .notes ??
-                                                    ''),
-                                              ],
-                                            ),
+                                                    '',
+                                                style: TextStyle(
+                                                    fontFamily: 'Roboto'),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      request
+                                                              .requestWorkFlowAPIs![
+                                                                  index]
+                                                              .status ??
+                                                          '',
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Roboto')),
+                                                  //todo fix this
+                                                  // Text('at ${request.requestWorkFlowAPIs![index].replayDate}'),
+                                                ],
+                                              ),
+                                              Text(
+                                                  request
+                                                          .requestWorkFlowAPIs![
+                                                              index]
+                                                          .notes ??
+                                                      '',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Roboto')),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  itemCount: request.requestWorkFlowAPIs!.length,
-                                ),
-                              SizedBox(
-                                height: 100,
-                              )
-                            ],
-                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                itemCount: request.requestWorkFlowAPIs!.length,
+                              ),
+                            SizedBox(
+                              height: 90.h,
+                            )
+                          ],
                         ),
                       ),
-                      Positioned(
-                        top: _cubit.myChildSize.height / 1.2,
-                        left: 0,
-                        right: 0,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: 300,
-                            child: DottedLine(
-                              dashLength: 10,
-                              dashGapLength: 5,
-                              lineThickness: 2,
-                              dashColor: Colors.grey,
+                    ),
+                  ),
+                  Positioned(
+                    top: _cubit.myChildSize.height - 90.h,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      width: 500.0,
+                      height: 97.h,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: 300,
+                              child: DottedLine(
+                                dashLength: 10,
+                                dashGapLength: 5,
+                                lineThickness: 2,
+                                dashColor: Colors.grey,
+                              ),
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                'Follow up your request to know if aproved or not, Good luck',
+                                style: TextStyle(color: Colors.pinkAccent),
+                                textAlign: TextAlign.center),
+                          )
+                        ],
                       ),
-                      Positioned(
-                        top: _cubit.myChildSize.height/1.18,
-                        left: 0,
-                        right: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              'Follow up your request to know if aproved or not, Good luck',
-                              style: TextStyle(color: Colors.pinkAccent),
-                              textAlign: TextAlign.center),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                    ),
+                  )
+                ],
               ),
             ),
-          )),
+          ),
         );
       },
     );
@@ -794,9 +878,9 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0.0);
     path.addOval(
-        Rect.fromCircle(center: Offset(0.0, size.height / 1.2), radius: 15.0));
+        Rect.fromCircle(center: Offset(0.0, size.height - 90.h), radius: 15.0));
     path.addOval(Rect.fromCircle(
-        center: Offset(size.width, size.height / 1.2), radius: 15.0));
+        center: Offset(size.width, size.height - 90.h), radius: 15.0));
 
     return path;
   }
