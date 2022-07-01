@@ -14,6 +14,7 @@ const Color defaultColor = Color(0xFF212121);
 const Color greyColor = Color(0xff6d6d6d);
 const Color whiteGreyColor = Color(0xFFC1C1C1);
 const Color redColor = Color(0xFFEA1C2D);
+const Color yellowColor = Color(0xFFFFA115);
 
 // text styles
 const appBarsTextStyle = TextStyle(

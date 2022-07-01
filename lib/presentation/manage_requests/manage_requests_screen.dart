@@ -487,209 +487,236 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
           buildShowDetailedModalBottomSheet(request);
         },
         child: MyBanner(
-      message: request.status ?? '',
-        textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
-        location: BannerLocation.topEnd,
-        color: getBenefitStatusColor(request.status?? ''),
-        child: Stack(
-          children: [
-            Positioned(
-                right: 5,
-                top: 2,
-                child: Icon(request.benefitType == 'Group'
-                    ? CustomIcons.users_alt
-                    : CustomIcons.user)),
-            Container(
-              // height: 150.h,
-              decoration: BoxDecoration(
-                border: Border(
-                  left: BorderSide(
-                    width: 5.0,
-                    color: getBenefitStatusColor(request.status ?? ''),
-                  ),
-                  right: BorderSide(
-                    width: 2.0,
-                    color:Color(0xFFE7E7E7),
+          message: request.status ?? '',
+          textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
+          location: BannerLocation.topEnd,
+          color: getBenefitStatusColor(request.status ?? ''),
+          child: Stack(
+            children: [
+              Positioned(
+                  right: 5,
+                  top: 2,
+                  child: Icon(request.benefitType == 'Group'
+                      ? CustomIcons.users_alt
+                      : CustomIcons.user)),
+              Container(
+                // height: 150.h,
+                decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(
+                      width: 5.0,
+                      color: getBenefitStatusColor(request.status ?? ''),
+                    ),
+                    right: BorderSide(
+                      width: 2.0,
+                      color: Color(0xFFE7E7E7),
+                    ),
                   ),
                 ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              // border: Border.all()
-                            ),
-                            child: Image.asset(
-                              'assets/images/hbd.png',
-                              fit: BoxFit.fill,
-                              alignment: Alignment.centerLeft,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.h),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 10,
+                            child: Stack(
                               children: [
-                                Text(
-                                  request.benefitName??'',
-                                  style: TextStyle(
-                                    color: mainColor,
-                                    fontSize: 14.sp,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w600,
+                                Container(
+                                  decoration: BoxDecoration(
+                                      // border: Border.all()
+                                      ),
+                                  child: Image.asset(
+                                    'assets/images/hbd.png',
+                                    fit: BoxFit.fill,
+                                    alignment: Alignment.centerLeft,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                      text: 'Name   ',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: greyColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                      text: request.createdBy?.employeeName ?? '',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: greyColor,
-                                      ),
-                                    ),
-                                  ]),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                      text: 'Number   ',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: greyColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                      text: request.requestNumber.toString() ?? '',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: greyColor,
-                                      ),
-                                    ),
-                                  ]),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                      text: 'Required Date   ',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: greyColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                      text: request.from ?? '',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: greyColor,
-                                      ),
-                                    ),
-                                  ]),
-                                ),
-                                if(request.requestedAt!=null)
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                      text: 'Requested At   ',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: greyColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                      text: request.requestedAt ?? '',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: greyColor,
-                                      ),
-                                    ),
-                                  ]),
                                 ),
 
+                                //todo add containt document flag for request
+                                if (request.warningMessage != null)
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5.w, vertical: 8.h),
+                                    child: Icon(
+                                      CustomIcons.shield_exclamation,
+                                      size: 27.r,
+                                      color: yellowColor,
+                                    ),
+                                  )
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 6.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 72.w,
-                          height: 40.h,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: redColor,
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              'Reject',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.bold,
+                          SizedBox(
+                            width: 9,
+                          ),
+                          Expanded(
+                            flex: 9,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8.h),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    request.benefitName ?? '',
+                                    style: TextStyle(
+                                      color: mainColor,
+                                      fontSize: 14.sp,
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text: 'Name   ',
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text: request.createdBy?.employeeName ??
+                                            '',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ]),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text: 'Number   ',
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            request.requestNumber.toString() ??
+                                                '',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ]),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text: 'Required Date   ',
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text: request.from ?? '',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ]),
+                                  ),
+                                  if (request.requestedAt != null)
+                                    RichText(
+                                      text: TextSpan(children: [
+                                        TextSpan(
+                                          text: 'Requested At   ',
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: greyColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        TextSpan(
+                                          text: request.requestedAt ?? '',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: greyColor,
+                                          ),
+                                        ),
+                                      ]),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 16.w,
-                        ),
-                        SizedBox(
-                          width: 72.w,
-                          height: 40.h,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: mainColor,
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              'Accept',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.bold,
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 72.w,
+                            height: 40.h,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: redColor,
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                'Reject',
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Spacer(),
-                        Text('Details',style: TextStyle(decoration: TextDecoration.underline,),),
-                        SizedBox(width: 4.w,),
-                        Icon(Icons.arrow_circle_right, size: 30.r),
-                      ],
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                          SizedBox(
+                            width: 72.w,
+                            height: 40.h,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: mainColor,
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                'Accept',
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            'Details',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 4.w,
+                          ),
+                          Icon(Icons.arrow_circle_right, size: 30.r),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -741,18 +768,24 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      flex: 2,
-                      child: Image.asset(
-                        'assets/images/hbd.png',
-                        fit: BoxFit.contain,
-                        alignment: Alignment.centerLeft,
+                      flex: 8,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.r),
+                            border: Border.all(
+                              color: Color(0xFFE7E7E7),
+                            )),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6.r),
+                          child: Image.asset('assets/images/hbd.png'),
+                        ),
                       ),
                     ),
                     SizedBox(
                       width: 8.w,
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 10,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -850,9 +883,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       ),
                     ),
                   ],
-                ),
-                SizedBox(
-                  height: 10.h,
                 ),
                 Wrap(
                   children: [
@@ -1133,6 +1163,26 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     ],
                   ),
                 ],
+
+                if(request.warningMessage!=null)
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: 'Warning: ',
+                      style: TextStyle(
+                          color: redColor,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text:
+                          request.warningMessage ?? '',
+                      style: TextStyle(color: redColor, fontFamily: 'Roboto'),
+                    ),
+                  ]),
+                ),
+                SizedBox(height: 8.h,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -1171,7 +1221,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                   ],
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: 20.h,
                 ),
               ],
             ),

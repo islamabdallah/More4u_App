@@ -44,7 +44,7 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
 
   @override
   Widget build(BuildContext context) {
-    TabController _tabController = TabController(length: 3, vsync: this);
+    TabController _tabController = TabController(length: 5, vsync: this);
 
     return BlocConsumer(
       bloc: _cubit,
@@ -186,6 +186,24 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                           ),
                         ),
                       ),
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("Approved"),
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text("Rejected"),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -219,6 +237,11 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                             )
                           : const Center(
                               child: Text('No InProgress Benefit available')),
+
+                      const Center(child: Text('No Benefit available')),
+                      const Center(child: Text('No Benefit available')),
+
+
                     ],
                   ),
                 ),

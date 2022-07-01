@@ -152,9 +152,9 @@
       "benefitType": "Individual",
       "employeeNumber": 0,
       "requestStatusId": 0,
-      "canCancel": false,
+      "canCancel": true,
       "canEdit": false,
-      "status": "InProgress",
+      "status": "Pending",
       "createdBy": {
         "employeeName": "heida aly",
         "email": "huda@gmail.com",

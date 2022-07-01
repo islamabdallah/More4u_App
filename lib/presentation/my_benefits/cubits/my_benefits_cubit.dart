@@ -19,6 +19,8 @@ class MyBenefitsCubit extends Cubit<MyBenefitsState> {
   List<Benefit> myAllBenefits = [];
   List<Benefit> myPendingBenefits = [];
   List<Benefit> myInProgressBenefits = [];
+  List<Benefit> myApprovedBenefits = [];
+  List<Benefit> myRejectedBenefits = [];
 
   List<Benefit> myBenefitRequests = [];
 
@@ -36,6 +38,12 @@ class MyBenefitsCubit extends Cubit<MyBenefitsState> {
           myPendingBenefits.add(benefit);
         } else if (benefit.lastStatus == 'InProgress') {
           myInProgressBenefits.add(benefit);
+        }
+        else if (benefit.lastStatus == 'Approved') {
+          myApprovedBenefits.add(benefit);
+        }
+        else {
+          myRejectedBenefits.add(benefit);
         }
       }
       emit(GetMyBenefitsSuccessState());

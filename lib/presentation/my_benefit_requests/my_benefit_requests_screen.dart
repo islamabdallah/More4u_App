@@ -174,6 +174,56 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                       color: greyColor),
                                 ),
                                 Spacer(),
+                                if (request.canCancel != null &&
+                                    request.canCancel!)
+                                  SizedBox(
+                                    height: 30.h,
+                                    width: 30.w,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(primary: redColor,padding: EdgeInsets.zero),
+                                      child: Center(child: Icon(CustomIcons.trash,size: 20.r,)),
+                                      onPressed: () {
+                                        AlertDialog alert = AlertDialog(
+                                          title: Text("Cancel Request"),
+                                          content: Text(
+                                              "Are you sure you want to cancel this request?"),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text("Ok"),
+                                              onPressed: () {
+                                                showMessageDialog(
+                                                  context: context,
+                                                  isSucceeded: true,
+                                                  message: 'Request Cancled!',
+                                                  onPressedOk: () {
+                                                    Navigator.popUntil(
+                                                        context,
+                                                        ModalRoute.withName(
+                                                            HomeScreen.routeName));
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return alert;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 Icon(Icons.arrow_circle_right, size: 30.r),
                                 SizedBox(
                                   width: 10,
