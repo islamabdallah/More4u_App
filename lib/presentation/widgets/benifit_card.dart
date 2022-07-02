@@ -66,7 +66,7 @@ class BenefitCard extends StatelessWidget {
                       Text(
                         benefit.name,
                         style: TextStyle(
-                            fontSize: 20.sp,
+                            fontSize: 18.sp,
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w700,
                             color: greyColor),
