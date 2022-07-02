@@ -272,23 +272,28 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                           ),
                           TextFormField(
                             controller: _cubit.message,
+                            keyboardType: TextInputType.multiline,
                             maxLines: 4,
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              label: Text('Message'),
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                              // prefixText: 'Question: ',
-                              prefixIcon: const Icon(
-                                Icons.article,
-                                size: 26,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
+                            decoration:
+                              InputDecoration(
+                                isDense: true,
+                                // contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                suffixIconConstraints:
+                                BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+                                prefixIconConstraints: BoxConstraints(maxHeight: 103.h, minWidth: 50.w) ,
+                                prefixIcon: Column(
+                                  children: [
+                                    Icon(CustomIcons.clipboard_regular),
+                                  ],
+                                ),
+                                border: OutlineInputBorder(),
+                                labelText: 'Message',
+                                hintText: 'Enter Your Message',
+                                hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
                               ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              isDense: true,
-                              border: OutlineInputBorder(),
-                              // focusedBorder: InputBorder.none,
-                            ),
                           ),
                           SizedBox(
                             height: 20,

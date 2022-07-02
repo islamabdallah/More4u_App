@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -667,7 +668,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               style: ElevatedButton.styleFrom(
                                 primary: redColor,
                               ),
-                              onPressed: () {},
+                              onPressed: () =>acceptOrReject(false),
                               child: Text(
                                 'Reject',
                                 style: TextStyle(
@@ -687,7 +688,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               style: ElevatedButton.styleFrom(
                                 primary: mainColor,
                               ),
-                              onPressed: () {},
+                              onPressed: () =>acceptOrReject(true),
                               child: Text(
                                 'Accept',
                                 style: TextStyle(
@@ -1192,7 +1193,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                         style: ElevatedButton.styleFrom(
                           primary: redColor,
                         ),
-                        onPressed: () {},
+                        onPressed: () =>acceptOrReject(false),
                         child: Text(
                           'Reject',
                           style: TextStyle(
@@ -1208,7 +1209,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     SizedBox(
                       width: 130.w,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: ()=>acceptOrReject(true),
                         child: Text(
                           'Accept',
                           style: TextStyle(
@@ -1232,45 +1233,243 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
   acceptOrReject(bool isAccepted) {
     showDialog(
       context: context,
-      builder: (_) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                maxLines: 3,
-                decoration: InputDecoration(
-                  label: Text('notes'),
-                ),
+      builder: (_) =>
+          Dialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+            child: SingleChildScrollView(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ClipPath(
+                    clipper: MyClipper(),
+                    child: Container(
+                      height: 300.h,
+                      width: 500.0,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.h, horizontal: 14.w),
+                      child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    isAccepted?'Approve and send your note':'Reject and send your note',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color:  isAccepted?mainColor:redColor,
+                                      fontSize: 18.sp,
+                                      fontFamily: "Cairo",
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: 3,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
+                                    decoration:
+                                    InputDecoration(
+                                      isDense: true,
+                                      // contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                      suffixIconConstraints:
+                                      BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+                                      prefixIconConstraints: BoxConstraints(maxHeight: 80.h, minWidth: 50.w) ,
+                                      prefixIcon: Column(
+                                        children: [
+                                          Icon(CustomIcons.clipboard_regular),
+                                        ],
+                                      ),
+                                      border: OutlineInputBorder(),
+                                      labelText: 'Notes',
+                                      hintText: 'Enter Your Notes',
+                                      hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    ),
+                                  ),
+                      ],
+                    ),
+                  ),
+                  ),
+                  Positioned(
+                    top: 300.h/1.4,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      width: 500.0,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: 300,
+                              child: DottedLine(
+                                dashLength: 10,
+                                dashGapLength: 5,
+                                lineThickness: 2,
+                                dashColor: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.h,horizontal: 50.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    child: ElevatedButton(
+                                      onPressed: (){
+                                        Navigator.pop(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(6.r),
+                                        ),
+                                        side: BorderSide(
+                                          width: 2.0.w,
+                                          color: isAccepted?mainColor:redColor,
+                                        ),
+                                        primary: Colors.white,
+                                        onPrimary: isAccepted? mainColor:redColor,
+
+                                      ),
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Roboto",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 14.sp),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 20.w,),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: (){},
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6.r),
+                                      ),
+                                      side: BorderSide(
+                                        width: 2.0.w,
+                                        color: isAccepted?mainColor:redColor,
+                                      ),
+                                      primary: isAccepted?mainColor:redColor,
+                                      onPrimary: Colors.white,
+
+                                    ),
+                                    child: Text(
+                                      isAccepted?'Accept':'Reject',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: "Roboto",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 14.sp),
+                                    ),
+                                  ),
+                                ),
+                              ],
+
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
-              SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    showMessageDialog(
-                      context: context,
-                      isSucceeded: true,
-                      message: isAccepted
-                          ? 'Request Accepted!'
-                          : 'Request Rejected!',
-                      onPressedOk: () {
-                        Navigator.popUntil(
-                            context, ModalRoute.withName(HomeScreen.routeName));
-                      },
-                    );
-                  },
-                  child: const Text('Confirm'),
-                  style: ElevatedButton.styleFrom(primary: mainColor),
-                ),
-              )
-            ],
+            ),
           ),
-        ),
-      ),
+      //     Dialog(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+      //   child: ClipPath(
+      //     clipper: MyClipper(),
+      //     child: Container(
+      //       decoration: BoxDecoration(
+      //       color: Colors.white,
+      //         borderRadius: BorderRadius.circular(6.r),
+      //       ),
+      //       padding: const EdgeInsets.all(8.0),
+      //       child: Column(
+      //         crossAxisAlignment: CrossAxisAlignment.start,
+      //         mainAxisSize: MainAxisSize.min,
+      //         children: [
+      //           Text(
+      //             isAccepted?'Approve and send your note':'Reject and send your note',
+      //             textAlign: TextAlign.center,
+      //             style: TextStyle(
+      //               color:  isAccepted?mainColor:redColor,
+      //               fontSize: 18.sp,
+      //               fontFamily: "Cairo",
+      //               fontWeight: FontWeight.w700,
+      //             ),
+      //           ),
+      //           TextFormField(
+      //             keyboardType: TextInputType.multiline,
+      //             maxLines: 3,
+      //             style: const TextStyle(
+      //                 fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
+      //             decoration:
+      //             InputDecoration(
+      //               isDense: true,
+      //               // contentPadding: EdgeInsets.symmetric(vertical: 0),
+      //               suffixIconConstraints:
+      //               BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+      //               prefixIconConstraints: BoxConstraints(maxHeight: 103.h, minWidth: 50.w) ,
+      //               prefixIcon: Column(
+      //                 children: [
+      //                   Icon(CustomIcons.clipboard_regular),
+      //                 ],
+      //               ),
+      //               border: OutlineInputBorder(),
+      //               labelText: 'Notes',
+      //               hintText: 'Enter Your Notes',
+      //               hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+      //               floatingLabelBehavior: FloatingLabelBehavior.always,
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 8,
+      //           ),
+      //           SizedBox(
+      //             width: double.infinity,
+      //             child: ElevatedButton(
+      //               onPressed: () {
+      //                 showMessageDialog(
+      //                   context: context,
+      //                   isSucceeded: true,
+      //                   message: isAccepted
+      //                       ? 'Request Accepted!'
+      //                       : 'Request Rejected!',
+      //                   onPressedOk: () {
+      //                     Navigator.popUntil(
+      //                         context, ModalRoute.withName(HomeScreen.routeName));
+      //                   },
+      //                 );
+      //               },
+      //               child: const Text('Confirm'),
+      //               style: ElevatedButton.styleFrom(primary: mainColor),
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
@@ -1343,4 +1542,24 @@ showInfo(BuildContext context, User user) {
           ]),
         );
       });
+}
+
+class MyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    print(size.height);
+    Path path = Path();
+    path.lineTo(0.0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0.0);
+    path.addOval(
+        Rect.fromCircle(center: Offset(0.0, size.height /1.4), radius: 15.0));
+    path.addOval(Rect.fromCircle(
+        center: Offset(size.width, size.height /1.4), radius: 15.0));
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
