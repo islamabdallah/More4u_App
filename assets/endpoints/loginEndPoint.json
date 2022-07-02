@@ -311,7 +311,7 @@
       },
       {
         "id": 10055,
-        "name": "testttt4",
+        "name": "hhhhh",
         "description": "testttt4 Description",
         "benefitCard": "0f83652b-9697-4f12-9dde-4871b21ef03b_rose1.jpg",
         "times": 3,
@@ -331,10 +331,22 @@
         ],
         "benefitStatses": null,
         "benefitConditions": {
-          "Type": "Individual"
+          "Type": "Individual",
+          "WorkDuration": "WorkDuration",
+          "DateToMatch": "DateToMatch",
+          "Gender": "Gender",
+          "MaritalStatus": "MaritalStatus",
+          "Age": "Age",
+          "MinParticipant": "MinParticipant",
+          "MaxParticipant": "MaxParticipant",
+          "PayrollArea": "PayrollArea",
+          "RequiredDocuments": "Required Documents are birthDate Certificate\r\npassport"
+
+
         },
         "benefitApplicable": {
-          "Type": true
+          "Type": true,
+          "WorkDuration": true
         }
       }
     ],

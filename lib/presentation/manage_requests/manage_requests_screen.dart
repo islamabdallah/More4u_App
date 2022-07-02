@@ -28,6 +28,7 @@ import '../profile/profile_screen.dart';
 import '../widgets/banner.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
+import '../widgets/helpers.dart';
 import 'cubits/manage_requests_cubit.dart';
 
 class ManageRequestsScreen extends StatefulWidget {
@@ -1460,17 +1461,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
   }
 }
 
-Color getBenefitStatusColor(String status) {
-  switch (status) {
-    case 'Pending':
-      return Colors.indigo;
-    case 'InProgress':
-      return Colors.green;
-
-    default:
-      return Colors.red;
-  }
-}
 
 showInfo(BuildContext context, User user) {
   showDialog(

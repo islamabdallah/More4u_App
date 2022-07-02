@@ -12,9 +12,11 @@ import '../../core/constants/constants.dart';
 import '../../custom_icons.dart';
 import '../../domain/entities/benefit.dart';
 import '../../injection_container.dart';
+import '../manage_requests/manage_requests_screen.dart';
 import '../notification/notification_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
+import '../widgets/helpers.dart';
 import 'cubits/my_benefits_cubit.dart';
 
 class MyBenefitsScreen extends StatefulWidget {
@@ -406,17 +408,5 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
         ),
       ),
     );
-  }
-}
-
-Color getBenefitStatusColor(String status) {
-  switch (status) {
-    case 'Pending':
-      return Colors.indigo;
-    case 'InProgress':
-      return Colors.green;
-
-    default:
-      return Colors.red;
   }
 }

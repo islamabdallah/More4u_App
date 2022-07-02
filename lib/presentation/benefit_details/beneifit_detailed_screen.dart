@@ -128,109 +128,120 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            Wrap(
-                              children: [
-                                conditionItem(
-                                    prefix: _cubit.benefit?.benefitConditions
-                                                ?.type! ==
-                                            'Individual'
-                                        ? CustomIcons.user
-                                        : CustomIcons.users_alt,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.type ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'Type',
-                                    value: _cubit
-                                        .benefit?.benefitConditions?.type),
-                                conditionItem(
-                                    prefix: CustomIcons.stats,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.age ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'Age',
-                                    value:
-                                        _cubit.benefit?.benefitConditions?.age),
-                                conditionItem(
-                                    prefix: CustomIcons.clock,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.workDuration ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'WorkDuration',
-                                    value: _cubit.benefit?.benefitConditions
-                                        ?.workDuration),
-                                conditionItem(
-                                    prefix: CustomIcons.stats,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.dateToMatch ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'Date To Match',
-                                    value: _cubit.benefit?.benefitConditions
-                                        ?.dateToMatch),
-                                conditionItem(
-                                    prefix: CustomIcons.venus_mars,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.gender ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'Gender',
-                                    value: _cubit
-                                        .benefit?.benefitConditions?.gender),
-                                conditionItem(
-                                    prefix: CustomIcons.bitmap,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.maritalStatus ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'Marital Status',
-                                    value: _cubit.benefit?.benefitConditions
-                                        ?.maritalStatus),
-                                conditionItem(
-                                    prefix: CustomIcons.stats,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.minParticipant ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'Min Participants',
-                                    value: _cubit.benefit?.benefitConditions
-                                        ?.minParticipant),
-                                conditionItem(
-                                    prefix: CustomIcons.stats,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.maxParticipant ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'maxParticipant',
-                                    value: _cubit.benefit?.benefitConditions
-                                        ?.maxParticipant),
-                                conditionItem(
-                                    prefix: CustomIcons.person_solid,
-                                    suffix: _cubit.benefit?.benefitApplicable
-                                                ?.payrollArea ==
-                                            true
-                                        ? CustomIcons.circle_check_regular
-                                        : CustomIcons.circle_xmark_regular,
-                                    label: 'payrollArea',
-                                    value: _cubit.benefit?.benefitConditions
-                                        ?.payrollArea),
-                                conditionItem(
-                                    prefix: CustomIcons.document,
-                                    suffix: CustomIcons.loading,
-                                    label: 'Required Documents',
-                                    value: _cubit.benefit?.benefitConditions
-                                        ?.requiredDocuments),
-                              ],
+                            MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: Scrollbar(
+                                thumbVisibility: true,
+                                trackVisibility: false,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  physics: ScrollPhysics(),
+                                  padding: EdgeInsets.only(right: 8.w),
+                                  children: [
+                                    conditionItem(
+                                        prefix: _cubit.benefit?.benefitConditions
+                                                    ?.type! ==
+                                                'Individual'
+                                            ? CustomIcons.user
+                                            : CustomIcons.users_alt,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.type ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'Type',
+                                        value: _cubit
+                                            .benefit?.benefitConditions?.type),
+                                    conditionItem(
+                                        prefix: CustomIcons.stats,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.age ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'Age',
+                                        value:
+                                            _cubit.benefit?.benefitConditions?.age),
+                                    conditionItem(
+                                        prefix: CustomIcons.clock,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.workDuration ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'WorkDuration',
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.workDuration),
+                                    conditionItem(
+                                        prefix: Icons.event_available,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.dateToMatch ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'Date To Match',
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.dateToMatch),
+                                    conditionItem(
+                                        prefix: CustomIcons.venus_mars,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.gender ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'Gender',
+                                        value: _cubit
+                                            .benefit?.benefitConditions?.gender),
+                                    conditionItem(
+                                        prefix: CustomIcons.bitmap,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.maritalStatus ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'Marital Status',
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.maritalStatus),
+                                    conditionItem(
+                                        prefix: Icons.trending_down,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.minParticipant ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'Min Participants',
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.minParticipant),
+                                    conditionItem(
+                                        prefix: Icons.trending_up,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.maxParticipant ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'maxParticipant',
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.maxParticipant),
+                                    conditionItem(
+                                        prefix: CustomIcons.person_solid,
+                                        suffix: _cubit.benefit?.benefitApplicable
+                                                    ?.payrollArea ==
+                                                true
+                                            ? CustomIcons.circle_check_regular
+                                            : CustomIcons.circle_xmark_regular,
+                                        label: 'payrollArea',
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.payrollArea),
+                                    conditionItem(
+                                        prefix: CustomIcons.document,
+                                        suffix: CustomIcons.loading,
+                                        label: 'Required Documents',
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.requiredDocuments),
+                                  ],
+                                ),
+                              ),
                             ),
                             Container(
                               padding: EdgeInsets.all(8),

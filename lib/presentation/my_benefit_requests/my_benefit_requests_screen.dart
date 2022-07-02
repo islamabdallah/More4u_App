@@ -15,9 +15,11 @@ import '../../domain/entities/benefit.dart';
 import '../../domain/entities/benefit_request.dart';
 import '../../injection_container.dart';
 import '../home/home_screen.dart';
+import '../manage_requests/manage_requests_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
 import '../my_benefits/cubits/my_benefits_cubit.dart';
+import '../widgets/helpers.dart';
 import '../widgets/selection_chip.dart';
 import '../widgets/utils/message_dialog.dart';
 
@@ -903,20 +905,6 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
 //   );
 // }
 
-}
-
-Color getBenefitStatusColor(String status) {
-  switch (status) {
-    case 'Pending':
-      return Colors.indigo;
-    case 'InProgress':
-      return Colors.green;
-    case 'Approved':
-      return Colors.green;
-
-    default:
-      return Colors.red;
-  }
 }
 
 class MyClipper extends CustomClipper<Path> {
