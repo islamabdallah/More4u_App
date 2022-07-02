@@ -24,6 +24,7 @@ import '../../injection_container.dart';
 import '../my_benefits/cubits/my_benefits_cubit.dart';
 import '../my_benefits/my_benefits_screen.dart';
 import '../notification/notification_screen.dart';
+import '../profile/profile_screen.dart';
 import '../widgets/banner.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
@@ -601,9 +602,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                             fontWeight: FontWeight.bold),
                                       ),
                                       TextSpan(
-                                        text:
-                                            request.requestNumber.toString() ??
-                                                '',
+                                        text: request.requestNumber.toString(),
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           color: greyColor,
@@ -668,7 +667,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               style: ElevatedButton.styleFrom(
                                 primary: redColor,
                               ),
-                              onPressed: () =>acceptOrReject(false),
+                              onPressed: () => acceptOrReject(false),
                               child: Text(
                                 'Reject',
                                 style: TextStyle(
@@ -688,7 +687,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               style: ElevatedButton.styleFrom(
                                 primary: mainColor,
                               ),
-                              onPressed: () =>acceptOrReject(true),
+                              onPressed: () => acceptOrReject(true),
                               child: Text(
                                 'Accept',
                                 style: TextStyle(
@@ -979,7 +978,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, ProfileScreen.routeName,arguments:request.createdBy);
+                          },
                           child: Text(
                             "View Profile",
                             textAlign: TextAlign.center,
@@ -1121,7 +1122,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                 ),
                 if (request.fullParticipantsData != null) ...[
                   Text(
-                    "Created By",
+                    "Participants",
                     style: TextStyle(
                       color: mainColor,
                       fontSize: 14.sp,
@@ -1129,61 +1130,44 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Wrap(
-                    children: [
-                      SelectionChip(
-                          label: 'Abanob Zakaria',
-                          index: 0,
-                          selectedIndex: 1,
-                          selectIndex: (_) {}),
-                      SelectionChip(
-                          label: 'Abanob Zakaria',
-                          index: 0,
-                          selectedIndex: 1,
-                          selectIndex: (_) {}),
-                      SelectionChip(
-                          label: 'Abanob Zakaria',
-                          index: 0,
-                          selectedIndex: 1,
-                          selectIndex: (_) {}),
-                      SelectionChip(
-                          label: 'Abanob Zakaria',
-                          index: 0,
-                          selectedIndex: 1,
-                          selectIndex: (_) {}),
-                      SelectionChip(
-                          label: 'Abanob Zakaria',
-                          index: 0,
-                          selectedIndex: 1,
-                          selectIndex: (_) {}),
-                      SelectionChip(
-                          label: 'Abanob Zakaria',
-                          index: 0,
-                          selectedIndex: 1,
-                          selectIndex: (_) {}),
-                    ],
+                  Center(
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        ...request.fullParticipantsData!.map((participant) =>
+                            SelectionChip(
+                                label: participant.employeeName??'',
+                                index: 0,
+                                selectedIndex: 1,
+                                selectIndex: (_) {
+                                  Navigator.pushNamed(context, ProfileScreen.routeName,arguments:participant );
+                                })).toList()
+
+                      ],
+                    ),
                   ),
                 ],
-
-                if(request.warningMessage!=null)
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(children: [
-                    TextSpan(
-                      text: 'Warning: ',
-                      style: TextStyle(
-                          color: redColor,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text:
-                          request.warningMessage ?? '',
-                      style: TextStyle(color: redColor, fontFamily: 'Roboto'),
-                    ),
-                  ]),
+                if (request.warningMessage != null)
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Warning: ',
+                        style: TextStyle(
+                            color: redColor,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: request.warningMessage ?? '',
+                        style: TextStyle(color: redColor, fontFamily: 'Roboto'),
+                      ),
+                    ]),
+                  ),
+                SizedBox(
+                  height: 8.h,
                 ),
-                SizedBox(height: 8.h,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -1193,7 +1177,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                         style: ElevatedButton.styleFrom(
                           primary: redColor,
                         ),
-                        onPressed: () =>acceptOrReject(false),
+                        onPressed: () => acceptOrReject(false),
                         child: Text(
                           'Reject',
                           style: TextStyle(
@@ -1209,7 +1193,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     SizedBox(
                       width: 130.w,
                       child: ElevatedButton(
-                        onPressed: ()=>acceptOrReject(true),
+                        onPressed: () => acceptOrReject(true),
                         child: Text(
                           'Accept',
                           style: TextStyle(
@@ -1233,165 +1217,167 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
   acceptOrReject(bool isAccepted) {
     showDialog(
       context: context,
-      builder: (_) =>
-          Dialog(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
-            child: SingleChildScrollView(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  ClipPath(
-                    clipper: MyClipper(),
-                    child: Container(
-                      height: 300.h,
-                      width: 500.0,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+        child: SingleChildScrollView(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              ClipPath(
+                clipper: MyClipper(),
+                child: Container(
+                  height: 300.h,
+                  width: 500.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        isAccepted
+                            ? 'Approve and send your note'
+                            : 'Reject and send your note',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isAccepted ? mainColor : redColor,
+                          fontSize: 18.sp,
+                          fontFamily: "Cairo",
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 12.h, horizontal: 14.w),
-                      child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    isAccepted?'Approve and send your note':'Reject and send your note',
-                                    textAlign: TextAlign.center,
+                      TextFormField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 3,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          // contentPadding: EdgeInsets.symmetric(vertical: 0),
+                          suffixIconConstraints:
+                              BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+                          prefixIconConstraints:
+                              BoxConstraints(maxHeight: 80.h, minWidth: 50.w),
+                          prefixIcon: Column(
+                            children: [
+                              Icon(CustomIcons.clipboard_regular),
+                            ],
+                          ),
+                          border: OutlineInputBorder(),
+                          labelText: 'Notes',
+                          hintText: 'Enter Your Notes',
+                          hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 300.h / 1.4,
+                left: 0,
+                right: 0,
+                child: Container(
+                  width: 500.0,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          width: 300,
+                          child: DottedLine(
+                            dashLength: 10,
+                            dashGapLength: 5,
+                            lineThickness: 2,
+                            dashColor: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.h, horizontal: 50.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6.r),
+                                    ),
+                                    side: BorderSide(
+                                      width: 2.0.w,
+                                      color: isAccepted ? mainColor : redColor,
+                                    ),
+                                    primary: Colors.white,
+                                    onPrimary:
+                                        isAccepted ? mainColor : redColor,
+                                  ),
+                                  child: Text(
+                                    'Cancel',
                                     style: TextStyle(
-                                      color:  isAccepted?mainColor:redColor,
-                                      fontSize: 18.sp,
-                                      fontFamily: "Cairo",
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: "Roboto",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 14.sp),
                                   ),
-                                  TextFormField(
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: 3,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
-                                    decoration:
-                                    InputDecoration(
-                                      isDense: true,
-                                      // contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                      suffixIconConstraints:
-                                      BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-                                      prefixIconConstraints: BoxConstraints(maxHeight: 80.h, minWidth: 50.w) ,
-                                      prefixIcon: Column(
-                                        children: [
-                                          Icon(CustomIcons.clipboard_regular),
-                                        ],
-                                      ),
-                                      border: OutlineInputBorder(),
-                                      labelText: 'Notes',
-                                      hintText: 'Enter Your Notes',
-                                      hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                                    ),
-                                  ),
-                      ],
-                    ),
-                  ),
-                  ),
-                  Positioned(
-                    top: 300.h/1.4,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      width: 500.0,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              width: 300,
-                              child: DottedLine(
-                                dashLength: 10,
-                                dashGapLength: 5,
-                                lineThickness: 2,
-                                dashColor: Colors.grey,
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.h,horizontal: 50.w),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    child: ElevatedButton(
-                                      onPressed: (){
-                                        Navigator.pop(context);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(6.r),
-                                        ),
-                                        side: BorderSide(
-                                          width: 2.0.w,
-                                          color: isAccepted?mainColor:redColor,
-                                        ),
-                                        primary: Colors.white,
-                                        onPrimary: isAccepted? mainColor:redColor,
-
-                                      ),
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: "Roboto",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 14.sp),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 20.w,),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: (){},
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6.r),
-                                      ),
-                                      side: BorderSide(
-                                        width: 2.0.w,
-                                        color: isAccepted?mainColor:redColor,
-                                      ),
-                                      primary: isAccepted?mainColor:redColor,
-                                      onPrimary: Colors.white,
-
-                                    ),
-                                    child: Text(
-                                      isAccepted?'Accept':'Reject',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Roboto",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.sp),
-                                    ),
-                                  ),
-                                ),
-                              ],
-
+                            SizedBox(
+                              width: 20.w,
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                  ),
+                                  side: BorderSide(
+                                    width: 2.0.w,
+                                    color: isAccepted ? mainColor : redColor,
+                                  ),
+                                  primary: isAccepted ? mainColor : redColor,
+                                  onPrimary: Colors.white,
+                                ),
+                                child: Text(
+                                  isAccepted ? 'Accept' : 'Reject',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Roboto",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 14.sp),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
+        ),
+      ),
       //     Dialog(
       //   backgroundColor: Colors.transparent,
       //   elevation: 0,
@@ -1553,9 +1539,9 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0.0);
     path.addOval(
-        Rect.fromCircle(center: Offset(0.0, size.height /1.4), radius: 15.0));
+        Rect.fromCircle(center: Offset(0.0, size.height / 1.4), radius: 15.0));
     path.addOval(Rect.fromCircle(
-        center: Offset(size.width, size.height /1.4), radius: 15.0));
+        center: Offset(size.width, size.height / 1.4), radius: 15.0));
 
     return path;
   }

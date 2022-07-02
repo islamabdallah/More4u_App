@@ -10,6 +10,7 @@ import 'package:more4u/custom_icons.dart';
 import 'package:more4u/presentation/home/home_screen.dart';
 import 'package:more4u/presentation/manage_requests/manage_requests_screen.dart';
 import 'package:more4u/presentation/my_benefits/my_benefits_screen.dart';
+import 'package:more4u/presentation/profile/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 
@@ -153,6 +154,8 @@ class DrawerWidget extends StatelessWidget {
                     title: 'Profile',
                     leading: CustomIcons.user,
                     onTap: () {
+                      if(ModalRoute.of(context)?.settings.name!=ProfileScreen.routeName)
+                      Navigator.pushNamed(context, ProfileScreen.routeName,arguments: userData);
                     },
                   ),
                   Divider(),

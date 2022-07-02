@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:more4u/presentation/my_benefit_requests/my_benefit_requests_screen.dart';
 
+import '../../../domain/entities/user.dart';
+import '../../../presentation/my_benefit_requests/my_benefit_requests_screen.dart';
 import '../../../domain/entities/benefit.dart';
 import '../../../presentation/Login/login_screen.dart';
 import '../../../presentation/benefit_details/beneifit_detailed_screen.dart';
@@ -11,6 +12,7 @@ import '../../../presentation/my_benefits/my_benefits_screen.dart';
 import '../../../presentation/notification/notification_screen.dart';
 import '../../../presentation/pages/profile.dart';
 import '../../../presentation/splash/splash_screen.dart';
+import '../../../presentation/profile/profile_screen.dart';
 
 class AppRoutes {
   static Route onGenerateRoutes(RouteSettings settings) {
@@ -21,11 +23,16 @@ class AppRoutes {
       case LoginScreen.routeName:
         return _materialRoute(const LoginScreen(), LoginScreen.routeName);
 
-      case ProfileWidget.routeName:
-        return _materialRoute(const ProfileWidget(), ProfileWidget.routeName);
+      case ProfileScreen.routeName:
+        return _materialRoute(
+            ProfileScreen(
+              user: settings.arguments as User,
+            ),
+            ProfileScreen.routeName);
 
       case NotificationScreen.routeName:
-        return _materialRoute(const NotificationScreen(), NotificationScreen.routeName);
+        return _materialRoute(
+            const NotificationScreen(), NotificationScreen.routeName);
 
       case HomeScreen.routeName:
         return _materialRoute(const HomeScreen(), HomeScreen.routeName);

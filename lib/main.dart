@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:more4u/data/models/user_model.dart';
 import 'package:more4u/presentation/Login/login_screen.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
+import 'package:more4u/presentation/profile/profile_screen.dart';
 
 import 'core/constants/constants.dart';
 import 'core/firebase/push_notification_service.dart';
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
                   colorScheme: ColorScheme.fromSwatch().copyWith(
                     primary: mainColor,
                   ),
-                  iconTheme: IconThemeData(color: greyColor, size: 20.h),
+                  iconTheme: IconThemeData(color: greyColor, size: 20.r),
                   fontFamily: 'Cairo',
                   drawerTheme:
                       DrawerThemeData(scrimColor: Colors.black.withOpacity(0.2))
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               onGenerateRoute: AppRoutes.onGenerateRoutes,
               initialRoute: SplashScreen.routeName,
+              // initialRoute: ProfileScreen.routeName,
               // initialRoute: LoginScreen.routeName,
               // initialRoute: ManageRequestsScreen.routeName,
               // initialRoute: MyBenefitsScreen.routeName,
