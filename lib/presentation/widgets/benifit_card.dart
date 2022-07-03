@@ -6,6 +6,7 @@ import '../../custom_icons.dart';
 import '../../domain/entities/benefit.dart';
 import '../benefit_details/beneifit_detailed_screen.dart';
 import '../benefit_redeem/BenefitRedeemScreen.dart';
+import '../home/cubits/home_cubit.dart';
 
 class BenefitCard extends StatelessWidget {
   final Benefit benefit;
@@ -31,7 +32,7 @@ class BenefitCard extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, BenefitDetailedScreen.routeName,
-                arguments: benefit);
+                arguments: benefit).whenComplete(() => HomeCubit.get(context).getHomeData());
           },
           child: Container(
             decoration: BoxDecoration(
@@ -127,7 +128,7 @@ class BenefitCard extends StatelessWidget {
                                   ? () {
                                       Navigator.pushNamed(context,
                                           BenefitRedeemScreen.routeName,
-                                          arguments: benefit);
+                                          arguments: benefit).whenComplete(() => HomeCubit.get(context).getHomeData());
                                     }
                                   : null)
                               : null,

@@ -6,6 +6,7 @@ import 'package:more4u/domain/repositories/benefit_repository.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
 import 'package:more4u/presentation/Login/cubits/login_cubit.dart';
 import 'package:more4u/presentation/benefit_details/cubits/benefit_details_cubit.dart';
+import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 import 'package:more4u/presentation/manage_requests/cubits/manage_requests_cubit.dart';
 import 'package:more4u/presentation/notification/cubits/notification_cubit.dart';
 
@@ -36,6 +37,7 @@ Future<void> init() async {
 
 // Cubits
   sl.registerFactory(() => LoginCubit(loginUser: sl()));
+  sl.registerFactory(() => HomeCubit(loginUser: sl()));
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
   sl.registerFactory(
       () => RedeemCubit(getParticipantsUsecase: sl(), redeemCardUsecase: sl()));
@@ -73,7 +75,8 @@ Future<void> init() async {
   // sl.registerLazySingleton<LoginRemoteDataSource>(
   //     () => LoginRemoteDataSourceImpl(client: sl()));
 
-  sl.registerLazySingleton<RemoteDataSource>(() => FakeRemoteDataSourceImpl());
+  sl.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(client: sl()));
+  // sl.registerLazySingleton<RemoteDataSource>(() => FakeRemoteDataSourceImpl());
 
   sl.registerLazySingleton<LocalDataSource>(
       () => LocalDataSourceImpl(sharedPreferences: sl()));

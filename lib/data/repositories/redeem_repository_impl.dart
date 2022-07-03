@@ -16,10 +16,18 @@ class RedeemRepositoryImpl extends RedeemRepository {
       {required this.remoteDataSource, required this.networkInfo});
 
   @override
-  Future<Either<Failure, List<Participant>>> getParticipants() async {
+  Future<Either<Failure, List<Participant>>> getParticipants(
+      {required int employeeNumber,
+        required int benefitId,
+        required bool isGift}
+      ) async {
     if (await networkInfo.isConnected) {
       try {
-        List<Participant> result = await remoteDataSource.getParticipants();
+        List<Participant> result = await remoteDataSource.getParticipants(
+          employeeNumber: employeeNumber,
+          benefitId: benefitId,
+          isGift: isGift,
+        );
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));

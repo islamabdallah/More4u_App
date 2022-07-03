@@ -19,6 +19,7 @@ import '../../core/utils/flutter_chips/src/chips_input.dart';
 import '../../custom_icons.dart';
 import '../../domain/entities/benefit.dart';
 import '../../injection_container.dart';
+import '../widgets/utils/loading_dialog.dart';
 import '../widgets/utils/message_dialog.dart';
 
 class BenefitRedeemScreen extends StatefulWidget {
@@ -38,7 +39,14 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
 
   @override
   void initState() {
-    _cubit = sl<RedeemCubit>()..initRedeem(widget.benefit);
+    _cubit = sl<RedeemCubit>()
+      ..initRedeem(widget.benefit);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(widget.benefit.benefitType == 'Group' || widget.benefit.isAgift){
+        _cubit.getParticipants();
+      }
+    });
     super.initState();
   }
 
@@ -47,13 +55,31 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
     return BlocConsumer<RedeemCubit, RedeemState>(
       bloc: _cubit,
       listener: (context, state) {
+        if (state is RedeemLoadingState) {
+          print('test');
+          loadingAlertDialog(context);
+        }
+        if (state is RedeemGetParticipantsSuccessState) {
+          Navigator.pop(context);
+        }
+        if (state is RedeemGetParticipantsErrorState) {
+
+          showMessageDialog(context: context,
+              isSucceeded: false,
+              message: state.message,
+              onPressedOk:()=> Navigator.pop(context),
+            onPressedRetry: ()=>_cubit.getParticipants(),
+          );
+        }
         if (state is RedeemSuccessState) {
+          Navigator.pop(context);
           showMessageDialog(
               context: context,
               isSucceeded: true,
               message: 'Card Redeem succeeded!',
-              onPressedOk: () => Navigator.popUntil(
-                  context, ModalRoute.withName(HomeScreen.routeName)));
+              onPressedOk: () =>
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(HomeScreen.routeName)));
         }
       },
       builder: (context, state) {
@@ -73,7 +99,8 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                       ),
                     ),
                     margin: EdgeInsets.only(bottom: 0),
-                    padding: EdgeInsets.only(left: 20.w,right: 20.w, top: 26.h),
+                    padding: EdgeInsets.only(
+                        left: 20.w, right: 20.w, top: 26.h),
                     child: SingleChildScrollView(
                       child: Column(
 //         mainAxisSize:MainAxisSize.min,
@@ -82,10 +109,12 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             TextFormField(
                               controller: _cubit.groupName,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.w400, color: mainColor),
+                                  fontWeight: FontWeight.w400,
+                                  color: mainColor),
                               decoration: InputDecoration(
                                 isDense: true,
-                                contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0),
                                 suffixIconConstraints:
                                 BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
                                 prefixIcon: Icon(CustomIcons.users_alt),
@@ -93,7 +122,8 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                 labelText: 'Group Name',
                                 hintText: 'Enter Your Group Name',
                                 hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                floatingLabelBehavior: FloatingLabelBehavior
+                                    .always,
                               ),
                             ),
                             SizedBox(
@@ -107,16 +137,17 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                               allowChipEditing: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                contentPadding: EdgeInsets.symmetric(vertical: 0),
+
                                 suffixIconConstraints:
                                 BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
                                 prefixIcon: Icon(CustomIcons.users_alt),
                                 border: OutlineInputBorder(),
-                                labelText: 'Group Participants',
-                                hintText: 'Enter Your Group Participants',
+                                labelText: widget.benefit.isAgift? 'Employee Name':'Group Participants',
+                                hintText: widget.benefit.isAgift?'Enter Employee Name' :'Enter Your Group Participants',
                                 hintStyle: TextStyle(color: Color(0xffc1c1c1)),
                                 errorText: _cubit.lowParticipantError,
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                floatingLabelBehavior: FloatingLabelBehavior
+                                    .always,
                               ),
                               maxChips: _cubit.benefit.maxParticipant,
                               findSuggestions: (String query) {
@@ -131,12 +162,13 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                             .toLowerCase()
                                             .contains(query.toLowerCase());
                                   }).toList(growable: false)
-                                    ..sort((a, b) => a.fullName
-                                        .toLowerCase()
-                                        .indexOf(lowercaseQuery)
-                                        .compareTo(b.fullName
-                                        .toLowerCase()
-                                        .indexOf(lowercaseQuery)));
+                                    ..sort((a, b) =>
+                                        a.fullName
+                                            .toLowerCase()
+                                            .indexOf(lowercaseQuery)
+                                            .compareTo(b.fullName
+                                            .toLowerCase()
+                                            .indexOf(lowercaseQuery)));
                                 } else {
                                   return const <Participant>[];
                                 }
@@ -167,6 +199,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                   },
                                   materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
+
                                 );
                               },
                               suggestionBuilder: (context, state, profile) {
@@ -177,7 +210,8 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                         'assets/images/profile_avatar_placeholder.png'),
                                   ),
                                   title: Text(profile.fullName),
-                                  subtitle: Text(profile.employeeNumber.toString()),
+                                  subtitle: Text(
+                                      profile.employeeNumber.toString()),
                                   onTap: () => state.selectSuggestion(profile),
                                 );
                               },
@@ -187,21 +221,26 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             ),
                           ],
                           DateTimeField(
-                              resetIcon: Icon(Icons.close,size: 25,),
+                              resetIcon: Icon(Icons.close, size: 25,),
                               controller: _cubit.startDate,
                               // validator: (value) => deliverDate == null ? translator.translate('required') : null,
                               decoration: InputDecoration(
                                 isDense: true,
-                                contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                prefixIcon: Icon(CustomIcons.calendar_days_solid__1_),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0),
+                                prefixIcon: Icon(
+                                    CustomIcons.calendar_days_solid__1_),
 
+                                suffixIcon: SizedBox(),
                                 border: OutlineInputBorder(),
                                 labelText: 'Start From',
                                 hintText: 'DD-MM-YYYY',
                                 helperText:
-                                'You are selected from ${_cubit.startDate.text} to ${_cubit.endDate.text}',
+                                'You are selected from ${_cubit.startDate
+                                    .text} to ${_cubit.endDate.text}',
                                 hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                floatingLabelBehavior: FloatingLabelBehavior
+                                    .always,
                               ),
                               format: DateFormat("dd-MM-yyyy"),
                               onShowPicker: (context, currentValue) async {
@@ -209,8 +248,11 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                     context: context,
                                     firstDate: DateTime.now(),
                                     initialDate: DateTime.now(),
-                                    lastDate: DateTime(DateTime.now().year + 1).add(
-                                        Duration(days: -1))); // if (date != null) {
+                                    lastDate: DateTime(DateTime
+                                        .now()
+                                        .year + 1).add(
+                                        Duration(
+                                            days: -1))); // if (date != null) {
                                 //   final time = await showTimePicker(
                                 //     context: context,
                                 //     initialTime:
@@ -275,25 +317,28 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             keyboardType: TextInputType.multiline,
                             maxLines: 4,
                             style: const TextStyle(
-                                fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Roboto'),
                             decoration:
-                              InputDecoration(
-                                isDense: true,
-                                // contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                suffixIconConstraints:
-                                BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-                                prefixIconConstraints: BoxConstraints(maxHeight: 103.h, minWidth: 50.w) ,
-                                prefixIcon: Column(
-                                  children: [
-                                    Icon(CustomIcons.clipboard_regular),
-                                  ],
-                                ),
-                                border: OutlineInputBorder(),
-                                labelText: 'Message',
-                                hintText: 'Enter Your Message',
-                                hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                            InputDecoration(
+                              isDense: true,
+                              // contentPadding: EdgeInsets.symmetric(vertical: 0),
+                              suffixIconConstraints:
+                              BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+                              prefixIconConstraints: BoxConstraints(
+                                  maxHeight: 103.h, minWidth: 50.w),
+                              prefixIcon: Column(
+                                children: [
+                                  Icon(CustomIcons.clipboard_regular),
+                                ],
                               ),
+                              border: OutlineInputBorder(),
+                              labelText: 'Message',
+                              hintText: 'Enter Your Message',
+                              hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                              floatingLabelBehavior: FloatingLabelBehavior
+                                  .always,
+                            ),
                           ),
                           SizedBox(
                             height: 20,

@@ -10,9 +10,9 @@ class LoginUserUsecase {
   LoginUserUsecase(this.repository);
 
   Future<Either<Failure, LoginResponse>> call({
-    required String username,
+    required String employeeNumber,
     required String pass,
   }) {
-    return repository.loginUser(employeeNumber: username, pass: pass);
+    return repository.loginUser(employeeNumber: employeeNumber, pass: pass);
   }
 }

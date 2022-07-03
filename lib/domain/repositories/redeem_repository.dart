@@ -5,5 +5,7 @@ import '../../../../../core/errors/failures.dart';
 import '../entities/benefit.dart';
 
 abstract class RedeemRepository {
-  Future<Either<Failure, List<Participant>>> getParticipants();
+  Future<Either<Failure, List<Participant>>> getParticipants(  {required int employeeNumber,
+    required int benefitId,
+    required bool isGift});
 }

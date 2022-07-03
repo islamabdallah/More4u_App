@@ -45,7 +45,7 @@ class RedeemCubit extends Cubit<RedeemState> {
     endDate.text = _formatDate(end);
     if (benefit.benefitType == 'Group' || benefit.isAgift) {
       showParticipantsField = true;
-      getParticipants();
+      // getParticipants();
     } else {
       showParticipantsField = false;
     }
@@ -89,7 +89,11 @@ class RedeemCubit extends Cubit<RedeemState> {
 
   void getParticipants() async {
     emit(RedeemLoadingState());
-    final result = await getParticipantsUsecase();
+    final result = await getParticipantsUsecase(
+      employeeNumber: userData!.employeeNumber,
+      benefitId: benefit.id,
+      isGift: benefit.isAgift
+    );
 
     result.fold((failure) {
       emit(RedeemGetParticipantsErrorState(failure.message));
@@ -127,6 +131,7 @@ class RedeemCubit extends Cubit<RedeemState> {
 
   redeemCard() async {
     if (_validateParticipants()) {
+      emit(RedeemLoadingState());
       var request = BenefitRequest(
         participants: benefit.benefitType == 'Group' ? participantsIds : null,
         sendToID: benefit.isAgift && participantsIds.isNotEmpty

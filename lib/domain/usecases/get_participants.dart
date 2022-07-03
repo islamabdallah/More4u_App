@@ -9,7 +9,13 @@ class GetParticipantsUsecase {
 
   GetParticipantsUsecase(this.repository);
 
-  Future<Either<Failure, List<Participant>>> call() {
-    return repository.getParticipants();
+  Future<Either<Failure, List<Participant>>> call(  {required int employeeNumber,
+    required int benefitId,
+    required bool isGift}) {
+    return repository.getParticipants(
+      employeeNumber: employeeNumber,
+      benefitId: benefitId,
+      isGift: isGift,
+    );
   }
 }

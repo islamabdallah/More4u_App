@@ -32,7 +32,7 @@ class LoginCubit extends Cubit<LoginStates> {
   void login() async {
     emit(LoginLoadingState());
     final result = await loginUser(
-        username: employeeNumberController.text, pass: passwordController.text);
+        employeeNumber: employeeNumberController.text, pass: passwordController.text);
 
     result.fold((failure) {
       emit(LoginErrorState(failure.message));

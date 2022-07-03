@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../core/errors/exceptions.dart';
+import '../../core/constants/api_path.dart';
 import '../../domain/entities/benefit_request.dart';
 import '../../domain/entities/filtered_search.dart';
 import '../models/benefit_model.dart';
@@ -32,11 +33,16 @@ abstract class RemoteDataSource {
     FilteredSearch? search,
   });
 
-  Future<List<ParticipantModel>> getParticipants();
+  Future<List<ParticipantModel>> getParticipants({
+    required int employeeNumber,
+    required int benefitId,
+    required bool isGift,
+  });
 
   Future<void> redeemCard({required BenefitRequestModel requestModel});
 
-  Future<List<NotificationModel>> getNotifications({required int employeeNumber});
+  Future<List<NotificationModel>> getNotifications(
+      {required int employeeNumber});
 }
 
 // class RemoteDataSourceImpl extends RemoteDataSource {
@@ -74,6 +80,122 @@ abstract class RemoteDataSource {
 //     }
 //   }
 // }
+
+class RemoteDataSourceImpl extends RemoteDataSource {
+  final http.Client client;
+
+  RemoteDataSourceImpl({required this.client});
+
+  @override
+  Future<BenefitModel> getBenefitDetails({required int benefitId}) {
+    // TODO: implement getBenefitDetails
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<BenefitRequest>> getBenefitsToManage(
+      {required int employeeNumber, FilteredSearch? search}) {
+    // TODO: implement getBenefitsToManage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<BenefitRequest>> getMyBenefitRequests(
+      {required int employeeNumber, required int benefitId}) {
+    // TODO: implement getMyBenefitRequests
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<BenefitModel>> getMyBenefits({required int employeeNumber}) {
+    // TODO: implement getMyBenefits
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<NotificationModel>> getNotifications(
+      {required int employeeNumber}) {
+    // TODO: implement getNotifications
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ParticipantModel>> getParticipants(
+      {required int employeeNumber,
+      required int benefitId,
+      required bool isGift}) async {
+
+    final response = await client.post(
+      Uri.parse(isGift ? whoCanIGiveThisBenefit : whoCanRedeemThisGroupBenefit)
+          .replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+        "benefitId": benefitId.toString()
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      List<ParticipantModel> participants = [];
+
+      for (var participant in result['data']) {
+        participants.add(ParticipantModel.fromJson(participant));
+      }
+      return participants;
+    } else {
+      Map<String, dynamic>  result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
+
+  @override
+  Future<LoginResponseModel> loginUser(
+      {required String employeeNumber, required String pass}) async {
+    final response = await client.post(Uri.parse(userLogin),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(
+          {
+            "employeeNumber": int.parse(employeeNumber),
+            "password": pass,
+            "rememberMe": true,
+            "email": "string"
+          },
+        ));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+
+      print(result);
+      LoginResponseModel loginResponseModel =
+          LoginResponseModel.fromJson(result);
+      return loginResponseModel;
+    } else {
+      print('nooooooooooooooo');
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
+
+  @override
+  Future<void> redeemCard({required BenefitRequestModel requestModel}) async {
+    // TODO: implement redeemCard
+    print(requestModel.toJson());
+  }
+}
 
 class FakeRemoteDataSourceImpl extends RemoteDataSource {
   @override
@@ -147,7 +269,10 @@ class FakeRemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<List<ParticipantModel>> getParticipants() async {
+  Future<List<ParticipantModel>> getParticipants(
+      {required int employeeNumber,
+      required int benefitId,
+      required bool isGift}) async {
     // String response = await rootBundle.loadString('assets/participants.json');
     String response = await rootBundle
         .loadString('assets/endpoints/WhoCanIGiveThisBenefit.json');
@@ -168,7 +293,8 @@ class FakeRemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<List<NotificationModel>> getNotifications({required int employeeNumber}) async {
+  Future<List<NotificationModel>> getNotifications(
+      {required int employeeNumber}) async {
     // String response = await rootBundle.loadString('assets/participants.json');
     String response = await rootBundle
         .loadString('assets/endpoints/NotificationEndPoint.json');

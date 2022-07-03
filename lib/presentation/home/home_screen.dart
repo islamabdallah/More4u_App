@@ -12,6 +12,7 @@ import '../../custom_icons.dart';
 import '../notification/notification_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
+import '../widgets/utils/loading_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = 'HomeScreen';
@@ -35,7 +36,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var cubit = HomeCubit.get(context);
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if(state is GetHomeDataLoadingState){
+          loadingAlertDialog(context);
+        }
+        if(state is GetHomeDataSuccessState){
+          Navigator.pop(context);
+        }
       },
       builder: (context, state) {
         return Scaffold(

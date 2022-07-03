@@ -33,16 +33,15 @@ showMessageDialog({
                             isSucceeded ? 'Succeeded' : 'Failed',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 22.sp,
+                              fontSize: 18.sp,
                               color:
                                   isSucceeded ? Colors.green : Colors.red,
                             ),
                           ),
-                          SizedBox(height: 10.h),
                           Text(
                             message??'',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20.sp),
+                            style: TextStyle(fontSize: 18.sp),
                             maxLines: 3,
                           ),
                           Spacer(),
@@ -51,7 +50,7 @@ showMessageDialog({
                             children: [
                               if (!isSucceeded) ...[
                                 SizedBox(
-                                  width: 130.w,
+                                  width: 110.w,
                                   height: 50.h,
                                   child: ElevatedButton(
                                     onPressed: () {
@@ -73,7 +72,7 @@ showMessageDialog({
                                 ),
                               ],
                               SizedBox(
-                                width: 130.w,
+                                width: 100.w,
                                 height: 50.h,
                                 child: ElevatedButton(
                                   onPressed: () {

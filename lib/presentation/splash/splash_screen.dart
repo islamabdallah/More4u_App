@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       var json = jsonDecode(user!);
       LoginUserUsecase login = sl<LoginUserUsecase>();
-      final result = await login(username: json['employeeNumber'],pass: json['pass']);
+      final result = await login(employeeNumber: json['employeeNumber'],pass: json['pass']);
       result.fold((failure) {
         showMessageDialog(context: context, isSucceeded: false);
       }, (loginResponse) {

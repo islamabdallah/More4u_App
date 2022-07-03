@@ -14,6 +14,7 @@ import 'package:more4u/presentation/profile/profile_screen.dart';
 
 import 'core/constants/constants.dart';
 import 'core/firebase/push_notification_service.dart';
+import 'injection_container.dart';
 import 'presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import 'presentation/home/home_screen.dart';
 import 'core/config/bloc_observer.dart';
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
           return MultiBlocProvider(
             providers: [
               BlocProvider<HomeCubit>(
-                create: (context) => HomeCubit(),
+                create: (context) => sl<HomeCubit>(),
               ),
             ],
             child: MaterialApp(
