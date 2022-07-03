@@ -101,15 +101,70 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<List<BenefitRequest>> getMyBenefitRequests(
-      {required int employeeNumber, required int benefitId}) {
-    // TODO: implement getMyBenefitRequests
-    throw UnimplementedError();
+      {required int employeeNumber, required int benefitId}) async {
+
+    final response = await client.post(
+      Uri.parse(showMyBenefitRequests)
+          .replace(queryParameters: {
+        "EmployeeNumber": employeeNumber.toString(),
+        "BenefitId": benefitId.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      List<BenefitRequestModel> myBenefitRequests = [];
+      for (Map<String, dynamic> myBenefitRequest in result['data']) {
+        myBenefitRequests.add(BenefitRequestModel.fromJson(myBenefitRequest));
+      }
+      return myBenefitRequests;
+    } else {
+      Map<String, dynamic>  result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+
   }
 
   @override
-  Future<List<BenefitModel>> getMyBenefits({required int employeeNumber}) {
-    // TODO: implement getMyBenefits
-    throw UnimplementedError();
+  Future<List<BenefitModel>> getMyBenefits({required int employeeNumber}) async{
+
+    final response = await client.post(
+      Uri.parse(showMyBenefits)
+          .replace(queryParameters: {
+        "EmployeeNumber": employeeNumber.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      List<BenefitModel> myBenefits = [];
+
+      for (var benefit in result['data']) {
+        myBenefits.add(BenefitModel.fromJson(benefit));
+      }
+      return myBenefits;
+    } else {
+      Map<String, dynamic>  result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+
+
   }
 
   @override

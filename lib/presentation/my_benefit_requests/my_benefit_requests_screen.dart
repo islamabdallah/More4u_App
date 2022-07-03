@@ -21,6 +21,7 @@ import '../widgets/drawer_widget.dart';
 import '../my_benefits/cubits/my_benefits_cubit.dart';
 import '../widgets/helpers.dart';
 import '../widgets/selection_chip.dart';
+import '../widgets/utils/loading_dialog.dart';
 import '../widgets/utils/message_dialog.dart';
 
 class MyBenefitRequestsScreen extends StatefulWidget {
@@ -41,8 +42,11 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
 
   @override
   void initState() {
-    _cubit = sl<MyBenefitRequestsCubit>()
-      ..getMyBenefitRequests(widget.benefit.id);
+    _cubit = sl<MyBenefitRequestsCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _cubit.getMyBenefitRequests(widget.benefit.id);
+    });
+
     super.initState();
   }
 
@@ -56,7 +60,15 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer(
       bloc: _cubit,
-      listener: (context, state) {},
+      listener: (context, state) {
+
+        if(state is MyBenefitRequestsLoadingState){
+          loadingAlertDialog(context);
+        }
+        if(state is MyBenefitRequestsSuccessState){
+          Navigator.pop(context);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           drawer: const DrawerWidget(),
