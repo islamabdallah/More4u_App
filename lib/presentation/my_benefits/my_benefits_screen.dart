@@ -243,7 +243,7 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                               itemCount: _cubit.myPendingBenefits.length,
                             )
                           : const Center(
-                              child: Text('No Pending Benefit available')),
+                              child: Text('No Benefit available')),
                       _cubit.myInProgressBenefits.isNotEmpty
                           ? ListView.builder(
                               padding: EdgeInsets.zero,
@@ -252,10 +252,27 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                               itemCount: _cubit.myInProgressBenefits.length,
                             )
                           : const Center(
-                              child: Text('No InProgress Benefit available')),
+                              child: Text('No Benefit available')),
 
-                      const Center(child: Text('No Benefit available')),
-                      const Center(child: Text('No Benefit available')),
+                      _cubit.myApprovedBenefits.isNotEmpty
+                          ? ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context, index) => myBenefitCard(
+                            benefit: _cubit.myApprovedBenefits[index]),
+                        itemCount: _cubit.myApprovedBenefits.length,
+                      )
+                          : const Center(
+                          child: Text('No Benefit available')),
+
+                      _cubit.myRejectedBenefits.isNotEmpty
+                          ? ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context, index) => myBenefitCard(
+                            benefit: _cubit.myRejectedBenefits[index]),
+                        itemCount: _cubit.myRejectedBenefits.length,
+                      )
+                          : const Center(
+                          child: Text('No Benefit available')),
 
 
                     ],
