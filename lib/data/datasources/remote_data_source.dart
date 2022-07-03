@@ -28,6 +28,12 @@ abstract class RemoteDataSource {
     required int benefitId,
   });
 
+  Future<String> cancelRequest({
+    required int employeeNumber,
+    required int benefitId,
+    required int requestNumber,
+  });
+
   Future<List<BenefitRequest>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
@@ -102,10 +108,8 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   @override
   Future<List<BenefitRequest>> getMyBenefitRequests(
       {required int employeeNumber, required int benefitId}) async {
-
     final response = await client.post(
-      Uri.parse(showMyBenefitRequests)
-          .replace(queryParameters: {
+      Uri.parse(showMyBenefitRequests).replace(queryParameters: {
         "EmployeeNumber": employeeNumber.toString(),
         "BenefitId": benefitId.toString(),
       }),
@@ -122,7 +126,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
       }
       return myBenefitRequests;
     } else {
-      Map<String, dynamic>  result = jsonDecode(response.body);
+      Map<String, dynamic> result = jsonDecode(response.body);
       print(result);
       if (result.isNotEmpty && result['message'] != null) {
         throw ServerException(result['message']);
@@ -130,15 +134,13 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         throw ServerException('Something went wrong!');
       }
     }
-
   }
 
   @override
-  Future<List<BenefitModel>> getMyBenefits({required int employeeNumber}) async{
-
+  Future<List<BenefitModel>> getMyBenefits(
+      {required int employeeNumber}) async {
     final response = await client.post(
-      Uri.parse(showMyBenefits)
-          .replace(queryParameters: {
+      Uri.parse(showMyBenefits).replace(queryParameters: {
         "EmployeeNumber": employeeNumber.toString(),
       }),
       headers: {
@@ -155,7 +157,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
       }
       return myBenefits;
     } else {
-      Map<String, dynamic>  result = jsonDecode(response.body);
+      Map<String, dynamic> result = jsonDecode(response.body);
       print(result);
       if (result.isNotEmpty && result['message'] != null) {
         throw ServerException(result['message']);
@@ -163,8 +165,6 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         throw ServerException('Something went wrong!');
       }
     }
-
-
   }
 
   @override
@@ -179,7 +179,6 @@ class RemoteDataSourceImpl extends RemoteDataSource {
       {required int employeeNumber,
       required int benefitId,
       required bool isGift}) async {
-
     final response = await client.post(
       Uri.parse(isGift ? whoCanIGiveThisBenefit : whoCanRedeemThisGroupBenefit)
           .replace(queryParameters: {
@@ -200,7 +199,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
       }
       return participants;
     } else {
-      Map<String, dynamic>  result = jsonDecode(response.body);
+      Map<String, dynamic> result = jsonDecode(response.body);
       print(result);
       if (result.isNotEmpty && result['message'] != null) {
         throw ServerException(result['message']);
@@ -249,6 +248,38 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   Future<void> redeemCard({required BenefitRequestModel requestModel}) async {
     // TODO: implement redeemCard
     print(requestModel.toJson());
+  }
+
+  @override
+  Future<String> cancelRequest({
+    required int employeeNumber,
+    required int benefitId,
+    required int requestNumber,
+  }) async {
+    final response = await client.post(
+      Uri.parse(requestCancel).replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+        "benefitId": benefitId.toString(),
+        "id": requestNumber.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+
+      return result['message'];
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
   }
 }
 
@@ -362,5 +393,14 @@ class FakeRemoteDataSourceImpl extends RemoteDataSource {
     return notifications;
 
     // return LoginResponseModel.fromJson(jsonDecode(response));
+  }
+
+  @override
+  Future<String> cancelRequest(
+      {required int employeeNumber,
+      required int benefitId,
+      required int requestNumber}) {
+    // TODO: implement cancelRequest
+    throw UnimplementedError();
   }
 }

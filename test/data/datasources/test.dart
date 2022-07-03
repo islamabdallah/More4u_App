@@ -37,19 +37,19 @@ main() {
         print(result);
       },
     );
-
-    test(
-      'test FakeRedeemRemoteDataSource',
-          () async {
-        //arrange
-        TestWidgetsFlutterBinding.ensureInitialized();
-        RemoteDataSource remoteDataSource = FakeRemoteDataSourceImpl();
-        //act
-        final result = await remoteDataSource.getParticipants();
-        //assert
-        print(result);
-      },
-    );
+    //
+    // test(
+    //   'test FakeRedeemRemoteDataSource',
+    //       () async {
+    //     //arrange
+    //     TestWidgetsFlutterBinding.ensureInitialized();
+    //     RemoteDataSource remoteDataSource = FakeRemoteDataSourceImpl();
+    //     //act
+    //     final result = await remoteDataSource.getParticipants();
+    //     //assert
+    //     print(result);
+    //   },
+    // );
 
     test(
       'test FakeMyBenefitsRemoteDataSourceImpl',

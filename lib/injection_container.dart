@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data/datasources/local_data_source.dart';
 import 'domain/repositories/login_repository.dart';
 import 'domain/repositories/redeem_repository.dart';
+import 'domain/usecases/cancel_request.dart';
 import 'domain/usecases/get_benefit_details.dart';
 import 'domain/usecases/get_benefits_to_manage.dart';
 import 'domain/usecases/get_my_benefit_requests.dart';
@@ -42,8 +43,8 @@ Future<void> init() async {
   sl.registerFactory(
       () => RedeemCubit(getParticipantsUsecase: sl(), redeemCardUsecase: sl()));
   sl.registerFactory(() => MyBenefitsCubit(getMyBenefitsUsecase: sl()));
-  sl.registerFactory(
-      () => MyBenefitRequestsCubit(getMyBenefitRequestsUsecase: sl()));
+  sl.registerFactory(() => MyBenefitRequestsCubit(
+      getMyBenefitRequestsUsecase: sl(), cancelRequestsUsecase: sl()));
   sl.registerFactory(
       () => ManageRequestsCubit(getBenefitsToManageUsecase: sl()));
   sl.registerFactory(() => NotificationCubit(getNotificationsUsecase: sl()));
@@ -54,6 +55,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetParticipantsUsecase(sl()));
   sl.registerLazySingleton(() => GetMyBenefitsUsecase(sl()));
   sl.registerLazySingleton(() => GetMyBenefitRequestsUsecase(sl()));
+  sl.registerLazySingleton(() => CancelRequestsUsecase(sl()));
   sl.registerLazySingleton(() => GetBenefitsToManageUsecase(sl()));
   sl.registerLazySingleton(() => RedeemCardUsecase(sl()));
   sl.registerLazySingleton(() => GetNotificationsUsecase(sl()));
@@ -75,7 +77,8 @@ Future<void> init() async {
   // sl.registerLazySingleton<LoginRemoteDataSource>(
   //     () => LoginRemoteDataSourceImpl(client: sl()));
 
-  sl.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<RemoteDataSource>(
+      () => RemoteDataSourceImpl(client: sl()));
   // sl.registerLazySingleton<RemoteDataSource>(() => FakeRemoteDataSourceImpl());
 
   sl.registerLazySingleton<LocalDataSource>(

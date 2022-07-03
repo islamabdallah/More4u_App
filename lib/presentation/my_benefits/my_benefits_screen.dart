@@ -286,7 +286,9 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
         child: InkWell(
           onTap: () {
             Navigator.pushNamed(context, MyBenefitRequestsScreen.routeName,
-                arguments: benefit);
+                arguments: benefit).whenComplete(() =>
+                _cubit.getMyBenefits()
+            );
           },
           child: MyBanner(
             message: '${benefit.lastStatus}',

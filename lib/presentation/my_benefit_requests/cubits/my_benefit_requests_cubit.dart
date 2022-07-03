@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:more4u/domain/usecases/cancel_request.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../domain/entities/benefit_request.dart';
@@ -11,8 +12,11 @@ part 'my_benefit_requests_state.dart';
 
 class MyBenefitRequestsCubit extends Cubit<MyBenefitRequestsState> {
   final GetMyBenefitRequestsUsecase getMyBenefitRequestsUsecase;
+  final CancelRequestsUsecase cancelRequestsUsecase;
 
-  MyBenefitRequestsCubit({required this.getMyBenefitRequestsUsecase})
+  MyBenefitRequestsCubit(
+      {required this.getMyBenefitRequestsUsecase,
+      required this.cancelRequestsUsecase})
       : super(MyBenefitRequestsInitial());
 
   List<BenefitRequest> myBenefitRequests = [];
@@ -27,6 +31,20 @@ class MyBenefitRequestsCubit extends Cubit<MyBenefitRequestsState> {
     }, (myBenefitRequests) {
       this.myBenefitRequests = myBenefitRequests;
       emit(MyBenefitRequestsSuccessState());
+    });
+  }
+
+  cancelRequest(int benefitId, int requestNumber) async {
+    emit(CancelRequestLoadingState());
+    final result = await cancelRequestsUsecase(
+        employeeNumber: userData!.employeeNumber,
+        benefitId: benefitId,
+        requestNumber: requestNumber);
+
+    result.fold((failure) {
+      emit(CancelRequestErrorState(failure.message));
+    }, (message) {
+      emit(CancelRequestSuccessState(message));
     });
   }
 

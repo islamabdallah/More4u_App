@@ -16,3 +16,17 @@ class MyBenefitRequestsErrorState extends MyBenefitRequestsState {
 class MyBenefitRequestsSuccessState extends MyBenefitRequestsState {}
 
 class ChangeSizeState extends MyBenefitRequestsState {}
+
+class CancelRequestLoadingState extends MyBenefitRequestsState {}
+
+class CancelRequestSuccessState extends MyBenefitRequestsState {
+  final String message;
+
+  CancelRequestSuccessState(this.message);
+}
+
+class CancelRequestErrorState extends MyBenefitRequestsState {
+  final String message;
+
+  CancelRequestErrorState(this.message);
+}

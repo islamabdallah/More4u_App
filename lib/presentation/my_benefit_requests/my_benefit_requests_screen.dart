@@ -61,12 +61,34 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
     return BlocConsumer(
       bloc: _cubit,
       listener: (context, state) {
-
-        if(state is MyBenefitRequestsLoadingState){
+        if (state is MyBenefitRequestsLoadingState) {
           loadingAlertDialog(context);
         }
-        if(state is MyBenefitRequestsSuccessState){
+        if (state is MyBenefitRequestsSuccessState) {
           Navigator.pop(context);
+        }
+        if (state is CancelRequestLoadingState) {
+          loadingAlertDialog(context);
+        }
+        if (state is CancelRequestSuccessState) {
+          Navigator.pop(context);
+          showMessageDialog(
+              context: context,
+              isSucceeded: true,
+              message: state.message,
+              onPressedOk: () {
+                _cubit.getMyBenefitRequests(widget.benefit.id);
+              });
+        }
+        if (state is CancelRequestErrorState) {
+          showMessageDialog(
+              context: context,
+              isSucceeded: false,
+              message: state.message,
+              onPressedOk: () {
+                Navigator.pop(context);
+                _cubit.getMyBenefitRequests(widget.benefit.id);
+              });
         }
       },
       builder: (context, state) {
@@ -194,8 +216,14 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                     height: 30.h,
                                     width: 30.w,
                                     child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(primary: redColor,padding: EdgeInsets.zero),
-                                      child: Center(child: Icon(CustomIcons.trash,size: 20.r,)),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: redColor,
+                                          padding: EdgeInsets.zero),
+                                      child: Center(
+                                          child: Icon(
+                                        CustomIcons.trash,
+                                        size: 20.r,
+                                      )),
                                       onPressed: () {
                                         AlertDialog alert = AlertDialog(
                                           title: Text("Cancel Request"),
@@ -211,17 +239,9 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                             TextButton(
                                               child: Text("Ok"),
                                               onPressed: () {
-                                                showMessageDialog(
-                                                  context: context,
-                                                  isSucceeded: true,
-                                                  message: 'Request Cancled!',
-                                                  onPressedOk: () {
-                                                    Navigator.popUntil(
-                                                        context,
-                                                        ModalRoute.withName(
-                                                            HomeScreen.routeName));
-                                                  },
-                                                );
+                                                _cubit.cancelRequest(
+                                                    request.benefitId!,
+                                                    request.requestNumber!);
                                               },
                                             ),
                                           ],

@@ -20,17 +20,22 @@ abstract class BenefitRepository {
     required int benefitId,
   });
 
+  Future<Either<Failure, String>> cancelRequest({
+    required int employeeNumber,
+    required int benefitId,
+    required int requestNumber,
+  });
+
   Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
   });
 
- Future<Either<Failure, Unit>> redeemCard({
+  Future<Either<Failure, Unit>> redeemCard({
     required BenefitRequest request,
   });
 
-  Future<Either<Failure,List<Notification>>> getNotifications({
+  Future<Either<Failure, List<Notification>>> getNotifications({
     required int employeeNumber,
   });
-
 }

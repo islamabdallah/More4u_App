@@ -24,7 +24,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
     if (await networkInfo.isConnected) {
       try {
         Benefit result =
-        await remoteDataSource.getBenefitDetails(benefitId: benefitId);
+            await remoteDataSource.getBenefitDetails(benefitId: benefitId);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
@@ -58,8 +58,29 @@ class BenefitRepositoryImpl extends BenefitRepository {
     if (await networkInfo.isConnected) {
       try {
         List<BenefitRequest> result =
-        await remoteDataSource.getMyBenefitRequests(
-            employeeNumber: employeeNumber, benefitId: benefitId);
+            await remoteDataSource.getMyBenefitRequests(
+                employeeNumber: employeeNumber, benefitId: benefitId);
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> cancelRequest({
+    required int employeeNumber,
+    required int benefitId,
+    required int requestNumber,
+  }) async {
+    if (await networkInfo.isConnected) {
+      try {
+        String result = await remoteDataSource.cancelRequest(
+            employeeNumber: employeeNumber,
+            benefitId: benefitId,
+            requestNumber: requestNumber);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
@@ -75,7 +96,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
     if (await networkInfo.isConnected) {
       try {
         List<BenefitRequest> result =
-        await remoteDataSource.getBenefitsToManage(
+            await remoteDataSource.getBenefitsToManage(
           employeeNumber: employeeNumber,
         );
         return Right(result);
@@ -92,25 +113,27 @@ class BenefitRepositoryImpl extends BenefitRepository {
       {required BenefitRequest request}) async {
     if (await networkInfo.isConnected) {
       try {
-        BenefitRequestModel myBenefitRequestModel = BenefitRequestModel
-            .fromEntity(request);
+        BenefitRequestModel myBenefitRequestModel =
+            BenefitRequestModel.fromEntity(request);
 
         await remoteDataSource.redeemCard(requestModel: myBenefitRequestModel);
 
-    return const Right(unit);
-    } on ServerException catch (e) {
-    return Left(ServerFailure(e.message));
-    }
+        return const Right(unit);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
     } else {
-    return const Left(ConnectionFailure('No internet Connection'));
+      return const Left(ConnectionFailure('No internet Connection'));
     }
   }
 
   @override
-  Future<Either<Failure, List<Notification>>> getNotifications({required int employeeNumber}) async {
+  Future<Either<Failure, List<Notification>>> getNotifications(
+      {required int employeeNumber}) async {
     if (await networkInfo.isConnected) {
       try {
-        List<Notification> notifications =  await remoteDataSource.getNotifications(employeeNumber: employeeNumber);
+        List<Notification> notifications = await remoteDataSource
+            .getNotifications(employeeNumber: employeeNumber);
 
         return Right(notifications);
       } on ServerException catch (e) {

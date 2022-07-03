@@ -8,3 +8,4 @@ const String whoCanIGiveThisBenefit = baseUrl + '/BenefitAPI/WhoCanIGiveThisBene
 const String whoCanRedeemThisGroupBenefit = baseUrl + '/BenefitAPI/WhoCanRedeemThisGroupBenefit';
 const String showMyBenefits = baseUrl + '/BenefitAPI/ShowMyBenefits';
 const String showMyBenefitRequests = baseUrl + '/BenefitAPI/ShowMyBenefitRequests';
+const String requestCancel = baseUrl + '/BenefitAPI/RequestCancel';
