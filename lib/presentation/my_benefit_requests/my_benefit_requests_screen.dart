@@ -239,6 +239,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                             TextButton(
                                               child: Text("Ok"),
                                               onPressed: () {
+                                                Navigator.pop(context);
                                                 _cubit.cancelRequest(
                                                     request.benefitId!,
                                                     request.requestNumber!);
@@ -423,6 +424,36 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                             SizedBox(
                               height: 4.h,
                             ),
+                            if(request.sendToModel!=null)
+                             Row(children:[ Text(
+                                'Gifted to: ',
+                                style: TextStyle(
+                                    color: greyColor,
+                                    fontSize: 16.sp,
+                                    fontFamily: 'Cairo',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w),
+                              child: Chip(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(8),
+                                  side: BorderSide(
+                                      color: Color(0xFFC1C1C1)),
+                                ),
+                                backgroundColor:
+                                Colors.transparent,
+                                label:
+                                Text(request.sendToModel?.employeeName??''),
+                                labelStyle: TextStyle(
+                                    color: mainColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13.sp),
+                              ),
+                            ),
+                            ],),
                             if (request.participantsData?.isNotEmpty ??
                                 false) ...[
                               Text(

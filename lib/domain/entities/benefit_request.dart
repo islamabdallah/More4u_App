@@ -9,6 +9,7 @@ class BenefitRequest extends Equatable {
   final String? message;
   final String? groupName;
   final String? selectedEmployeeNumbers;
+
   // final List<int>? participants;
   final List<Participant>? participantsData;
   final List<User>? fullParticipantsData;
@@ -16,6 +17,7 @@ class BenefitRequest extends Equatable {
   final User? sendToModel;
   final int? employeeNumber;
   final String? requestedAt;
+  final List<String>? documents;
 
   //benefit data
   final int? benefitId;
@@ -48,6 +50,7 @@ class BenefitRequest extends Equatable {
       this.sendToModel,
       this.employeeNumber,
       this.requestedAt,
+      this.documents,
       this.benefitId,
       this.benefitName,
       this.benefitType,
@@ -67,7 +70,7 @@ class BenefitRequest extends Equatable {
         to,
         message,
         groupName,
-    selectedEmployeeNumbers,
+        selectedEmployeeNumbers,
         // participants,
         participantsData,
         fullParticipantsData,
@@ -75,6 +78,7 @@ class BenefitRequest extends Equatable {
         sendToModel,
         employeeNumber,
         requestedAt,
+        documents,
         benefitId,
         benefitName,
         benefitType,
@@ -122,22 +126,22 @@ class RequestWorkFlowAPIs {
       this.replayDate,
       this.notes});
 
-  // String get statusString {
-  //   switch (status) {
-  //     case 1:
-  //       return 'Pending';
-  //     case 2:
-  //       return 'InProgress';
-  //     case 3:
-  //       return 'Approved';
-  //     case 4:
-  //       return 'Rejected';
-  //     case 5:
-  //       return 'Cancelled';
-  //     case 6:
-  //       return 'NotStartedYet';
-  //     default:
-  //       return 'Any';
-  //   }
-  // }
+// String get statusString {
+//   switch (status) {
+//     case 1:
+//       return 'Pending';
+//     case 2:
+//       return 'InProgress';
+//     case 3:
+//       return 'Approved';
+//     case 4:
+//       return 'Rejected';
+//     case 5:
+//       return 'Cancelled';
+//     case 6:
+//       return 'NotStartedYet';
+//     default:
+//       return 'Any';
+//   }
+// }
 }

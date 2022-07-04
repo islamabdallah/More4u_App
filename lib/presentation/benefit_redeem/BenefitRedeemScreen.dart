@@ -36,14 +36,14 @@ class BenefitRedeemScreen extends StatefulWidget {
 
 class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
   late RedeemCubit _cubit;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    _cubit = sl<RedeemCubit>()
-      ..initRedeem(widget.benefit);
+    _cubit = sl<RedeemCubit>()..initRedeem(widget.benefit);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(widget.benefit.benefitType == 'Group' || widget.benefit.isAgift){
+      if (widget.benefit.benefitType == 'Group' || widget.benefit.isAgift) {
         _cubit.getParticipants();
       }
     });
@@ -63,12 +63,12 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
           Navigator.pop(context);
         }
         if (state is RedeemGetParticipantsErrorState) {
-
-          showMessageDialog(context: context,
-              isSucceeded: false,
-              message: state.message,
-              onPressedOk:()=> Navigator.pop(context),
-            onPressedRetry: ()=>_cubit.getParticipants(),
+          showMessageDialog(
+            context: context,
+            isSucceeded: false,
+            message: state.message,
+            onPressedOk: () => Navigator.pop(context),
+            onPressedRetry: () => _cubit.getParticipants(),
           );
         }
         if (state is RedeemSuccessState) {
@@ -77,9 +77,26 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
               context: context,
               isSucceeded: true,
               message: 'Card Redeem succeeded!',
-              onPressedOk: () =>
-                  Navigator.popUntil(
-                      context, ModalRoute.withName(HomeScreen.routeName)));
+              onPressedOk: () => Navigator.popUntil(
+                  context, ModalRoute.withName(HomeScreen.routeName)));
+        }
+        if (state is RedeemSuccessState) {
+          Navigator.pop(context);
+          showMessageDialog(
+              context: context,
+              isSucceeded: true,
+              message: 'Card Redeem succeeded!',
+              onPressedOk: () => Navigator.popUntil(
+                  context, ModalRoute.withName(HomeScreen.routeName)));
+        }
+        if (state is RedeemErrorState) {
+          Navigator.pop(context);
+          showMessageDialog(
+              context: context,
+              isSucceeded: false,
+              message: state.message,
+              onPressedOk: () => Navigator.popUntil(
+                  context, ModalRoute.withName(HomeScreen.routeName)));
         }
       },
       builder: (context, state) {
@@ -99,326 +116,355 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                       ),
                     ),
                     margin: EdgeInsets.only(bottom: 0),
-                    padding: EdgeInsets.only(
-                        left: 20.w, right: 20.w, top: 26.h),
+                    padding:
+                        EdgeInsets.only(left: 20.w, right: 20.w, top: 26.h),
                     child: SingleChildScrollView(
-                      child: Column(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
 //         mainAxisSize:MainAxisSize.min,
-                        children: [
-                          if (_cubit.benefit.benefitType == 'Group') ...[
+                          children: [
+                            if (_cubit.benefit.benefitType == 'Group') ...[
+                              TextFormField(
+                                controller: _cubit.groupName,
+                                validator: (text) {
+                                  if (text?.isEmpty ?? false) {
+                                    return 'required';
+                                  }
+                                  return null;
+                                },
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: mainColor),
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding:
+                                      EdgeInsets.symmetric(vertical: 0),
+                                  suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 20.h, minWidth: 50.w),
+                                  prefixIcon: Icon(CustomIcons.users_alt),
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Group Name',
+                                  hintText: 'Enter Your Group Name',
+                                  hintStyle:
+                                      TextStyle(color: Color(0xffc1c1c1)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                            if (_cubit.showParticipantsField) ...[
+                              ChipsInput<Participant>(
+                                enabled: _cubit.enableParticipantsField,
+                                // enabled: false,
+                                allowChipEditing: true,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  suffixIconConstraints: BoxConstraints(
+                                      maxHeight: 20.h, minWidth: 50.w),
+                                  prefixIcon: Icon(CustomIcons.users_alt),
+                                  border: OutlineInputBorder(),
+                                  labelText: widget.benefit.isAgift
+                                      ? 'Employee Name'
+                                      : 'Group Participants',
+                                  hintText: widget.benefit.isAgift
+                                      ? 'Enter Employee Name'
+                                      : 'Enter Your Group Participants',
+                                  hintStyle:
+                                      TextStyle(color: Color(0xffc1c1c1)),
+                                  errorText: _cubit.lowParticipantError,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                maxChips: _cubit.benefit.maxParticipant,
+                                findSuggestions: (String query) {
+                                  if (query.length > 1) {
+                                    var lowercaseQuery = query.toLowerCase();
+                                    return _cubit.participants.where((profile) {
+                                      return profile.fullName
+                                              .toLowerCase()
+                                              .contains(query.toLowerCase()) ||
+                                          profile.employeeNumber
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains(query.toLowerCase());
+                                    }).toList(growable: false)
+                                      ..sort((a, b) => a.fullName
+                                          .toLowerCase()
+                                          .indexOf(lowercaseQuery)
+                                          .compareTo(b.fullName
+                                              .toLowerCase()
+                                              .indexOf(lowercaseQuery)));
+                                  } else {
+                                    return const <Participant>[];
+                                  }
+                                },
+                                onChanged: _cubit.participantsOnChange,
+                                chipBuilder: (context, state, profile) {
+                                  return InputChip(
+                                    padding: EdgeInsets.zero,
+                                    deleteIconColor: mainColor,
+                                    labelStyle: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: mainColor),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side:
+                                          BorderSide(color: Color(0xFFC1C1C1)),
+                                    ),
+                                    backgroundColor: Color(0xFFE7E7E7),
+                                    key: ObjectKey(profile),
+                                    label: Text(profile.fullName),
+                                    // avatar: CircleAvatar(
+                                    //   backgroundImage: AssetImage(
+                                    //       'assets/images/profile_avatar_placeholder.png'),
+                                    // ),
+                                    onDeleted: () {
+                                      _cubit.participantOnRemove(profile);
+                                      state.forceDeleteChip(profile);
+                                    },
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  );
+                                },
+                                suggestionBuilder: (context, state, profile) {
+                                  return ListTile(
+                                    key: ObjectKey(profile),
+                                    leading: CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          'assets/images/profile_avatar_placeholder.png'),
+                                    ),
+                                    title: Text(profile.fullName),
+                                    subtitle:
+                                        Text(profile.employeeNumber.toString()),
+                                    onTap: () =>
+                                        state.selectSuggestion(profile),
+                                  );
+                                },
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                            DateTimeField(
+                                resetIcon: Icon(
+                                  Icons.close,
+                                  size: 25,
+                                ),
+                                controller: _cubit.startDate,
+                                // validator: (value) => deliverDate == null ? translator.translate('required') : null,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding:
+                                      EdgeInsets.symmetric(vertical: 0),
+                                  prefixIcon:
+                                      Icon(CustomIcons.calendar_days_solid__1_),
+                                  suffixIcon: SizedBox(),
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Start From',
+                                  hintText: 'YYYY-MM-DD',
+                                  helperText:
+                                      'You are selected from ${_cubit.startDate.text} to ${_cubit.endDate.text}',
+                                  hintStyle:
+                                      TextStyle(color: Color(0xffc1c1c1)),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                ),
+                                format: DateFormat("yyyy-MM-dd"),
+                                onShowPicker: (context, currentValue) async {
+                                  return showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime.now(),
+                                      initialDate: _cubit.start,
+                                      lastDate: DateTime(
+                                              DateTime.now().year + 1)
+                                          .add(Duration(
+                                              days:
+                                                  -1))); // if (date != null) {
+                                  //   final time = await showTimePicker(
+                                  //     context: context,
+                                  //     initialTime:
+                                  //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                                  //   );
+                                  //   return DateTimeField.combine(date, time);
+                                  // } else {
+                                  //   return currentValue;
+                                  // }
+                                },
+                                onChanged: _cubit.changeStartDate),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            // DateTimeField(
+                            //   enabled: false,
+                            //   controller: _cubit.endDate,
+                            //   // validator: (value) => deliverDate == null ? translator.translate('required') : null,
+                            //   decoration: InputDecoration(
+                            //     label: Text(
+                            //       'To',
+                            //       style: TextStyle(color: Colors.black54),
+                            //     ),
+                            //     border: InputBorder.none,
+                            //     disabledBorder: OutlineInputBorder(
+                            //         borderSide: BorderSide(color: Colors.black45)),
+                            //     labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                            //     contentPadding: EdgeInsets.all(3.0),
+                            //     prefixIcon: const Icon(
+                            //       Icons.calendar_today,
+                            //     ),
+                            //   ),
+                            //   format: DateFormat("dd-MM-yyyy"),
+                            //   onShowPicker: (context, currentValue) async {
+                            //     // return showDatePicker(
+                            //     //     context: context,
+                            //     //     firstDate: DateTime.now(),
+                            //     //     initialDate: DateTime.now(),
+                            //     //     lastDate: DateTime(DateTime.now().year + 1));
+                            //     // if (date != null) {
+                            //     //   final time = await showTimePicker(
+                            //     //     context: context,
+                            //     //     initialTime:
+                            //     //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                            //     //   );
+                            //     //   return DateTimeField.combine(date, time);
+                            //     // } else {
+                            //     //   return currentValue;
+                            //     // }
+                            //   },
+                            //   onChanged: (value) {
+                            //     setState(() {
+                            //       // deliverDate = value;
+                            //     });
+                            //   },
+                            // ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             TextFormField(
-                              controller: _cubit.groupName,
+                              controller: _cubit.message,
+                              validator: (text) {
+                                if (_cubit.dateToMatch != null) {
+                                  if (_cubit.dateToMatch !=
+                                      _cubit.startDate.text) {
+                                    print(_cubit.dateToMatch);
+                                    print( _cubit.startDate.text);
+
+                                    return 'required';
+                                  }
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.multiline,
+                              maxLines: 4,
                               style: const TextStyle(
                                   fontWeight: FontWeight.w400,
-                                  color: mainColor),
+                                  fontFamily: 'Roboto'),
                               decoration: InputDecoration(
                                 isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 0),
-                                suffixIconConstraints:
-                                BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-                                prefixIcon: Icon(CustomIcons.users_alt),
+                                // contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                suffixIconConstraints: BoxConstraints(
+                                    maxHeight: 20.h, minWidth: 50.w),
+                                prefixIconConstraints: BoxConstraints(
+                                    maxHeight: 103.h, minWidth: 50.w),
+                                prefixIcon: Column(
+                                  children: [
+                                    Icon(CustomIcons.clipboard_regular),
+                                  ],
+                                ),
                                 border: OutlineInputBorder(),
-                                labelText: 'Group Name',
-                                hintText: 'Enter Your Group Name',
+                                labelText: 'Message',
+                                hintText: 'Enter Your Message',
                                 hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                                floatingLabelBehavior: FloatingLabelBehavior
-                                    .always,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
                               ),
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                          ],
-                          if (_cubit.showParticipantsField) ...[
-                            ChipsInput<Participant>(
-                              enabled: _cubit.enableParticipantsField,
-                              // enabled: false,
-                              allowChipEditing: true,
-                              decoration: InputDecoration(
-                                isDense: true,
 
-                                suffixIconConstraints:
-                                BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-                                prefixIcon: Icon(CustomIcons.users_alt),
-                                border: OutlineInputBorder(),
-                                labelText: widget.benefit.isAgift? 'Employee Name':'Group Participants',
-                                hintText: widget.benefit.isAgift?'Enter Employee Name' :'Enter Your Group Participants',
-                                hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                                errorText: _cubit.lowParticipantError,
-                                floatingLabelBehavior: FloatingLabelBehavior
-                                    .always,
+                            // ListView.builder(
+                            //     shrinkWrap: true,
+                            //     itemBuilder: (_, index) {
+                            //       return _cubit.myDocs.values.elementAt(index) == null
+                            //           ? TextButton(
+                            //               style: TextButton.styleFrom(
+                            //                 side: BorderSide(color: Colors.red, width: 1),
+                            //                 shape: const RoundedRectangleBorder(
+                            //                     borderRadius:
+                            //                         BorderRadius.all(Radius.circular(5))),
+                            //               ),
+                            //               onPressed: () async {
+                            //                 _cubit.pickImage(
+                            //                     _cubit.myDocs.keys.elementAt(index));
+                            //               },
+                            //               child: Row(
+                            //                 mainAxisAlignment: MainAxisAlignment.center,
+                            //                 children: [
+                            //                   const Icon(
+                            //                     Icons.photo_library,
+                            //                   ),
+                            //                   const SizedBox(
+                            //                     width: 5.0,
+                            //                   ),
+                            //                   Text(
+                            //                     'addImage',
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             )
+                            //           : Stack(fit: StackFit.loose, children: <Widget>[
+                            //               Image(
+                            //                 image: MemoryImage(base64Decode(
+                            //                     _cubit.myDocs.values.elementAt(index)!)),
+                            //                 fit: BoxFit.cover,
+                            //                 width: 200,
+                            //                 height: 200,
+                            //               ),
+                            //               Positioned(
+                            //                 right: 5,
+                            //                 top: 5,
+                            //                 child: Container(
+                            //                   width: 25,
+                            //                   height: 25,
+                            //                   child: IconButton(
+                            //                     iconSize: 20,
+                            //                     padding: EdgeInsets.zero,
+                            //                     icon: Icon(
+                            //                       Icons.remove_circle,
+                            //                       size: 20,
+                            //                       color: Colors.red,
+                            //                     ),
+                            //                     onPressed: () {
+                            //                       _cubit.removeImage(index);
+                            //                     },
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //             ]);
+                            //     },
+                            //     itemCount: _cubit.myDocs.length),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Center(
+                              child: SizedBox(
+                                width: 187.w,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      if((_formKey.currentState!.validate())){
+                                      _cubit.redeemCard();
+                                      }
+                                    },
+                                    child: Text('Redeem')),
                               ),
-                              maxChips: _cubit.benefit.maxParticipant,
-                              findSuggestions: (String query) {
-                                if (query.length > 1) {
-                                  var lowercaseQuery = query.toLowerCase();
-                                  return _cubit.participants.where((profile) {
-                                    return profile.fullName
-                                        .toLowerCase()
-                                        .contains(query.toLowerCase()) ||
-                                        profile.employeeNumber
-                                            .toString()
-                                            .toLowerCase()
-                                            .contains(query.toLowerCase());
-                                  }).toList(growable: false)
-                                    ..sort((a, b) =>
-                                        a.fullName
-                                            .toLowerCase()
-                                            .indexOf(lowercaseQuery)
-                                            .compareTo(b.fullName
-                                            .toLowerCase()
-                                            .indexOf(lowercaseQuery)));
-                                } else {
-                                  return const <Participant>[];
-                                }
-                              },
-                              onChanged: _cubit.participantsOnChange,
-                              chipBuilder: (context, state, profile) {
-                                return InputChip(
-                                  padding: EdgeInsets.zero,
-                                  deleteIconColor: mainColor,
-                                  labelStyle: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: mainColor),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: BorderSide(color: Color(0xFFC1C1C1)),
-                                  ),
-                                  backgroundColor: Color(0xFFE7E7E7),
-                                  key: ObjectKey(profile),
-                                  label: Text(profile.fullName),
-                                  // avatar: CircleAvatar(
-                                  //   backgroundImage: AssetImage(
-                                  //       'assets/images/profile_avatar_placeholder.png'),
-                                  // ),
-                                  onDeleted: () {
-                                    _cubit.participantOnRemove(profile);
-                                    state.forceDeleteChip(profile);
-                                  },
-                                  materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-
-                                );
-                              },
-                              suggestionBuilder: (context, state, profile) {
-                                return ListTile(
-                                  key: ObjectKey(profile),
-                                  leading: CircleAvatar(
-                                    backgroundImage: AssetImage(
-                                        'assets/images/profile_avatar_placeholder.png'),
-                                  ),
-                                  title: Text(profile.fullName),
-                                  subtitle: Text(
-                                      profile.employeeNumber.toString()),
-                                  onTap: () => state.selectSuggestion(profile),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              height: 20,
                             ),
                           ],
-                          DateTimeField(
-                              resetIcon: Icon(Icons.close, size: 25,),
-                              controller: _cubit.startDate,
-                              // validator: (value) => deliverDate == null ? translator.translate('required') : null,
-                              decoration: InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 0),
-                                prefixIcon: Icon(
-                                    CustomIcons.calendar_days_solid__1_),
-
-                                suffixIcon: SizedBox(),
-                                border: OutlineInputBorder(),
-                                labelText: 'Start From',
-                                hintText: 'DD-MM-YYYY',
-                                helperText:
-                                'You are selected from ${_cubit.startDate
-                                    .text} to ${_cubit.endDate.text}',
-                                hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                                floatingLabelBehavior: FloatingLabelBehavior
-                                    .always,
-                              ),
-                              format: DateFormat("dd-MM-yyyy"),
-                              onShowPicker: (context, currentValue) async {
-                                return showDatePicker(
-                                    context: context,
-                                    firstDate: DateTime.now(),
-                                    initialDate: DateTime.now(),
-                                    lastDate: DateTime(DateTime
-                                        .now()
-                                        .year + 1).add(
-                                        Duration(
-                                            days: -1))); // if (date != null) {
-                                //   final time = await showTimePicker(
-                                //     context: context,
-                                //     initialTime:
-                                //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                                //   );
-                                //   return DateTimeField.combine(date, time);
-                                // } else {
-                                //   return currentValue;
-                                // }
-                              },
-                              onChanged: _cubit.changeStartDate),
-                          // SizedBox(
-                          //   height: 20,
-                          // ),
-                          // DateTimeField(
-                          //   enabled: false,
-                          //   controller: _cubit.endDate,
-                          //   // validator: (value) => deliverDate == null ? translator.translate('required') : null,
-                          //   decoration: InputDecoration(
-                          //     label: Text(
-                          //       'To',
-                          //       style: TextStyle(color: Colors.black54),
-                          //     ),
-                          //     border: InputBorder.none,
-                          //     disabledBorder: OutlineInputBorder(
-                          //         borderSide: BorderSide(color: Colors.black45)),
-                          //     labelStyle: TextStyle(fontWeight: FontWeight.w600),
-                          //     contentPadding: EdgeInsets.all(3.0),
-                          //     prefixIcon: const Icon(
-                          //       Icons.calendar_today,
-                          //     ),
-                          //   ),
-                          //   format: DateFormat("dd-MM-yyyy"),
-                          //   onShowPicker: (context, currentValue) async {
-                          //     // return showDatePicker(
-                          //     //     context: context,
-                          //     //     firstDate: DateTime.now(),
-                          //     //     initialDate: DateTime.now(),
-                          //     //     lastDate: DateTime(DateTime.now().year + 1));
-                          //     // if (date != null) {
-                          //     //   final time = await showTimePicker(
-                          //     //     context: context,
-                          //     //     initialTime:
-                          //     //     TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                          //     //   );
-                          //     //   return DateTimeField.combine(date, time);
-                          //     // } else {
-                          //     //   return currentValue;
-                          //     // }
-                          //   },
-                          //   onChanged: (value) {
-                          //     setState(() {
-                          //       // deliverDate = value;
-                          //     });
-                          //   },
-                          // ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _cubit.message,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 4,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Roboto'),
-                            decoration:
-                            InputDecoration(
-                              isDense: true,
-                              // contentPadding: EdgeInsets.symmetric(vertical: 0),
-                              suffixIconConstraints:
-                              BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-                              prefixIconConstraints: BoxConstraints(
-                                  maxHeight: 103.h, minWidth: 50.w),
-                              prefixIcon: Column(
-                                children: [
-                                  Icon(CustomIcons.clipboard_regular),
-                                ],
-                              ),
-                              border: OutlineInputBorder(),
-                              labelText: 'Message',
-                              hintText: 'Enter Your Message',
-                              hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                              floatingLabelBehavior: FloatingLabelBehavior
-                                  .always,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-
-                          // ListView.builder(
-                          //     shrinkWrap: true,
-                          //     itemBuilder: (_, index) {
-                          //       return _cubit.myDocs.values.elementAt(index) == null
-                          //           ? TextButton(
-                          //               style: TextButton.styleFrom(
-                          //                 side: BorderSide(color: Colors.red, width: 1),
-                          //                 shape: const RoundedRectangleBorder(
-                          //                     borderRadius:
-                          //                         BorderRadius.all(Radius.circular(5))),
-                          //               ),
-                          //               onPressed: () async {
-                          //                 _cubit.pickImage(
-                          //                     _cubit.myDocs.keys.elementAt(index));
-                          //               },
-                          //               child: Row(
-                          //                 mainAxisAlignment: MainAxisAlignment.center,
-                          //                 children: [
-                          //                   const Icon(
-                          //                     Icons.photo_library,
-                          //                   ),
-                          //                   const SizedBox(
-                          //                     width: 5.0,
-                          //                   ),
-                          //                   Text(
-                          //                     'addImage',
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             )
-                          //           : Stack(fit: StackFit.loose, children: <Widget>[
-                          //               Image(
-                          //                 image: MemoryImage(base64Decode(
-                          //                     _cubit.myDocs.values.elementAt(index)!)),
-                          //                 fit: BoxFit.cover,
-                          //                 width: 200,
-                          //                 height: 200,
-                          //               ),
-                          //               Positioned(
-                          //                 right: 5,
-                          //                 top: 5,
-                          //                 child: Container(
-                          //                   width: 25,
-                          //                   height: 25,
-                          //                   child: IconButton(
-                          //                     iconSize: 20,
-                          //                     padding: EdgeInsets.zero,
-                          //                     icon: Icon(
-                          //                       Icons.remove_circle,
-                          //                       size: 20,
-                          //                       color: Colors.red,
-                          //                     ),
-                          //                     onPressed: () {
-                          //                       _cubit.removeImage(index);
-                          //                     },
-                          //                   ),
-                          //                 ),
-                          //               ),
-                          //             ]);
-                          //     },
-                          //     itemCount: _cubit.myDocs.length),
-                          // SizedBox(
-                          //   height: 20,
-                          // ),
-                          Center(
-                            child: SizedBox(
-                              width: 187.w,
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    _cubit.redeemCard();
-                                  },
-                                  child: Text('Redeem')),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -442,9 +488,9 @@ class AppProfile {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is AppProfile &&
-              runtimeType == other.runtimeType &&
-              name == other.name;
+      other is AppProfile &&
+          runtimeType == other.runtimeType &&
+          name == other.name;
 
   @override
   int get hashCode => name.hashCode;

@@ -34,6 +34,7 @@ class RedeemCubit extends Cubit<RedeemState> {
   TextEditingController groupName = TextEditingController();
   TextEditingController message = TextEditingController();
   late DateTime date, start, end;
+  String? dateToMatch;
 
   late bool showParticipantsField;
   late bool enableParticipantsField = true;
@@ -52,19 +53,22 @@ class RedeemCubit extends Cubit<RedeemState> {
   }
 
   String _formatDate(DateTime date) {
-    return DateFormat("dd-MM-yyyy").format(date);
+    return DateFormat("yyyy-MM-dd").format(date);
   }
 
   _configureDate(Benefit benefit) {
     switch (benefit.dateToMatch) {
       case 'Birth Date':
         date = DateTime.parse(userData!.birthDate);
+        dateToMatch = _formatDate(DateTime(DateTime.now().year, date.month, date.day));
         break;
       case 'join Date':
         date = DateTime.parse(userData!.joinDate);
+        dateToMatch = _formatDate(DateTime(DateTime.now().year, date.month, date.day));
         break;
       case 'Certain Date':
         date = DateTime.parse(benefit.certainDate!);
+        dateToMatch = _formatDate(DateTime(DateTime.now().year, date.month, date.day));
         break;
       default:
         date = DateTime.now();
@@ -137,13 +141,14 @@ class RedeemCubit extends Cubit<RedeemState> {
         // participants: benefit.benefitType == 'Group' ? participantsIds : null,
         sendToID: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first
-            : null,
+            : 0,
         from: startDate.text,
         to: endDate.text,
         benefitId: benefit.id,
         employeeNumber: userData!.employeeNumber,
         groupName: groupName.text,
         message: message.text,
+        documents: [],
       );
       print(request);
       final result = await redeemCardUsecase(request: request);

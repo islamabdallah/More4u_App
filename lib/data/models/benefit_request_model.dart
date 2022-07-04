@@ -20,6 +20,7 @@ class BenefitRequestModel extends BenefitRequest {
     User? sendToModel,
     int? employeeNumber,
     String? requestedAt,
+    List<String>? documents,
 
     //benefit data
     int? benefitId,
@@ -47,10 +48,11 @@ class BenefitRequestModel extends BenefitRequest {
           // participants: participants,
           participantsData: participantsData,
           fullParticipantsData: fullParticipantsData,
-    sendToID: sendToID,
+          sendToID: sendToID,
           sendToModel: sendToModel,
           employeeNumber: employeeNumber,
           requestedAt: requestedAt,
+          documents: documents,
           benefitId: benefitId,
           benefitName: benefitName,
           benefitType: benefitType,
@@ -89,6 +91,7 @@ class BenefitRequestModel extends BenefitRequest {
             : null,
         employeeNumber: json['employeeNumber'],
         requestedAt: json['requestedAt'],
+        documents: json['documents']?.cast<String>(),
         benefitId: json['benefitId'],
         benefitName: json['benefitName'],
         benefitType: json['benefitType'],
@@ -119,11 +122,11 @@ class BenefitRequestModel extends BenefitRequest {
       "from": from,
       "to": to,
       "message": message,
+      'documents':documents,
     };
   }
 
-  factory BenefitRequestModel.fromEntity(
-          BenefitRequest myBenefitRequest) =>
+  factory BenefitRequestModel.fromEntity(BenefitRequest myBenefitRequest) =>
       BenefitRequestModel(
         message: myBenefitRequest.message,
         groupName: myBenefitRequest.groupName,
@@ -134,6 +137,7 @@ class BenefitRequestModel extends BenefitRequest {
         employeeNumber: myBenefitRequest.employeeNumber,
         from: myBenefitRequest.from,
         to: myBenefitRequest.to,
+        documents: myBenefitRequest.documents,
         participantsData: myBenefitRequest.participantsData,
         benefitName: myBenefitRequest.benefitName,
         requestStatusId: myBenefitRequest.requestStatusId,

@@ -18,6 +18,7 @@ import '../../core/constants/constants.dart';
 import '../../core/firebase/push_notification_service.dart';
 import '../../data/datasources/local_data_source.dart';
 import '../Login/login_screen.dart';
+import '../home/cubits/home_cubit.dart';
 import '../notification/notification_screen.dart';
 import 'powered_by_cemex.dart';
 
@@ -122,7 +123,7 @@ class DrawerWidget extends StatelessWidget {
                       if (ModalRoute.of(context)?.settings.name ==
                           HomeScreen.routeName) {
                         Navigator.pushNamed(
-                            context, MyBenefitsScreen.routeName);
+                            context, MyBenefitsScreen.routeName).whenComplete(() => HomeCubit.get(context).getHomeData());
                         print('hhhhh');
                       } else {
                         Navigator.pushReplacementNamed(
@@ -170,7 +171,7 @@ class DrawerWidget extends StatelessWidget {
                         if (ModalRoute.of(context)?.settings.name ==
                             HomeScreen.routeName) {
                           Navigator.pushNamed(
-                              context, ManageRequestsScreen.routeName);
+                              context, ManageRequestsScreen.routeName).whenComplete(() => HomeCubit.get(context).getHomeData());
                         } else {
                           Navigator.pushReplacementNamed(
                               context, ManageRequestsScreen.routeName);
