@@ -18,7 +18,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   getBenefitsToManage() async {
     emit(GetRequestsToManageLoadingState());
 
-    final result = await getBenefitsToManageUsecase(employeeNumber: 5);
+    final result = await getBenefitsToManageUsecase(employeeNumber: userData!.employeeNumber);
 
     result.fold((failure) {
       emit(GetRequestsToManageFailedState(failure.message));

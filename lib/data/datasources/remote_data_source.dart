@@ -99,10 +99,34 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<List<BenefitRequest>> getBenefitsToManage(
-      {required int employeeNumber, FilteredSearch? search}) {
-    // TODO: implement getBenefitsToManage
-    throw UnimplementedError();
+  Future<List<BenefitRequest>> getBenefitsToManage (
+      {required int employeeNumber, FilteredSearch? search}) async{
+    final response = await client.post(
+      Uri.parse(showRequestsDefault).replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      List<BenefitRequestModel> benefitRequests = [];
+      for (Map<String, dynamic> benefitRequest in result['data']['requests']) {
+        benefitRequests.add(BenefitRequestModel.fromJson(benefitRequest));
+      }
+      return benefitRequests;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+
   }
 
   @override

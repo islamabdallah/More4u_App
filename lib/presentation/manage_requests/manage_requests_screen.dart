@@ -29,6 +29,7 @@ import '../widgets/banner.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/helpers.dart';
+import '../widgets/utils/loading_dialog.dart';
 import 'cubits/manage_requests_cubit.dart';
 
 class ManageRequestsScreen extends StatefulWidget {
@@ -46,8 +47,12 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
 
   @override
   void initState() {
-    // _cubit = sl<ManageRequestsCubit>();
-    _cubit = sl<ManageRequestsCubit>()..getBenefitsToManage();
+
+    _cubit = sl<ManageRequestsCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _cubit.getBenefitsToManage();;
+    });
+
     super.initState();
   }
 
@@ -63,7 +68,25 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
 
     return BlocConsumer(
       bloc: _cubit,
-      listener: (context, state) {},
+      listener: (context, state) {
+
+        if (state is GetRequestsToManageLoadingState) {
+          loadingAlertDialog(context);
+        }
+        if (state is GetRequestsToManageSuccessState) {
+          Navigator.pop(context);
+        }
+        if (state is GetRequestsToManageFailedState) {
+          showMessageDialog(
+              context: context,
+              isSucceeded: false,
+              message: state.message,
+              onPressedOk: () {
+                Navigator.pop(context);
+              });
+        }
+
+      },
       builder: (context, state) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
