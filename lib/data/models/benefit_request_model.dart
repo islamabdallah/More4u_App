@@ -12,7 +12,8 @@ class BenefitRequestModel extends BenefitRequest {
     String? to,
     String? message,
     String? groupName,
-    List<int>? participants,
+    String? selectedEmployeeNumbers,
+    // List<int>? participants,
     List<Participant>? participantsData,
     List<User>? fullParticipantsData,
     int? sendToID,
@@ -42,7 +43,8 @@ class BenefitRequestModel extends BenefitRequest {
           to: to,
           message: message,
           groupName: groupName,
-          participants: participants,
+          selectedEmployeeNumbers: selectedEmployeeNumbers,
+          // participants: participants,
           participantsData: participantsData,
           fullParticipantsData: fullParticipantsData,
     sendToID: sendToID,
@@ -69,7 +71,8 @@ class BenefitRequestModel extends BenefitRequest {
         to: json['to'],
         message: json['message'],
         groupName: json['groupName'],
-        participants: json['participants'],
+        selectedEmployeeNumbers: json['selectedEmployeeNumbers'],
+        // participants: json['participants'],
         participantsData: json['participantsData'] != null
             ? List<Participant>.from(json['participantsData']
                 .map((x) => ParticipantModel.fromJson(x))
@@ -107,14 +110,15 @@ class BenefitRequestModel extends BenefitRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      "message": message,
+      "employeeNumber": employeeNumber,
       'groupName': groupName,
-      'participants': participants,
+      'selectedEmployeeNumbers': selectedEmployeeNumbers,
+      // 'participants': participants,
       "sendToID": sendToID,
       "benefitId": benefitId,
-      "employeeNumber": employeeNumber,
       "from": from,
       "to": to,
+      "message": message,
     };
   }
 
@@ -123,7 +127,8 @@ class BenefitRequestModel extends BenefitRequest {
       BenefitRequestModel(
         message: myBenefitRequest.message,
         groupName: myBenefitRequest.groupName,
-        participants: myBenefitRequest.participants,
+        selectedEmployeeNumbers: myBenefitRequest.selectedEmployeeNumbers,
+        // participants: myBenefitRequest.participants,
         sendToID: myBenefitRequest.sendToID,
         benefitId: myBenefitRequest.benefitId,
         employeeNumber: myBenefitRequest.employeeNumber,

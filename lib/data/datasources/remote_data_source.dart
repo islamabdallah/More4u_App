@@ -246,8 +246,26 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<void> redeemCard({required BenefitRequestModel requestModel}) async {
-    // TODO: implement redeemCard
-    print(requestModel.toJson());
+
+    print(jsonEncode(requestModel.toJson()));
+
+    final response = await client.post(Uri.parse(confirmRequest),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestModel.toJson()));
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
   }
 
   @override

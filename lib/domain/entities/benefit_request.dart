@@ -8,7 +8,8 @@ class BenefitRequest extends Equatable {
   final String? to;
   final String? message;
   final String? groupName;
-  final List<int>? participants;
+  final String? selectedEmployeeNumbers;
+  // final List<int>? participants;
   final List<Participant>? participantsData;
   final List<User>? fullParticipantsData;
   final int? sendToID;
@@ -39,7 +40,8 @@ class BenefitRequest extends Equatable {
       this.to,
       this.message,
       this.groupName,
-      this.participants,
+      this.selectedEmployeeNumbers,
+      // this.participants,
       this.participantsData,
       this.fullParticipantsData,
       this.sendToID,
@@ -65,7 +67,8 @@ class BenefitRequest extends Equatable {
         to,
         message,
         groupName,
-        participants,
+    selectedEmployeeNumbers,
+        // participants,
         participantsData,
         fullParticipantsData,
         sendToID,

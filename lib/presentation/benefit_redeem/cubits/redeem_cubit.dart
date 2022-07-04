@@ -90,10 +90,9 @@ class RedeemCubit extends Cubit<RedeemState> {
   void getParticipants() async {
     emit(RedeemLoadingState());
     final result = await getParticipantsUsecase(
-      employeeNumber: userData!.employeeNumber,
-      benefitId: benefit.id,
-      isGift: benefit.isAgift
-    );
+        employeeNumber: userData!.employeeNumber,
+        benefitId: benefit.id,
+        isGift: benefit.isAgift);
 
     result.fold((failure) {
       emit(RedeemGetParticipantsErrorState(failure.message));
@@ -133,7 +132,9 @@ class RedeemCubit extends Cubit<RedeemState> {
     if (_validateParticipants()) {
       emit(RedeemLoadingState());
       var request = BenefitRequest(
-        participants: benefit.benefitType == 'Group' ? participantsIds : null,
+        selectedEmployeeNumbers:
+            benefit.benefitType == 'Group' ? participantsIds.join(';') : null,
+        // participants: benefit.benefitType == 'Group' ? participantsIds : null,
         sendToID: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first
             : null,
@@ -171,35 +172,31 @@ class RedeemCubit extends Cubit<RedeemState> {
   }
 
   List<File> images = [];
-  static List<String> requiredDocs = ['d1','d2'];
+  static List<String> requiredDocs = ['d1', 'd2'];
 
-  Map<String,String?> myDocs = {
-    for(var doc in requiredDocs)
-      doc:null,
+  Map<String, String?> myDocs = {
+    for (var doc in requiredDocs) doc: null,
   };
-
 
   pickImage(String key) async {
     final ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: ImageSource.gallery      // maxHeight: 200,
-      // maxWidth: 200,
-    );
+    XFile? image =
+        await _picker.pickImage(source: ImageSource.gallery // maxHeight: 200,
+            // maxWidth: 200,
+            );
     if (image != null) {
-
-      File imageFile =File(image.path);
+      File imageFile = File(image.path);
       Uint8List bytes = imageFile.readAsBytesSync();
       String img64 = base64Encode(bytes);
       myDocs[key] = img64;
-        // images.add(File(image.path));
+      // images.add(File(image.path));
 
       emit(ImagePickedSuccessState());
     }
   }
 
-  removeImage(index){
-    myDocs[myDocs.keys.elementAt(index)]=null;
+  removeImage(index) {
+    myDocs[myDocs.keys.elementAt(index)] = null;
     emit(ImageRemoveSuccessState());
-
   }
-
 }
