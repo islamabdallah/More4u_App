@@ -542,7 +542,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Flexible(
+                    IntrinsicHeight(
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -584,7 +584,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 8.h),
                               child: Column(
-                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
