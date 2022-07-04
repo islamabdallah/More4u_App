@@ -133,7 +133,7 @@ class RedeemCubit extends Cubit<RedeemState> {
   }
 
   redeemCard() async {
-    if (_validateParticipants()) {
+    if (validateParticipants()) {
       emit(RedeemLoadingState());
       var request = BenefitRequest(
         selectedEmployeeNumbers:
@@ -162,7 +162,7 @@ class RedeemCubit extends Cubit<RedeemState> {
 
   String? lowParticipantError;
 
-  bool _validateParticipants() {
+  bool validateParticipants() {
     if ((benefit.benefitType == 'Group' || benefit.isAgift) &&
         participantsIds.length < benefit.minParticipant) {
       lowParticipantError =
@@ -176,7 +176,11 @@ class RedeemCubit extends Cubit<RedeemState> {
     return true;
   }
 
-  List<File> images = [];
+
+  //documents
+
+  String? missingDocs;
+
   static List<String> requiredDocs = ['d1', 'd2'];
 
   Map<String, String?> myDocs = {
@@ -203,5 +207,18 @@ class RedeemCubit extends Cubit<RedeemState> {
   removeImage(index) {
     myDocs[myDocs.keys.elementAt(index)] = null;
     emit(ImageRemoveSuccessState());
+  }
+
+  bool validateDocuments(){
+    for (var img in myDocs.values){
+      if (img == null) {
+        missingDocs = 'Missing Required Docs!';
+        emit(ErrorValidationState());
+        return false;
+      }
+    }
+    missingDocs = null;
+    emit(ErrorValidationState());
+      return true;
   }
 }

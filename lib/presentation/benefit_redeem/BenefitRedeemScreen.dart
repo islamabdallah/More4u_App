@@ -386,78 +386,81 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             SizedBox(
                               height: 20,
                             ),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (_, index) {
+                                  return _cubit.myDocs.values.elementAt(index) == null
+                                      ? TextButton(
+                                          style: TextButton.styleFrom(
+                                            side: BorderSide(color: Colors.red, width: 1),
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.all(Radius.circular(5))),
+                                          ),
+                                          onPressed: () async {
+                                            _cubit.pickImage(
+                                                _cubit.myDocs.keys.elementAt(index));
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(
+                                                Icons.photo_library,
+                                              ),
+                                              const SizedBox(
+                                                width: 5.0,
+                                              ),
+                                              Text(
+                                                'addImage',
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Stack(fit: StackFit.loose, children: <Widget>[
+                                          Image(
+                                            image: MemoryImage(base64Decode(
+                                                _cubit.myDocs.values.elementAt(index)!)),
+                                            fit: BoxFit.cover,
+                                            width: 200,
+                                            height: 200,
+                                          ),
+                                          Positioned(
+                                            right: 5,
+                                            top: 5,
+                                            child: Container(
+                                              width: 25,
+                                              height: 25,
+                                              child: IconButton(
+                                                iconSize: 20,
+                                                padding: EdgeInsets.zero,
+                                                icon: Icon(
+                                                  Icons.remove_circle,
+                                                  size: 20,
+                                                  color: Colors.red,
+                                                ),
+                                                onPressed: () {
+                                                  _cubit.removeImage(index);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ]);
+                                },
+                                itemCount: _cubit.myDocs.length),
 
-                            // ListView.builder(
-                            //     shrinkWrap: true,
-                            //     itemBuilder: (_, index) {
-                            //       return _cubit.myDocs.values.elementAt(index) == null
-                            //           ? TextButton(
-                            //               style: TextButton.styleFrom(
-                            //                 side: BorderSide(color: Colors.red, width: 1),
-                            //                 shape: const RoundedRectangleBorder(
-                            //                     borderRadius:
-                            //                         BorderRadius.all(Radius.circular(5))),
-                            //               ),
-                            //               onPressed: () async {
-                            //                 _cubit.pickImage(
-                            //                     _cubit.myDocs.keys.elementAt(index));
-                            //               },
-                            //               child: Row(
-                            //                 mainAxisAlignment: MainAxisAlignment.center,
-                            //                 children: [
-                            //                   const Icon(
-                            //                     Icons.photo_library,
-                            //                   ),
-                            //                   const SizedBox(
-                            //                     width: 5.0,
-                            //                   ),
-                            //                   Text(
-                            //                     'addImage',
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             )
-                            //           : Stack(fit: StackFit.loose, children: <Widget>[
-                            //               Image(
-                            //                 image: MemoryImage(base64Decode(
-                            //                     _cubit.myDocs.values.elementAt(index)!)),
-                            //                 fit: BoxFit.cover,
-                            //                 width: 200,
-                            //                 height: 200,
-                            //               ),
-                            //               Positioned(
-                            //                 right: 5,
-                            //                 top: 5,
-                            //                 child: Container(
-                            //                   width: 25,
-                            //                   height: 25,
-                            //                   child: IconButton(
-                            //                     iconSize: 20,
-                            //                     padding: EdgeInsets.zero,
-                            //                     icon: Icon(
-                            //                       Icons.remove_circle,
-                            //                       size: 20,
-                            //                       color: Colors.red,
-                            //                     ),
-                            //                     onPressed: () {
-                            //                       _cubit.removeImage(index);
-                            //                     },
-                            //                   ),
-                            //                 ),
-                            //               ),
-                            //             ]);
-                            //     },
-                            //     itemCount: _cubit.myDocs.length),
-                            // SizedBox(
-                            //   height: 20,
-                            // ),
+                            if(_cubit.missingDocs!=null)
+                              Text(_cubit.missingDocs!),
+
+                            SizedBox(
+                              height: 20,
+                            ),
                             Center(
                               child: SizedBox(
                                 width: 187.w,
                                 child: ElevatedButton(
                                     onPressed: () {
-                                      if((_formKey.currentState!.validate())){
-                                      _cubit.redeemCard();
+                                      if((_formKey.currentState!.validate() && _cubit.validateParticipants() && _cubit.validateDocuments())){
+                                      // _cubit.redeemCard();
                                       }
                                     },
                                     child: Text('Redeem')),
