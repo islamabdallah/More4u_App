@@ -122,6 +122,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                       child: Form(
                         key: _formKey,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
 //         mainAxisSize:MainAxisSize.min,
                           children: [
                             if (_cubit.benefit.benefitType == 'Group') ...[
@@ -386,67 +387,89 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                itemBuilder: (_, index) {
-                                  return _cubit.myDocs.values.elementAt(index) == null
-                                      ? TextButton(
-                                          style: TextButton.styleFrom(
-                                            side: BorderSide(color: Colors.red, width: 1),
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.all(Radius.circular(5))),
-                                          ),
-                                          onPressed: () async {
-                                            _cubit.pickImage(
-                                                _cubit.myDocs.keys.elementAt(index));
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              const Icon(
-                                                Icons.photo_library,
+                            if(_cubit.benefit.requiredDocuments!=null)
+                            SizedBox(
+                              height: 120.h,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemBuilder: (_, index) {
+                                    return
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                    child:
+                                      _cubit.myDocs.values.elementAt(index) == null
+                                        ? SizedBox(
+                                      height: 120.h,
+                                          width: 120.h,
+                                          child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                side: BorderSide(color: redColor, width: 2),
+                                                shape: const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(Radius.circular(5))),
                                               ),
-                                              const SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              Text(
-                                                'addImage',
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : Stack(fit: StackFit.loose, children: <Widget>[
-                                          Image(
-                                            image: MemoryImage(base64Decode(
-                                                _cubit.myDocs.values.elementAt(index)!)),
-                                            fit: BoxFit.cover,
-                                            width: 200,
-                                            height: 200,
-                                          ),
-                                          Positioned(
-                                            right: 5,
-                                            top: 5,
-                                            child: Container(
-                                              width: 25,
-                                              height: 25,
-                                              child: IconButton(
-                                                iconSize: 20,
-                                                padding: EdgeInsets.zero,
-                                                icon: Icon(
-                                                  Icons.remove_circle,
-                                                  size: 20,
-                                                  color: Colors.red,
-                                                ),
-                                                onPressed: () {
-                                                  _cubit.removeImage(index);
-                                                },
+                                              onPressed: () async {
+                                                _cubit.pickImage(
+                                                    _cubit.myDocs.keys.elementAt(index));
+                                              },
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    _cubit.myDocs.keys.elementAt(index),
+                                                    style: TextStyle(
+                                                      color: redColor,
+                                                      fontSize: 13.sp,
+                                                      fontFamily: "Cairo",
+                                                      fontWeight: FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 5.0,
+                                                  ),
+                                                   Icon(
+                                                    CustomIcons.cloud_upload__2_,
+                                                     size: 30.r,
+                                                     color: redColor,
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                        ]);
-                                },
-                                itemCount: _cubit.myDocs.length),
+                                        )
+                                        : Stack(fit: StackFit.loose, children: <Widget>[
+                                            Image(
+                                              image: MemoryImage(base64Decode(
+                                                  _cubit.myDocs.values.elementAt(index)!)),
+                                              fit: BoxFit.fill,
+                                              width: 120.h,
+                                              height: 120.h,
+                                            ),
+                                            Positioned(
+                                              right: 5,
+                                              top: 5,
+                                              child: Container(
+                                                width: 25,
+                                                height: 25,
+                                                child: IconButton(
+                                                  iconSize: 20,
+                                                  padding: EdgeInsets.zero,
+                                                  icon: Icon(
+                                                    Icons.remove_circle,
+                                                    size: 20,
+                                                    color: Colors.red,
+                                                  ),
+                                                  onPressed: () {
+                                                    _cubit.removeImage(index);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ])
+                                      )
+                                    ;
+                                  },
+                                  itemCount: _cubit.myDocs.length),
+                            ),
 
                             if(_cubit.missingDocs!=null)
                               Text(_cubit.missingDocs!),

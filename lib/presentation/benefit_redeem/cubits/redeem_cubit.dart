@@ -60,15 +60,18 @@ class RedeemCubit extends Cubit<RedeemState> {
     switch (benefit.dateToMatch) {
       case 'Birth Date':
         date = DateTime.parse(userData!.birthDate);
-        dateToMatch = _formatDate(DateTime(DateTime.now().year, date.month, date.day));
+        dateToMatch =
+            _formatDate(DateTime(DateTime.now().year, date.month, date.day));
         break;
       case 'join Date':
         date = DateTime.parse(userData!.joinDate);
-        dateToMatch = _formatDate(DateTime(DateTime.now().year, date.month, date.day));
+        dateToMatch =
+            _formatDate(DateTime(DateTime.now().year, date.month, date.day));
         break;
       case 'Certain Date':
         date = DateTime.parse(benefit.certainDate!);
-        dateToMatch = _formatDate(DateTime(DateTime.now().year, date.month, date.day));
+        dateToMatch =
+            _formatDate(DateTime(DateTime.now().year, date.month, date.day));
         break;
       default:
         date = DateTime.now();
@@ -135,20 +138,26 @@ class RedeemCubit extends Cubit<RedeemState> {
   redeemCard() async {
     if (validateParticipants()) {
       emit(RedeemLoadingState());
+
+      List<String> documents = [];
+      for (var doc in myDocs.values) {
+        if (doc != null) documents.add(doc);
+      }
+
       var request = BenefitRequest(
         selectedEmployeeNumbers:
             benefit.benefitType == 'Group' ? participantsIds.join(';') : null,
         // participants: benefit.benefitType == 'Group' ? participantsIds : null,
         sendToID: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first
-            : 0,
+            : null,
         from: startDate.text,
         to: endDate.text,
         benefitId: benefit.id,
         employeeNumber: userData!.employeeNumber,
         groupName: groupName.text,
         message: message.text,
-        documents: [],
+        documents: documents,
       );
       print(request);
       final result = await redeemCardUsecase(request: request);
@@ -176,12 +185,11 @@ class RedeemCubit extends Cubit<RedeemState> {
     return true;
   }
 
-
   //documents
 
   String? missingDocs;
 
-  static List<String> requiredDocs = ['d1', 'd2'];
+  static List<String> requiredDocs = [];
 
   Map<String, String?> myDocs = {
     for (var doc in requiredDocs) doc: null,
@@ -191,11 +199,12 @@ class RedeemCubit extends Cubit<RedeemState> {
     final ImagePicker _picker = ImagePicker();
     XFile? image =
         await _picker.pickImage(source: ImageSource.gallery // maxHeight: 200,
-            // maxWidth: 200,
             );
     if (image != null) {
       File imageFile = File(image.path);
       Uint8List bytes = imageFile.readAsBytesSync();
+      // Uint8List bytes = await imageFile.readAsBytes();
+
       String img64 = base64Encode(bytes);
       myDocs[key] = img64;
       // images.add(File(image.path));
@@ -209,16 +218,19 @@ class RedeemCubit extends Cubit<RedeemState> {
     emit(ImageRemoveSuccessState());
   }
 
-  bool validateDocuments(){
-    for (var img in myDocs.values){
-      if (img == null) {
-        missingDocs = 'Missing Required Docs!';
-        emit(ErrorValidationState());
-        return false;
+  bool validateDocuments() {
+    if (benefit.requiredDocuments != null) {
+      for (var img in myDocs.values) {
+        if (img == null) {
+          missingDocs = 'Missing Required Docs!';
+          emit(ErrorValidationState());
+          return false;
+        }
       }
+    } else {
+      missingDocs = null;
+      emit(ErrorValidationState());
     }
-    missingDocs = null;
-    emit(ErrorValidationState());
-      return true;
+    return true;
   }
 }
