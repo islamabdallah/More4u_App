@@ -8,9 +8,9 @@ Color getBenefitStatusColor(String status) {
     case 'InProgress':
       return yellowColor;
     case 'Approved':
-      return Colors.green;
+      return greenColor;
 
     default:
-      return Colors.red;
+      return redColor;
   }
 }

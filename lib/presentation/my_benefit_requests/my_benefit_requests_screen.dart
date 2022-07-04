@@ -699,10 +699,60 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(
+                            child: (request.status=='Pending'||request.status=='InProgress')? Text(
                                 'Follow up your request to know if aproved or not, Good luck',
-                                style: TextStyle(color: Colors.pinkAccent),
-                                textAlign: TextAlign.center),
+                                style: TextStyle(color: redColor),
+                                textAlign: TextAlign.center)
+                            : request.status=='Approved'?Column(children: [
+                              SizedBox(
+                                width: 128,
+                                child: Text(
+                                  "Congratulations",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: greenColor,
+                                    fontSize: 18.sp,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "Enjoy with your friend and family",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: greyColor,
+                                  fontSize: 14.sp,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],):Column(children: [
+                              SizedBox(
+                                width: 128,
+                                child: Text(
+                                  "OOPs, Sorry",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: redColor,
+                                    fontSize: 18.sp,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "Try again later",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: greyColor,
+                                  fontSize: 14.sp,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],)
+                            ,
                           )
                         ],
                       ),
