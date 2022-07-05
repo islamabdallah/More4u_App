@@ -350,7 +350,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                               validator: (text) {
                                 if (_cubit.dateToMatch != null) {
                                   if (_cubit.dateToMatch !=
-                                      _cubit.startDate.text) {
+                                      _cubit.startDate.text && (text?.isEmpty??true)) {
                                     print(_cubit.dateToMatch);
                                     print( _cubit.startDate.text);
 
@@ -387,7 +387,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            if(_cubit.benefit.requiredDocuments!=null)
+                            if(_cubit.benefit.requiredDocumentsArray!=null)
                             SizedBox(
                               height: 120.h,
                               child: ListView.builder(
@@ -420,9 +420,12 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                                     style: TextStyle(
                                                       color: redColor,
                                                       fontSize: 13.sp,
-                                                      fontFamily: "Cairo",
+                                                      fontFamily: "Roboto",
                                                       fontWeight: FontWeight.w700,
-                                                    ),
+                                                    ),textAlign: TextAlign.center,
+                                                    maxLines: 3,
+                                                    softWrap: true,
+                                                    overflow: TextOverflow.fade,
                                                   ),
                                                   const SizedBox(
                                                     width: 5.0,
@@ -483,7 +486,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                 child: ElevatedButton(
                                     onPressed: () {
                                       if((_formKey.currentState!.validate() && _cubit.validateParticipants() && _cubit.validateDocuments())){
-                                      // _cubit.redeemCard();
+                                      _cubit.redeemCard();
                                       }
                                     },
                                     child: Text('Redeem')),

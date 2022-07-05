@@ -40,6 +40,12 @@ class RedeemCubit extends Cubit<RedeemState> {
   late bool enableParticipantsField = true;
 
   initRedeem(Benefit benefit) {
+
+    if(benefit.requiredDocumentsArray!=null){
+      myDocs = {
+        for (var doc in benefit.requiredDocumentsArray!) doc: null,
+      };
+    }
     this.benefit = benefit;
     _configureDate(benefit);
     startDate.text = _formatDate(start);
@@ -150,7 +156,7 @@ class RedeemCubit extends Cubit<RedeemState> {
         // participants: benefit.benefitType == 'Group' ? participantsIds : null,
         sendToID: benefit.isAgift && participantsIds.isNotEmpty
             ? participantsIds.first
-            : null,
+            : 0,
         from: startDate.text,
         to: endDate.text,
         benefitId: benefit.id,
@@ -192,7 +198,6 @@ class RedeemCubit extends Cubit<RedeemState> {
   static List<String> requiredDocs = [];
 
   Map<String, String?> myDocs = {
-    for (var doc in requiredDocs) doc: null,
   };
 
   pickImage(String key) async {
@@ -219,7 +224,7 @@ class RedeemCubit extends Cubit<RedeemState> {
   }
 
   bool validateDocuments() {
-    if (benefit.requiredDocuments != null) {
+    if (benefit.requiredDocumentsArray != null) {
       for (var img in myDocs.values) {
         if (img == null) {
           missingDocs = 'Missing Required Docs!';

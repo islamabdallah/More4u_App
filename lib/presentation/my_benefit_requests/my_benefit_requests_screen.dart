@@ -454,7 +454,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                               ),
                             ),
                             ],),
-                            if (request.participantsData?.isNotEmpty ??
+                            if (request.fullParticipantsData?.isNotEmpty ??
                                 false) ...[
                               Text(
                                 'Participants: ',
@@ -467,7 +467,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                               Center(
                                 child: Wrap(
                                   children: [
-                                    ...request.participantsData!
+                                    ...request.fullParticipantsData!
                                         .map((participant) => Padding(
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 2.w),
@@ -481,7 +481,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                                 backgroundColor:
                                                     Colors.transparent,
                                                 label:
-                                                    Text(participant.fullName),
+                                                    Text(participant.employeeName??''),
                                                 labelStyle: TextStyle(
                                                     color: mainColor,
                                                     fontWeight: FontWeight.bold,

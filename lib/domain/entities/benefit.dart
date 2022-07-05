@@ -19,7 +19,7 @@ class Benefit extends Equatable {
   final bool isAgift;
   final int minParticipant;
   final int maxParticipant;
-  final String? requiredDocuments;
+  final List<String>? requiredDocumentsArray;
   final int? numberOfDays;
   final String? dateToMatch;
   final String? certainDate;
@@ -44,7 +44,7 @@ class Benefit extends Equatable {
     required this.isAgift,
     required this.minParticipant,
     required this.maxParticipant,
-    this.requiredDocuments,
+    this.requiredDocumentsArray,
     this.numberOfDays,
     this.dateToMatch,
     this.certainDate,
@@ -66,7 +66,7 @@ class Benefit extends Equatable {
         isAgift,
         minParticipant,
         maxParticipant,
-        requiredDocuments,
+        requiredDocumentsArray,
         dateToMatch,
         certainDate,
         lastStatus,
