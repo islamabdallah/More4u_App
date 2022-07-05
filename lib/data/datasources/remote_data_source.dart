@@ -99,16 +99,28 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<List<BenefitRequest>> getBenefitsToManage (
-      {required int employeeNumber, FilteredSearch? search}) async{
-    final response = await client.post(
-      Uri.parse(showRequestsDefault).replace(queryParameters: {
-        "employeeNumber": employeeNumber.toString(),
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+  Future<List<BenefitRequest>> getBenefitsToManage(
+      {required int employeeNumber, FilteredSearch? search}) async {
+    final response = search != null
+        ? await client.post(Uri.parse(showRequests), headers: {
+            'Content-Type': 'application/json',
+          }, body: jsonEncode({
+            "selectedBenefitType": search.selectedBenefitType,
+            "selectedRequestStatus": search.selectedRequestStatus,
+            "employeeNumberSearch": search.employeeNumberSearch,
+            "selectedDepartmentId": search.selectedDepartmentId,
+            "selectedTimingId": search.selectedTimingId,
+            "selectedAll": false,
+            "employeeNumber": employeeNumber,
+          }))
+        : await client.post(
+            Uri.parse(showRequestsDefault).replace(queryParameters: {
+              "employeeNumber": employeeNumber.toString(),
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          );
 
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
@@ -126,7 +138,6 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         throw ServerException('Something went wrong!');
       }
     }
-
   }
 
   @override
@@ -270,7 +281,6 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<void> redeemCard({required BenefitRequestModel requestModel}) async {
-
     print(jsonEncode(requestModel.toJson()));
 
     final response = await client.post(Uri.parse(confirmRequest),

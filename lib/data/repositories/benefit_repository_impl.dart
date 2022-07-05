@@ -98,6 +98,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
         List<BenefitRequest> result =
             await remoteDataSource.getBenefitsToManage(
           employeeNumber: employeeNumber,
+          search: search,
         );
         return Right(result);
       } on ServerException catch (e) {

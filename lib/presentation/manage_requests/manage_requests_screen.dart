@@ -4,6 +4,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -50,7 +51,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
 
     _cubit = sl<ManageRequestsCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.getBenefitsToManage();;
+      _cubit.getBenefitsToManage();
     });
 
     super.initState();
@@ -196,8 +197,14 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   color: Colors.black26)
                             ]),
                         child: TextField(
+                          controller: _cubit.employeeNumberSearch,
+                          keyboardType: TextInputType.number,
+                          inputFormatters:
+                          [
+                            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                          ],
                           decoration: InputDecoration(
-                            hintText: "Search by request number",
+                            hintText: "Search by employee number",
                             isDense: true,
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8.h, horizontal: 11.w),
@@ -219,7 +226,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       // overlayColor:MaterialStateProperty.all(Colors.transparent) ,
                       // focusColor: Colors.transparent,
                       borderRadius: BorderRadius.circular(10),
-                      onTap: () {},
+                      onTap: () {
+                        _cubit.search();
+                      },
                       child: Ink(
                         width: 45,
                         height: 45,
@@ -269,66 +278,13 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                   ],
                 ),
                 SizedBox(height: 25.h),
-                Theme(
-                  data: ThemeData(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                  ),
-                  child: TabBar(
-                    controller: _tabController,
-                    isScrollable: true,
-                    unselectedLabelColor: Color(0xFF6D6D6D),
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorPadding: EdgeInsets.symmetric(vertical: 14.h),
-                    indicator: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r),
-                        color: redColor),
-                    padding: EdgeInsets.zero,
-                    labelPadding: EdgeInsets.zero,
-                    tabs: [
-                      Tab(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text("All"),
-                          ),
-                        ),
-                      ),
-                      Tab(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text("Pending"),
-                          ),
-                        ),
-                      ),
-                      Tab(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text("InProgress"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+
                 Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      ListView.builder(
-                        // shrinkWrap: true,
-                        itemBuilder: (context, index) =>
-                            requestCard(_cubit.benefitRequests[index]),
-                        itemCount: _cubit.benefitRequests.length,
-                      ),
-                      const Center(child: Text('No Benefit available')),
-                      const Center(child: Text('No Benefit available')),
-                    ],
+                  child: ListView.builder(
+                    // shrinkWrap: true,
+                    itemBuilder: (context, index) =>
+                        requestCard(_cubit.benefitRequests[index]),
+                    itemCount: _cubit.benefitRequests.length,
                   ),
                 ),
               ],
@@ -373,7 +329,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Filteration',
+                        'Filtration',
                         style: TextStyle(
                             color: mainColor,
                             fontSize: 18.sp,
@@ -440,7 +396,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       ],
                     ),
                     Text(
-                      "Benefit Type",
+                      "Date",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Color(0xff7f7f7f),
@@ -449,9 +405,50 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       ),
                     ),
                     DateTimeField(
+                      controller: _cubit.fromText,
                       // validator: (value) => deliverDate == null ? translator.translate('required') : null,
+
                       decoration: InputDecoration(
-                        label: Text('Date From'),
+                        label: Text('From'),
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                        contentPadding: EdgeInsets.all(3.0),
+                        prefixIcon: const Icon(
+                          Icons.calendar_today,
+                        ),
+                        suffixIcon:  IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: (){
+                            _cubit.changeFromDate(null);
+                          },
+                        )
+                      ),
+
+
+                      format: DateFormat("yyyy-MM-dd"),
+                      onShowPicker: (context, currentValue) async {
+                        return showDatePicker(
+                          context: context,
+                          firstDate: DateTime(DateTime.now().year),
+                          initialDate: DateTime.now(),
+                          lastDate:DateTime(
+                              DateTime.now().year + 1)
+                              .add(Duration(
+                              days:
+                              -1)),
+                        );
+                      },
+                      onChanged: (date) {
+                        _cubit.changeFromDate(date);
+                      },
+
+                    ),
+                    SizedBox(height: 16.h),
+                    DateTimeField(
+                      controller: _cubit.toText,
+                      enabled: _cubit.fromDate!=null,
+                      decoration: InputDecoration(
+                        label: Text('To'),
                         border: OutlineInputBorder(),
                         labelStyle: TextStyle(fontWeight: FontWeight.w600),
                         contentPadding: EdgeInsets.all(3.0),
@@ -459,16 +456,23 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                           Icons.calendar_today,
                         ),
                       ),
-                      format: DateFormat("dd-MM-yyyy"),
+                      format: DateFormat("yyyy-MM-dd"),
+                      resetIcon: null,
                       onShowPicker: (context, currentValue) async {
                         return showDatePicker(
                           context: context,
-                          firstDate: DateTime(DateTime.now().year),
-                          initialDate: DateTime.now(),
-                          lastDate: DateTime.now(),
+                          firstDate: _cubit.fromDate??DateTime.now(),
+                          initialDate:  _cubit.toDate??DateTime.now(),
+                            lastDate:DateTime(
+                                DateTime.now().year + 1)
+                                .add(Duration(
+                                days:
+                                -1))
                         );
                       },
-                      onChanged: (date) {},
+                      onChanged: (date) {
+                        _cubit.changeToDate(date);
+                      },
                     ),
                     SizedBox(
                       height: 16,
