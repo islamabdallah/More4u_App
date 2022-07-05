@@ -91,6 +91,29 @@ class BenefitRepositoryImpl extends BenefitRepository {
   }
 
   @override
+  Future<Either<Failure, String>> addResponse({
+    required int employeeNumber,
+    required int status,
+    required int requestNumber,
+    required String message,
+  }) async {
+    if (await networkInfo.isConnected) {
+      try {
+        String result = await remoteDataSource.addResponse(
+            employeeNumber: employeeNumber,
+            status: status,
+            message: message,
+            requestNumber: requestNumber);
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage(
       {required int employeeNumber, FilteredSearch? search}) async {
     if (await networkInfo.isConnected) {

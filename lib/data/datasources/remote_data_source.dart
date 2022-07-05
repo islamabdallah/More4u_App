@@ -34,6 +34,13 @@ abstract class RemoteDataSource {
     required int requestNumber,
   });
 
+  Future<String> addResponse({
+    required int employeeNumber,
+    required int status,
+    required int requestNumber,
+    required String message,
+  });
+
   Future<List<BenefitRequest>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
@@ -333,6 +340,49 @@ class RemoteDataSourceImpl extends RemoteDataSource {
       }
     }
   }
+
+  @override
+  Future<String> addResponse({
+    required int employeeNumber,
+    required int status,
+    required int requestNumber,
+    required String message,
+  }) async {
+
+    print({
+      "requestId": requestNumber.toString(),
+      "status": status.toString(),
+      "message": message,
+      "employeeNumber": employeeNumber.toString(),
+    });
+
+    final response = await client.post(
+      Uri.parse(addRequestResponse).replace(queryParameters: {
+        "requestId": requestNumber.toString(),
+        "status": status.toString(),
+        "message": message,
+        "employeeNumber": employeeNumber.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+
+      return result['message'];
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
 }
 
 class FakeRemoteDataSourceImpl extends RemoteDataSource {
@@ -453,6 +503,12 @@ class FakeRemoteDataSourceImpl extends RemoteDataSource {
       required int benefitId,
       required int requestNumber}) {
     // TODO: implement cancelRequest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> addResponse({required int employeeNumber, required int status, required int requestNumber, required String message}) {
+    // TODO: implement addResponse
     throw UnimplementedError();
   }
 }

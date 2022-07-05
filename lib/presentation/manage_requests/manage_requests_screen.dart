@@ -48,7 +48,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
 
   @override
   void initState() {
-
     _cubit = sl<ManageRequestsCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.getBenefitsToManage();
@@ -70,7 +69,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
     return BlocConsumer(
       bloc: _cubit,
       listener: (context, state) {
-
         if (state is GetRequestsToManageLoadingState) {
           loadingAlertDialog(context);
         }
@@ -87,6 +85,29 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               });
         }
 
+        if (state is AddRequestResponseLoadingState) {
+          loadingAlertDialog(context);
+        }
+        if (state is AddRequestResponseSuccessState) {
+          Navigator.pop(context);
+          showMessageDialog(
+              context: context,
+              isSucceeded: true,
+              message: state.message,
+              onPressedOk: () {
+
+              });
+        }
+        if (state is AddRequestResponseErrorState) {
+          Navigator.pop(context);
+          showMessageDialog(
+              context: context,
+              isSucceeded: true,
+              message: state.message,
+              onPressedOk: () {
+
+              });
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -199,8 +220,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                         child: TextField(
                           controller: _cubit.employeeNumberSearch,
                           keyboardType: TextInputType.number,
-                          inputFormatters:
-                          [
+                          inputFormatters: [
                             FilteringTextInputFormatter.allow(RegExp("[0-9]")),
                           ],
                           decoration: InputDecoration(
@@ -278,14 +298,17 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                   ],
                 ),
                 SizedBox(height: 25.h),
-
                 Expanded(
-                  child: ListView.builder(
+                  child:
+                  _cubit.benefitRequests.isNotEmpty?
+                  ListView.builder(
                     // shrinkWrap: true,
                     itemBuilder: (context, index) =>
                         requestCard(_cubit.benefitRequests[index]),
                     itemCount: _cubit.benefitRequests.length,
-                  ),
+                  )
+                  :const Center(child: Text('No Requests To Manage')),
+
                 ),
               ],
             ),
@@ -409,21 +432,19 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       // validator: (value) => deliverDate == null ? translator.translate('required') : null,
 
                       decoration: InputDecoration(
-                        label: Text('From'),
-                        border: OutlineInputBorder(),
-                        labelStyle: TextStyle(fontWeight: FontWeight.w600),
-                        contentPadding: EdgeInsets.all(3.0),
-                        prefixIcon: const Icon(
-                          Icons.calendar_today,
-                        ),
-                        suffixIcon:  IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: (){
-                            _cubit.changeFromDate(null);
-                          },
-                        )
-                      ),
-
+                          label: Text('From'),
+                          border: OutlineInputBorder(),
+                          labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                          contentPadding: EdgeInsets.all(3.0),
+                          prefixIcon: const Icon(
+                            Icons.calendar_today,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              _cubit.changeFromDate(null);
+                            },
+                          )),
 
                       format: DateFormat("yyyy-MM-dd"),
                       onShowPicker: (context, currentValue) async {
@@ -431,22 +452,18 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                           context: context,
                           firstDate: DateTime(DateTime.now().year),
                           initialDate: DateTime.now(),
-                          lastDate:DateTime(
-                              DateTime.now().year + 1)
-                              .add(Duration(
-                              days:
-                              -1)),
+                          lastDate: DateTime(DateTime.now().year + 1)
+                              .add(Duration(days: -1)),
                         );
                       },
                       onChanged: (date) {
                         _cubit.changeFromDate(date);
                       },
-
                     ),
                     SizedBox(height: 16.h),
                     DateTimeField(
                       controller: _cubit.toText,
-                      enabled: _cubit.fromDate!=null,
+                      enabled: _cubit.fromDate != null,
                       decoration: InputDecoration(
                         label: Text('To'),
                         border: OutlineInputBorder(),
@@ -460,15 +477,11 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       resetIcon: null,
                       onShowPicker: (context, currentValue) async {
                         return showDatePicker(
-                          context: context,
-                          firstDate: _cubit.fromDate??DateTime.now(),
-                          initialDate:  _cubit.toDate??DateTime.now(),
-                            lastDate:DateTime(
-                                DateTime.now().year + 1)
-                                .add(Duration(
-                                days:
-                                -1))
-                        );
+                            context: context,
+                            firstDate: _cubit.fromDate ?? DateTime.now(),
+                            initialDate: _cubit.toDate ?? DateTime.now(),
+                            lastDate: DateTime(DateTime.now().year + 1)
+                                .add(Duration(days: -1)));
                       },
                       onChanged: (date) {
                         _cubit.changeToDate(date);
@@ -588,7 +601,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 8.h),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -695,7 +709,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               style: ElevatedButton.styleFrom(
                                 primary: redColor,
                               ),
-                              onPressed: () => acceptOrReject(false),
+                              onPressed: () =>
+                                  acceptOrReject(false, request.requestNumber!),
                               child: Text(
                                 'Reject',
                                 style: TextStyle(
@@ -715,7 +730,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               style: ElevatedButton.styleFrom(
                                 primary: mainColor,
                               ),
-                              onPressed: () => acceptOrReject(true),
+                              onPressed: () =>
+                                  acceptOrReject(true, request.requestNumber!),
                               child: Text(
                                 'Accept',
                                 style: TextStyle(
@@ -1007,7 +1023,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, ProfileScreen.routeName,arguments:request.createdBy);
+                            Navigator.pushNamed(
+                                context, ProfileScreen.routeName,
+                                arguments: request.createdBy);
                           },
                           child: Text(
                             "View Profile",
@@ -1163,15 +1181,17 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       crossAxisAlignment: WrapCrossAlignment.center,
                       alignment: WrapAlignment.center,
                       children: [
-                        ...request.fullParticipantsData!.map((participant) =>
-                            SelectionChip(
-                                label: participant.employeeName??'',
+                        ...request.fullParticipantsData!
+                            .map((participant) => SelectionChip(
+                                label: participant.employeeName ?? '',
                                 index: 0,
                                 selectedIndex: 1,
                                 selectIndex: (_) {
-                                  Navigator.pushNamed(context, ProfileScreen.routeName,arguments:participant );
-                                })).toList()
-
+                                  Navigator.pushNamed(
+                                      context, ProfileScreen.routeName,
+                                      arguments: participant);
+                                }))
+                            .toList()
                       ],
                     ),
                   ),
@@ -1205,7 +1225,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                         style: ElevatedButton.styleFrom(
                           primary: redColor,
                         ),
-                        onPressed: () => acceptOrReject(false),
+                        onPressed: () =>
+                            acceptOrReject(false, request.requestNumber!),
                         child: Text(
                           'Reject',
                           style: TextStyle(
@@ -1221,7 +1242,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     SizedBox(
                       width: 130.w,
                       child: ElevatedButton(
-                        onPressed: () => acceptOrReject(true),
+                        onPressed: () =>
+                            acceptOrReject(true, request.requestNumber!),
                         child: Text(
                           'Accept',
                           style: TextStyle(
@@ -1242,108 +1264,156 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
         });
   }
 
-  acceptOrReject(bool isAccepted) {
+  acceptOrReject(bool isAccepted, int requestNumber) {
     showDialog(
       context: context,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
-        child: SingleChildScrollView(
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              ClipPath(
-                clipper: MyClipper(),
-                child: Container(
-                  height: 300.h,
-                  width: 500.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        isAccepted
-                            ? 'Approve and send your note'
-                            : 'Reject and send your note',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: isAccepted ? mainColor : redColor,
-                          fontSize: 18.sp,
-                          fontFamily: "Cairo",
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 3,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
-                        decoration: InputDecoration(
-                          isDense: true,
-                          // contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          suffixIconConstraints:
-                              BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-                          prefixIconConstraints:
-                              BoxConstraints(maxHeight: 80.h, minWidth: 50.w),
-                          prefixIcon: Column(
-                            children: [
-                              Icon(CustomIcons.clipboard_regular),
-                            ],
+      builder: (_) {
+        TextEditingController _textController = TextEditingController();
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+          child: SingleChildScrollView(
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                ClipPath(
+                  clipper: MyClipper(),
+                  child: Container(
+                    height: 300.h,
+                    width: 500.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          isAccepted
+                              ? 'Approve and send your note'
+                              : 'Reject and send your note',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: isAccepted ? mainColor : redColor,
+                            fontSize: 18.sp,
+                            fontFamily: "Cairo",
+                            fontWeight: FontWeight.w700,
                           ),
-                          border: OutlineInputBorder(),
-                          labelText: 'Notes',
-                          hintText: 'Enter Your Notes',
-                          hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
-                      ),
-                    ],
+                        TextFormField(
+                          controller: _textController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 3,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Roboto'),
+                          decoration: InputDecoration(
+                            isDense: true,
+                            // contentPadding: EdgeInsets.symmetric(vertical: 0),
+                            suffixIconConstraints:
+                                BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+                            prefixIconConstraints:
+                                BoxConstraints(maxHeight: 80.h, minWidth: 50.w),
+                            prefixIcon: Column(
+                              children: [
+                                Icon(CustomIcons.clipboard_regular),
+                              ],
+                            ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Notes',
+                            hintText: 'Enter Your Notes',
+                            hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 300.h / 1.4,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: 500.0,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          width: 300,
-                          child: DottedLine(
-                            dashLength: 10,
-                            dashGapLength: 5,
-                            lineThickness: 2,
-                            dashColor: Colors.grey,
+                Positioned(
+                  top: 300.h / 1.4,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    width: 500.0,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            width: 300,
+                            child: DottedLine(
+                              dashLength: 10,
+                              dashGapLength: 5,
+                              lineThickness: 2,
+                              dashColor: Colors.grey,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.h, horizontal: 50.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: SizedBox(
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 8.h, horizontal: 50.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                      ),
+                                      side: BorderSide(
+                                        width: 2.0.w,
+                                        color:
+                                            isAccepted ? mainColor : redColor,
+                                      ),
+                                      primary: Colors.white,
+                                      onPrimary:
+                                          isAccepted ? mainColor : redColor,
+                                    ),
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: "Roboto",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 14.sp),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                              Expanded(
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
+                                  onPressed: () async {
+                                   var b= await _cubit.acceptOrRejectRequest(
+                                        requestNumber,
+                                        isAccepted ? 1 : 2,
+                                        _textController.text);
+                                   print('hello');
+                                   if(b??false){
+                                     print('hello');
+                                     print(b);
+                                     _cubit.removeRequest(requestNumber);
+                                   }
+                                    if (!mounted) return;
+                                    Navigator.of(context).pop();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -1353,12 +1423,11 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       width: 2.0.w,
                                       color: isAccepted ? mainColor : redColor,
                                     ),
-                                    primary: Colors.white,
-                                    onPrimary:
-                                        isAccepted ? mainColor : redColor,
+                                    primary: isAccepted ? mainColor : redColor,
+                                    onPrimary: Colors.white,
                                   ),
                                   child: Text(
-                                    'Cancel',
+                                    isAccepted ? 'Accept' : 'Reject',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontFamily: "Roboto",
@@ -1367,45 +1436,18 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6.r),
-                                  ),
-                                  side: BorderSide(
-                                    width: 2.0.w,
-                                    color: isAccepted ? mainColor : redColor,
-                                  ),
-                                  primary: isAccepted ? mainColor : redColor,
-                                  onPrimary: Colors.white,
-                                ),
-                                child: Text(
-                                  isAccepted ? 'Accept' : 'Reject',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "Roboto",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 14.sp),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
       //     Dialog(
       //   backgroundColor: Colors.transparent,
       //   elevation: 0,
@@ -1487,7 +1529,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
     );
   }
 }
-
 
 showInfo(BuildContext context, User user) {
   showDialog(

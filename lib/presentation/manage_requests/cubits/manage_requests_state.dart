@@ -9,10 +9,26 @@ class GetRequestsToManageLoadingState extends ManageRequestsState {}
 
 class GetRequestsToManageSuccessState extends ManageRequestsState {}
 
+class RemoveRequestSuccessState extends ManageRequestsState {}
+
 class GetRequestsToManageFailedState extends ManageRequestsState {
   final String message;
 
   GetRequestsToManageFailedState(this.message);
+}
+
+class AddRequestResponseLoadingState extends ManageRequestsState {}
+
+class AddRequestResponseSuccessState extends ManageRequestsState {
+  final String message;
+
+  AddRequestResponseSuccessState(this.message);
+}
+
+class AddRequestResponseErrorState extends ManageRequestsState {
+  final String message;
+
+  AddRequestResponseErrorState(this.message);
 }
 
 class ChangeFiltration extends ManageRequestsState {}

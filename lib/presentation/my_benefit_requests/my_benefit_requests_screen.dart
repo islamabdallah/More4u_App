@@ -81,6 +81,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
               });
         }
         if (state is CancelRequestErrorState) {
+          Navigator.pop(context);
           showMessageDialog(
               context: context,
               isSucceeded: false,
@@ -664,27 +665,30 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Text(
-                                                      request
-                                                              .requestWorkFlowAPIs![
-                                                                  index]
-                                                              .status ??
-                                                          '',
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Roboto')),
+                                                  // Text(
+                                                  //     request
+                                                  //             .requestWorkFlowAPIs![
+                                                  //                 index]
+                                                  //             .status ??
+                                                  //         '',
+                                                  //     style: TextStyle(
+                                                  //         fontFamily:
+                                                  //             'Roboto')),
                                                   //todo fix this
                                                   // Text('at ${request.requestWorkFlowAPIs![index].replayDate}'),
                                                 ],
                                               ),
-                                              Text(
-                                                  request
-                                                          .requestWorkFlowAPIs![
-                                                              index]
-                                                          .notes ??
-                                                      '',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Roboto')),
+                                              Padding(
+                                                padding: EdgeInsets.only(left: 11.w),
+                                                child: Text(
+                                                    request
+                                                            .requestWorkFlowAPIs![
+                                                                index]
+                                                            .notes ??
+                                                        '',
+                                                    style: TextStyle(
+                                                        fontFamily: 'Roboto',color: greyColor)),
+                                              ),
                                             ],
                                           ),
                                         ),

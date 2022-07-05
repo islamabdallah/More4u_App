@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data/datasources/local_data_source.dart';
 import 'domain/repositories/login_repository.dart';
 import 'domain/repositories/redeem_repository.dart';
+import 'domain/usecases/add_response.dart';
 import 'domain/usecases/cancel_request.dart';
 import 'domain/usecases/get_benefit_details.dart';
 import 'domain/usecases/get_benefits_to_manage.dart';
@@ -45,8 +46,8 @@ Future<void> init() async {
   sl.registerFactory(() => MyBenefitsCubit(getMyBenefitsUsecase: sl()));
   sl.registerFactory(() => MyBenefitRequestsCubit(
       getMyBenefitRequestsUsecase: sl(), cancelRequestsUsecase: sl()));
-  sl.registerFactory(
-      () => ManageRequestsCubit(getBenefitsToManageUsecase: sl()));
+  sl.registerFactory(() => ManageRequestsCubit(
+      getBenefitsToManageUsecase: sl(), addRequestResponseUsecase: sl()));
   sl.registerFactory(() => NotificationCubit(getNotificationsUsecase: sl()));
 // Usecases
 
@@ -56,6 +57,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetMyBenefitsUsecase(sl()));
   sl.registerLazySingleton(() => GetMyBenefitRequestsUsecase(sl()));
   sl.registerLazySingleton(() => CancelRequestsUsecase(sl()));
+  sl.registerLazySingleton(() => AddRequestResponseUsecase(sl()));
   sl.registerLazySingleton(() => GetBenefitsToManageUsecase(sl()));
   sl.registerLazySingleton(() => RedeemCardUsecase(sl()));
   sl.registerLazySingleton(() => GetNotificationsUsecase(sl()));

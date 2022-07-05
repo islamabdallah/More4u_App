@@ -26,6 +26,13 @@ abstract class BenefitRepository {
     required int requestNumber,
   });
 
+  Future<Either<Failure, String>> addResponse({
+    required int employeeNumber,
+    required int status,
+    required int requestNumber,
+    required String message,
+  });
+
   Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
