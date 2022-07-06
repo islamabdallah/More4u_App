@@ -64,7 +64,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
 
   @override
   Widget build(BuildContext context) {
-    TabController _tabController = TabController(length: 3, vsync: this);
 
     return BlocConsumer(
       bloc: _cubit,
@@ -95,7 +94,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               isSucceeded: true,
               message: state.message,
               onPressedOk: () {
-
               });
         }
         if (state is AddRequestResponseErrorState) {
@@ -527,6 +525,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
       margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0),
       child: InkWell(
         onTap: () {
+          _cubit.isBottomSheetOpened=true;
+          print(_cubit.isBottomSheetOpened);
           buildShowDetailedModalBottomSheet(request);
         },
         child: MyBanner(
@@ -1261,7 +1261,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               ],
             ),
           );
-        });
+        }).whenComplete(() => _cubit.isBottomSheetOpened=false);
   }
 
   acceptOrReject(bool isAccepted, int requestNumber) {
@@ -1402,6 +1402,13 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () async {
+                                    print(_cubit.isBottomSheetOpened);
+                                    if(_cubit.isBottomSheetOpened) {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                    } else{
+                                      Navigator.of(context).pop();
+                                    }
                                    var b= await _cubit.acceptOrRejectRequest(
                                         requestNumber,
                                         isAccepted ? 1 : 2,
@@ -1412,8 +1419,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                      print(b);
                                      _cubit.removeRequest(requestNumber);
                                    }
-                                    if (!mounted) return;
-                                    Navigator.of(context).pop();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(

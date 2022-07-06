@@ -20,6 +20,8 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
       : super(ManageRequestsInitial());
 
   List<BenefitRequest> benefitRequests = [];
+  bool isBottomSheetOpened = false;
+
 
   getBenefitsToManage({FilteredSearch? search}) async {
     emit(GetRequestsToManageLoadingState());
@@ -39,6 +41,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
     benefitRequests.removeWhere((element) => element.requestNumber==requestNumber);
     emit(RemoveRequestSuccessState());
   }
+
 
   Future<bool?> acceptOrRejectRequest(int requestNumber,int status,String message)async{
     emit(AddRequestResponseLoadingState());
