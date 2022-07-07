@@ -152,11 +152,11 @@ class RequestWorkFlowAPIs {
 
 class MyAction extends Equatable{
   final String? action;
-  final String? note;
+  final String? notes;
   final String? replayDate;
 
-  const MyAction({this.action, this.note, this.replayDate});
+  const MyAction({this.action, this.notes, this.replayDate});
 
   @override
-  List<Object?> get props => [action,note,replayDate];
+  List<Object?> get props => [action,notes,replayDate];
 }

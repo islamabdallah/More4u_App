@@ -10,7 +10,6 @@ import '../../../presentation/home/home_screen.dart';
 import '../../../presentation/manage_requests/manage_requests_screen.dart';
 import '../../../presentation/my_benefits/my_benefits_screen.dart';
 import '../../../presentation/notification/notification_screen.dart';
-import '../../../presentation/pages/profile.dart';
 import '../../../presentation/splash/splash_screen.dart';
 import '../../../presentation/profile/profile_screen.dart';
 

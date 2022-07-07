@@ -179,17 +179,17 @@ class RequestWorkFlowAPIsModel extends RequestWorkFlowAPIs {
 class MyActionModel extends MyAction {
   const MyActionModel({
     String? action,
-    String? note,
+    String? notes,
     String? replayDate,
   }) : super(
           action: action,
-          note: note,
+          notes: notes,
           replayDate: replayDate,
         );
 
   factory MyActionModel.fromJson(Map<String, dynamic> json) => MyActionModel(
         action: json['action'],
-        note: json['note'],
+        notes: json['notes'],
         replayDate: json['replayDate'],
       );
 }
