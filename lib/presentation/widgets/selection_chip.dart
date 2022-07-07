@@ -18,7 +18,7 @@ class SelectionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
       child: ChoiceChip(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),

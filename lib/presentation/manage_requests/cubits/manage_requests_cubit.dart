@@ -74,6 +74,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   TextEditingController toText = TextEditingController();
   int statusCurrentIndex = -1;
   int typeCurrentIndex = -1;
+  bool containWarning = false;
 
   DateTime? fromDate;
   DateTime? toDate;
@@ -103,6 +104,11 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
         toText.text = fromText.text;
       }
     }
+    emit(ChangeFiltration());
+  }
+
+  changeContainWarning(bool value) {
+    containWarning = value;
     emit(ChangeFiltration());
   }
 

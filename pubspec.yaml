@@ -66,10 +66,9 @@ dependencies:
   dotted_line: ^3.1.0
   bottom_sheet: ^3.1.1
 
-
   #notifications
-  firebase_core: ^1.18.0
-  firebase_messaging: ^11.4.2
+  firebase_core: ^1.19.1
+  firebase_messaging: ^11.4.4
   flutter_local_notifications: ^9.6.1
 
 

@@ -109,17 +109,19 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   Future<List<BenefitRequest>> getBenefitsToManage(
       {required int employeeNumber, FilteredSearch? search}) async {
     final response = search != null
-        ? await client.post(Uri.parse(showRequests), headers: {
-            'Content-Type': 'application/json',
-          }, body: jsonEncode({
-            "selectedBenefitType": search.selectedBenefitType,
-            "selectedRequestStatus": search.selectedRequestStatus,
-            "employeeNumberSearch": search.employeeNumberSearch,
-            "selectedDepartmentId": search.selectedDepartmentId,
-            "selectedTimingId": search.selectedTimingId,
-            "selectedAll": false,
-            "employeeNumber": employeeNumber,
-          }))
+        ? await client.post(Uri.parse(showRequests),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              "selectedBenefitType": search.selectedBenefitType,
+              "selectedRequestStatus": search.selectedRequestStatus,
+              "employeeNumberSearch": search.employeeNumberSearch,
+              "selectedDepartmentId": search.selectedDepartmentId,
+              "selectedTimingId": search.selectedTimingId,
+              "selectedAll": false,
+              "employeeNumber": employeeNumber,
+            }))
         : await client.post(
             Uri.parse(showRequestsDefault).replace(queryParameters: {
               "employeeNumber": employeeNumber.toString(),
@@ -132,8 +134,11 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
       List<BenefitRequestModel> benefitRequests = [];
-      for (Map<String, dynamic> benefitRequest in result['data']['requests']) {
-        benefitRequests.add(BenefitRequestModel.fromJson(benefitRequest));
+      if (result['data']['requests'] != null) {
+        for (Map<String, dynamic> benefitRequest in result['data']
+            ['requests']) {
+          benefitRequests.add(BenefitRequestModel.fromJson(benefitRequest));
+        }
       }
       return benefitRequests;
     } else {
@@ -348,7 +353,6 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     required int requestNumber,
     required String message,
   }) async {
-
     print({
       "requestId": requestNumber.toString(),
       "status": status.toString(),
@@ -507,7 +511,11 @@ class FakeRemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<String> addResponse({required int employeeNumber, required int status, required int requestNumber, required String message}) {
+  Future<String> addResponse(
+      {required int employeeNumber,
+      required int status,
+      required int requestNumber,
+      required String message}) {
     // TODO: implement addResponse
     throw UnimplementedError();
   }

@@ -2,7 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +27,7 @@ import '../notification/notification_screen.dart';
 import '../profile/profile_screen.dart';
 import '../widgets/banner.dart';
 import '../widgets/benifit_card.dart';
+import '../widgets/custom_switch.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/helpers.dart';
 import '../widgets/utils/loading_dialog.dart';
@@ -336,17 +336,19 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 12.h,),
                     Align(
                       alignment: Alignment.center,
                       child: Container(
-                        width: 51,
-                        height: 4,
+                        width: 51.w,
+                        height: 4.h,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1),
+                          borderRadius: BorderRadius.circular(50),
                           color: Color(0xffd9d9d9),
                         ),
                       ),
                     ),
+                    SizedBox(height: 8.h,),
                     Align(
                       alignment: Alignment.center,
                       child: Text(
@@ -360,8 +362,31 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     SizedBox(
                       height: 16,
                     ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        'Benefit Has Warning',
+                        style: TextStyle(
+                          color: Color(0xff7f7f7f),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ), //Text
+
+                     Spacer(),
+                      CustomSwitch(
+                        value: _cubit.containWarning,
+                        onChanged: (bool? value) {
+                          _cubit.changeContainWarning(value!);
+                        },
+                        activeColor: mainColor,
+
+                      ), //Checkbox
+                    ], //<Widget>[]
+                  ),
+
                     Text(
-                      "Status",
+                      "Action",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Color(0xff7f7f7f),
@@ -372,13 +397,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     Wrap(
                       children: [
                         SelectionChip(
-                            label: 'Pending',
+                            label: 'Holding',
                             index: 0,
-                            selectedIndex: _cubit.statusCurrentIndex,
-                            selectIndex: _cubit.selectStatus),
-                        SelectionChip(
-                            label: 'Inprogress',
-                            index: 1,
                             selectedIndex: _cubit.statusCurrentIndex,
                             selectIndex: _cubit.selectStatus),
                         SelectionChip(

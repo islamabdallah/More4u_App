@@ -71,12 +71,25 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20.h),
-                      Text(
-                        widget.benefit.name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.sp,
-                            color: mainColor),
+                      Row(
+                        children: [
+                          Text(
+                            widget.benefit.name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.sp,
+                                color: mainColor),
+                          ),
+                          Spacer(),
+                          Icon(CustomIcons.ph_arrows_counter_clockwise_duotone),
+                          SizedBox(
+                            width: 4.w,
+                          ),
+                          Text(
+                            '${widget.benefit.timesEmployeeReceiveThisBenefit}/${widget.benefit.times}',
+                            style: TextStyle(fontSize: 14.sp, color: greyColor, fontFamily: 'Roboto',),
+                          ),
+                        ],
                       ),
                       Text(
                         _cubit.benefit?.description ?? '',
@@ -318,6 +331,22 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                           ],
                         ),
                       ),
+                      //todo add && widget.benefit.isInProggress
+                      if(widget.benefit.times==widget.benefit.timesEmployeeReceiveThisBenefit)
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.center
+                      ,children: [
+                        Icon(CustomIcons.exclamation,color: redColor,),
+                        SizedBox(width: 3.w,),
+                        Text(
+                          "You did used this card before",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: redColor,
+                            fontSize: 12.sp,
+                          ),
+                        )
+                      ],),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
