@@ -23,6 +23,7 @@ class BenefitModel extends Benefit {
     String? dateToMatch,
     String? certainDate,
     String? lastStatus,
+    int? totalRequestsCount,
   }) : super(
           id: id,
           name: name,
@@ -43,6 +44,7 @@ class BenefitModel extends Benefit {
           dateToMatch: dateToMatch,
           certainDate: certainDate,
           lastStatus: lastStatus,
+          totalRequestsCount: totalRequestsCount,
         );
 
   factory BenefitModel.fromJson(Map<String, dynamic> json) {
@@ -56,10 +58,12 @@ class BenefitModel extends Benefit {
       benefitType: json['benefitType'],
       description: json['description'],
       benefitWorkflows: json['benefitWorkflows']?.cast<String>(),
-      benefitConditions:json["benefitConditions"]!=null?
-          BenefitConditionsModel.fromJson(json["benefitConditions"]):null,
-      benefitApplicable:json["benefitApplicable"]!=null?
-          BenefitApplicableModel.fromJson(json["benefitApplicable"]):null,
+      benefitConditions: json["benefitConditions"] != null
+          ? BenefitConditionsModel.fromJson(json["benefitConditions"])
+          : null,
+      benefitApplicable: json["benefitApplicable"] != null
+          ? BenefitApplicableModel.fromJson(json["benefitApplicable"])
+          : null,
       isAgift: json['isAgift'],
       minParticipant: json['minParticipant'],
       maxParticipant: json['maxParticipant'],
@@ -68,6 +72,7 @@ class BenefitModel extends Benefit {
       dateToMatch: json['dateToMatch'],
       certainDate: json['certainDate'],
       lastStatus: json['lastStatus'],
+      totalRequestsCount: json['totalRequestsCount'],
     );
   }
 }

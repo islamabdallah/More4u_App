@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +65,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
 
   @override
   Widget build(BuildContext context) {
-
     return BlocConsumer(
       bloc: _cubit,
       listener: (context, state) {
@@ -93,8 +93,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               context: context,
               isSucceeded: true,
               message: state.message,
-              onPressedOk: () {
-              });
+              onPressedOk: () {});
         }
         if (state is AddRequestResponseErrorState) {
           Navigator.pop(context);
@@ -102,9 +101,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               context: context,
               isSucceeded: true,
               message: state.message,
-              onPressedOk: () {
-
-              });
+              onPressedOk: () {});
         }
       },
       builder: (context, state) {
@@ -258,11 +255,11 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
                             child: Icon(
-                          // Icons.filter_list_alt,
-                          CustomIcons.search__1_,
-                          size: 20.w,
-                          color: Colors.white,
-                        )),
+                              // Icons.filter_list_alt,
+                              CustomIcons.search__1_,
+                              size: 20.w,
+                              color: Colors.white,
+                            )),
                       ),
                     ),
                     SizedBox(
@@ -286,27 +283,25 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
                             child: Icon(
-                          // Icons.filter_list_alt,
-                          CustomIcons.settings_sliders,
-                          size: 20.w,
-                          color: Colors.white,
-                        )),
+                              // Icons.filter_list_alt,
+                              CustomIcons.settings_sliders,
+                              size: 20.w,
+                              color: Colors.white,
+                            )),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 25.h),
                 Expanded(
-                  child:
-                  _cubit.benefitRequests.isNotEmpty?
-                  ListView.builder(
+                  child: _cubit.benefitRequests.isNotEmpty
+                      ? ListView.builder(
                     // shrinkWrap: true,
                     itemBuilder: (context, index) =>
                         requestCard(_cubit.benefitRequests[index]),
                     itemCount: _cubit.benefitRequests.length,
                   )
-                  :const Center(child: Text('No Requests To Manage')),
-
+                      : const Center(child: Text('No Requests To Manage')),
                 ),
               ],
             ),
@@ -336,7 +331,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 12.h,),
+                    SizedBox(
+                      height: 12.h,
+                    ),
                     Align(
                       alignment: Alignment.center,
                       child: Container(
@@ -348,7 +345,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                         ),
                       ),
                     ),
-                    SizedBox(height: 8.h,),
+                    SizedBox(
+                      height: 8.h,
+                    ),
                     Align(
                       alignment: Alignment.center,
                       child: Text(
@@ -362,29 +361,27 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     SizedBox(
                       height: 16,
                     ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        'Benefit Has Warning',
-                        style: TextStyle(
-                          color: Color(0xff7f7f7f),
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ), //Text
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          'Benefit Has Warning',
+                          style: TextStyle(
+                            color: Color(0xff7f7f7f),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ), //Text
 
-                     Spacer(),
-                      CustomSwitch(
-                        value: _cubit.containWarning,
-                        onChanged: (bool? value) {
-                          _cubit.changeContainWarning(value!);
-                        },
-                        activeColor: mainColor,
-
-                      ), //Checkbox
-                    ], //<Widget>[]
-                  ),
-
+                        Spacer(),
+                        CustomSwitch(
+                          value: _cubit.hasWarning,
+                          onChanged: (bool? value) {
+                            _cubit.changeContainWarning(value!);
+                          },
+                          activeColor: mainColor,
+                        ), //Checkbox
+                      ], //<Widget>[]
+                    ),
                     Text(
                       "Action",
                       textAlign: TextAlign.center,
@@ -398,17 +395,17 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       children: [
                         SelectionChip(
                             label: 'Holding',
-                            index: 0,
+                            index: 1,
                             selectedIndex: _cubit.statusCurrentIndex,
                             selectIndex: _cubit.selectStatus),
                         SelectionChip(
                             label: 'Approved',
-                            index: 2,
+                            index: 3,
                             selectedIndex: _cubit.statusCurrentIndex,
                             selectIndex: _cubit.selectStatus),
                         SelectionChip(
                             label: 'Rejected',
-                            index: 3,
+                            index: 4,
                             selectedIndex: _cubit.statusCurrentIndex,
                             selectIndex: _cubit.selectStatus),
                       ],
@@ -426,12 +423,12 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       children: [
                         SelectionChip(
                             label: 'Individual',
-                            index: 0,
+                            index: 2,
                             selectedIndex: _cubit.typeCurrentIndex,
                             selectIndex: _cubit.selectType),
                         SelectionChip(
                             label: 'Group',
-                            index: 1,
+                            index: 3,
                             selectedIndex: _cubit.typeCurrentIndex,
                             selectIndex: _cubit.selectType),
                       ],
@@ -468,9 +465,13 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       onShowPicker: (context, currentValue) async {
                         return showDatePicker(
                           context: context,
-                          firstDate: DateTime(DateTime.now().year),
+                          firstDate: DateTime(DateTime
+                              .now()
+                              .year),
                           initialDate: DateTime.now(),
-                          lastDate: DateTime(DateTime.now().year + 1)
+                          lastDate: DateTime(DateTime
+                              .now()
+                              .year + 1)
                               .add(Duration(days: -1)),
                         );
                       },
@@ -498,7 +499,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             context: context,
                             firstDate: _cubit.fromDate ?? DateTime.now(),
                             initialDate: _cubit.toDate ?? DateTime.now(),
-                            lastDate: DateTime(DateTime.now().year + 1)
+                            lastDate: DateTime(DateTime
+                                .now()
+                                .year + 1)
                                 .add(Duration(days: -1)));
                       },
                       onChanged: (date) {
@@ -545,7 +548,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
       margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0),
       child: InkWell(
         onTap: () {
-          _cubit.isBottomSheetOpened=true;
+          _cubit.isBottomSheetOpened = true;
           print(_cubit.isBottomSheetOpened);
           buildShowDetailedModalBottomSheet(request);
         },
@@ -590,8 +593,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                      // border: Border.all()
-                                      ),
+                                    // border: Border.all()
+                                  ),
                                   child: Image.asset(
                                     'assets/images/hbd.png',
                                     fit: BoxFit.fill,
@@ -622,7 +625,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               padding: EdgeInsets.symmetric(vertical: 8.h),
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -630,6 +633,17 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     style: TextStyle(
                                       color: mainColor,
                                       fontSize: 14.sp,
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    timeago.format(DateTime.parse(
+                                        request.requestedat ?? '')),
+                                    style: TextStyle(
+                                      color: greyColor,
+                                      fontSize: 12.sp,
                                       fontFamily: "Roboto",
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -690,25 +704,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       ),
                                     ]),
                                   ),
-                                  if (request.requestedAt != null)
-                                    RichText(
-                                      text: TextSpan(children: [
-                                        TextSpan(
-                                          text: 'Requested At   ',
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: greyColor,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        TextSpan(
-                                          text: request.requestedAt ?? '',
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: greyColor,
-                                          ),
-                                        ),
-                                      ]),
-                                    ),
                                 ],
                               ),
                             ),
@@ -718,8 +713,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     ),
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
-                      child: Row(
+                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
+                      child: request.myAction == null
+                          ? Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
@@ -730,7 +726,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                 primary: redColor,
                               ),
                               onPressed: () =>
-                                  acceptOrReject(false, request.requestNumber!),
+                                  acceptOrReject(
+                                      false, request.requestNumber!),
                               child: Text(
                                 'Reject',
                                 style: TextStyle(
@@ -751,7 +748,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                 primary: mainColor,
                               ),
                               onPressed: () =>
-                                  acceptOrReject(true, request.requestNumber!),
+                                  acceptOrReject(
+                                      true, request.requestNumber!),
                               child: Text(
                                 'Accept',
                                 style: TextStyle(
@@ -773,6 +771,47 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                           ),
                           Icon(Icons.arrow_circle_right, size: 30.r),
                         ],
+                      )
+                          : Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: RichText(
+                              softWrap: true,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: 'You ',
+                                  style: TextStyle(
+                                    color: greyColor,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: request.myAction?.action ?? '',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: getBenefitStatusColor(
+                                        request.myAction?.action ?? ''),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' this request ',
+                                  style: TextStyle(
+                                    color: greyColor,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: timeago.format(DateTime.parse(
+                                      request.myAction?.replayDate ?? '')),
+                                  style: TextStyle(
+                                      color: greyColor,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ])),
+                        ),
                       ),
                     ),
                   ],
@@ -807,386 +846,390 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
         //   ),
         // ),
         context: context,
-        builder: (
-          BuildContext context,
-          ScrollController scrollController,
-          double bottomSheetOffset,
-        ) {
+        builder: (BuildContext context,
+            ScrollController scrollController,
+            double bottomSheetOffset,) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: ListView(
-              shrinkWrap: true,
-              controller: scrollController,
-              children: [
+                shrinkWrap: true,
+                controller: scrollController,
+                children: [
                 SizedBox(height: 25.h),
-                Text(
-                  request.benefitName ?? '',
-                  style: TextStyle(
-                    color: mainColor,
-                    fontSize: 20.sp,
-                    fontFamily: "Roboto",
-                    fontWeight: FontWeight.w600,
+            Text(
+              request.benefitName ?? '',
+              style: TextStyle(
+                color: mainColor,
+                fontSize: 20.sp,
+                fontFamily: "Roboto",
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.r),
+                        border: Border.all(
+                          color: Color(0xFFE7E7E7),
+                        )),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6.r),
+                      child: Image.asset('assets/images/hbd.png'),
+                    ),
                   ),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.r),
-                            border: Border.all(
-                              color: Color(0xFFE7E7E7),
-                            )),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(6.r),
-                          child: Image.asset('assets/images/hbd.png'),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Expanded(
-                      flex: 10,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Name    ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.createdBy?.employeeName ?? '',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Number    ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '${request.requestNumber}',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Type    ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.benefitType ?? '',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Required Date    ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.from ?? '',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'To    ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.to ?? '',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Wrap(
-                  children: [
-                    if (request.message != null)
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'Message: ',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                color: greyColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: request.message ?? '',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: greyColor,
-                            ),
-                          ),
-                        ]),
-                      ),
-                  ],
-                ),
                 SizedBox(
-                  height: 16.h,
+                  width: 8.w,
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "Created By",
-                      style: TextStyle(
-                        color: mainColor,
-                        fontSize: 14.sp,
-                        fontFamily: "Roboto",
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Spacer(),
-                    if (request.requestedAt != null)
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'At ',
+                Expanded(
+                  flex: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Name    ',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 color: greyColor,
                                 fontWeight: FontWeight.bold),
                           ),
-                          TextSpan(
-                            text: request.requestedAt ?? '',
+                          Text(
+                            request.createdBy?.employeeName ?? '',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: greyColor,
                             ),
                           ),
-                        ]),
+                        ],
                       ),
-                  ],
-                ),
-                Divider(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          request.createdBy?.employeeName ?? '',
-                          style: TextStyle(
-                            color: greyColor,
-                            fontSize: 14.sp,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4.h,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: mainColor, width: 2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          height: 130.h,
-                          width: 132.h,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: Image.network(
-                              'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, ProfileScreen.routeName,
-                                arguments: request.createdBy);
-                          },
-                          child: Text(
-                            "View Profile",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Icon(CustomIcons.hastag),
-                              SizedBox(
-                                width: 6.w,
-                              ),
-                              Text(
-                                'Employee Number    ',
-                                style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.createdBy?.employeeNumber.toString() ??
-                                    '',
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            'Number    ',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: greyColor,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Row(
-                            children: [
-                              Icon(CustomIcons.seedling_solid__1_),
-                              SizedBox(
-                                width: 6.w,
-                              ),
-                              Text(
-                                'Sap Number    ',
-                                style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.createdBy?.sapNumber.toString() ?? '',
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(CustomIcons.apps),
-                              SizedBox(
-                                width: 6.w,
-                              ),
-                              Text(
-                                'Department    ',
-                                style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.createdBy?.departmentName ?? '',
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(CustomIcons.cake_birthday),
-                              SizedBox(
-                                width: 6.w,
-                              ),
-                              Text(
-                                'Birthday    ',
-                                style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.createdBy?.birthDate ?? '',
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(CustomIcons.person_solid),
-                              SizedBox(
-                                width: 6.w,
-                              ),
-                              Text(
-                                'Payroll Area    ',
-                                style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                request.createdBy?.collar ?? '',
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            '${request.requestNumber}',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: greyColor,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      Row(
+                        children: [
+                          Text(
+                            'Type    ',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: greyColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            request.benefitType ?? '',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: greyColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Required Date    ',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: greyColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            request.from ?? '',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: greyColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'To    ',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: greyColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            request.to ?? '',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: greyColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  height: 20.h,
+              ],
+            ),
+            Wrap(
+              children: [
+                if (request.message != null)
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Message: ',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: greyColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: request.message ?? '',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: greyColor,
+                        ),
+                      ),
+                    ]),
+                  ),
+              ],
+            ),
+            SizedBox(
+              height: 16.h,
+            ),
+            Row(
+              children: [
+                Text(
+                  "Created By",
+                  style: TextStyle(
+                    color: mainColor,
+                    fontSize: 14.sp,
+                    fontFamily: "Roboto",
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-                if (request.fullParticipantsData != null) ...[
+                Spacer(),
+                if (request.requestedat != null)
+
+                  RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'At ',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: greyColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: '${DateFormat('yyyy-MM-dd hh:mm aaa').format(
+                              DateTime.parse(request.requestedat ?? ''
+                              ))}',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: greyColor,
+                                ),
+                              ),
+                              ]),
+                        ),
+                      ],
+                      ),
+                      Divider(),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                request.createdBy?.employeeName ?? '',
+                                style: TextStyle(
+                                  color: greyColor,
+                                  fontSize: 14.sp,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 4.h,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: mainColor, width: 2),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                height: 130.h,
+                                width: 132.h,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6),
+                                  child: Image.network(
+                                    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, ProfileScreen.routeName,
+                                      arguments: request.createdBy);
+                                },
+                                child: Text(
+                                  "View Profile",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(CustomIcons.hastag),
+                                    SizedBox(
+                                      width: 6.w,
+                                    ),
+                                    Text(
+                                      'Employee Number    ',
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      request.createdBy?.employeeNumber
+                                          .toString() ??
+                                          '',
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: greyColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(CustomIcons.seedling_solid__1_),
+                                    SizedBox(
+                                      width: 6.w,
+                                    ),
+                                    Text(
+                                      'Sap Number    ',
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      request.createdBy?.sapNumber.toString() ??
+                                          '',
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: greyColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(CustomIcons.apps),
+                                    SizedBox(
+                                      width: 6.w,
+                                    ),
+                                    Text(
+                                      'Department    ',
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      request.createdBy?.departmentName ?? '',
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: greyColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(CustomIcons.cake_birthday),
+                                    SizedBox(
+                                      width: 6.w,
+                                    ),
+                                    Text(
+                                      'Birthday    ',
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      request.createdBy?.birthDate ?? '',
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: greyColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(CustomIcons.person_solid),
+                                    SizedBox(
+                                      width: 6.w,
+                                    ),
+                                    Text(
+                                      'Payroll Area    ',
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      request.createdBy?.collar ?? '',
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: greyColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      if (request.fullParticipantsData != null) ...[
                   Text(
                     "Participants",
                     style: TextStyle(
@@ -1202,7 +1245,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       alignment: WrapAlignment.center,
                       children: [
                         ...request.fullParticipantsData!
-                            .map((participant) => SelectionChip(
+                            .map((participant) =>
+                            SelectionChip(
                                 label: participant.employeeName ?? '',
                                 index: 0,
                                 selectedIndex: 1,
@@ -1236,7 +1280,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                 SizedBox(
                   height: 8.h,
                 ),
-                Row(
+                request.myAction == null
+                    ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
@@ -1274,139 +1319,256 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       ),
                     ),
                   ],
+                )
+                    : Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      RichText(
+                          softWrap: true,
+                          text: TextSpan(children: [
+                            TextSpan(
+                              text: 'You ',
+                              style: TextStyle(
+                                color: greyColor,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: request.myAction?.action ?? '',
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: getBenefitStatusColor(
+                                    request.myAction?.action ?? ''),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' this request ',
+                              style: TextStyle(
+                                color: greyColor,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                            TextSpan(
+                              text: timeago.format(DateTime.parse(
+                                  request.myAction?.replayDate ?? '')),
+                              style: TextStyle(
+                                  color: greyColor,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ])),
+                      if(request.myAction?.note != null)
+                        RichText(
+                            softWrap: true,
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: 'Note: ',
+                                style: TextStyle(
+                                    color: greyColor,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+
+                              TextSpan(
+                                text:
+                                request.myAction?.note ?? '',
+                                style: TextStyle(
+                                    color: greyColor,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ])),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
               ],
             ),
-          );
-        }).whenComplete(() => _cubit.isBottomSheetOpened=false);
-  }
+          );}).whenComplete(() => _cubit.isBottomSheetOpened = false);
+        }
 
-  acceptOrReject(bool isAccepted, int requestNumber) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        TextEditingController _textController = TextEditingController();
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
-          child: SingleChildScrollView(
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                ClipPath(
-                  clipper: MyClipper(),
-                  child: Container(
-                    height: 300.h,
-                    width: 500.0,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          isAccepted
-                              ? 'Approve and send your note'
-                              : 'Reject and send your note',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: isAccepted ? mainColor : redColor,
-                            fontSize: 18.sp,
-                            fontFamily: "Cairo",
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        TextFormField(
-                          controller: _textController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 3,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Roboto'),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            // contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            suffixIconConstraints:
-                                BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-                            prefixIconConstraints:
-                                BoxConstraints(maxHeight: 80.h, minWidth: 50.w),
-                            prefixIcon: Column(
-                              children: [
-                                Icon(CustomIcons.clipboard_regular),
-                              ],
+        acceptOrReject(bool isAccepted, int requestNumber)
+    {
+      showDialog(
+        context: context,
+        builder: (_) {
+          TextEditingController _textController = TextEditingController();
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+            child: SingleChildScrollView(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ClipPath(
+                    clipper: MyClipper(),
+                    child: Container(
+                      height: 300.h,
+                      width: 500.0,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding:
+                      EdgeInsets.symmetric(vertical: 12.h, horizontal: 14.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            isAccepted
+                                ? 'Approve and send your note'
+                                : 'Reject and send your note',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: isAccepted ? mainColor : redColor,
+                              fontSize: 18.sp,
+                              fontFamily: "Cairo",
+                              fontWeight: FontWeight.w700,
                             ),
-                            border: OutlineInputBorder(),
-                            labelText: 'Notes',
-                            hintText: 'Enter Your Notes',
-                            hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
                           ),
-                        ),
-                      ],
+                          TextFormField(
+                            controller: _textController,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 3,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Roboto'),
+                            decoration: InputDecoration(
+                              isDense: true,
+                              // contentPadding: EdgeInsets.symmetric(vertical: 0),
+                              suffixIconConstraints:
+                              BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+                              prefixIconConstraints:
+                              BoxConstraints(maxHeight: 80.h, minWidth: 50.w),
+                              prefixIcon: Column(
+                                children: [
+                                  Icon(CustomIcons.clipboard_regular),
+                                ],
+                              ),
+                              border: OutlineInputBorder(),
+                              labelText: 'Notes',
+                              hintText: 'Enter Your Notes',
+                              hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                              floatingLabelBehavior: FloatingLabelBehavior
+                                  .always,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 300.h / 1.4,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    width: 500.0,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: 300,
-                            child: DottedLine(
-                              dashLength: 10,
-                              dashGapLength: 5,
-                              lineThickness: 2,
-                              dashColor: Colors.grey,
+                  Positioned(
+                    top: 300.h / 1.4,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      width: 500.0,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: 300,
+                              child: DottedLine(
+                                dashLength: 10,
+                                dashGapLength: 5,
+                                lineThickness: 2,
+                                dashColor: Colors.grey,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 8.h, horizontal: 50.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: SizedBox(
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.h, horizontal: 50.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(6.r),
+                                        ),
+                                        side: BorderSide(
+                                          width: 2.0.w,
+                                          color:
+                                          isAccepted ? mainColor : redColor,
+                                        ),
+                                        primary: Colors.white,
+                                        onPrimary:
+                                        isAccepted ? mainColor : redColor,
+                                      ),
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Roboto",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 14.sp),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                Expanded(
                                   child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
+                                    onPressed: () async {
+                                      print(_cubit.isBottomSheetOpened);
+                                      if (_cubit.isBottomSheetOpened) {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      } else {
+                                        Navigator.of(context).pop();
+                                      }
+                                      var b = await _cubit
+                                          .acceptOrRejectRequest(
+                                          requestNumber,
+                                          isAccepted ? 1 : 2,
+                                          _textController.text);
+                                      print('hello');
+                                      if (b ?? false) {
+                                        print('hello');
+                                        print(b);
+                                        _cubit.removeRequest(requestNumber);
+                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.r),
+                                        borderRadius: BorderRadius.circular(
+                                            6.r),
                                       ),
                                       side: BorderSide(
                                         width: 2.0.w,
-                                        color:
-                                            isAccepted ? mainColor : redColor,
+                                        color: isAccepted
+                                            ? mainColor
+                                            : redColor,
                                       ),
-                                      primary: Colors.white,
-                                      onPrimary:
-                                          isAccepted ? mainColor : redColor,
+                                      primary: isAccepted
+                                          ? mainColor
+                                          : redColor,
+                                      onPrimary: Colors.white,
                                     ),
                                     child: Text(
-                                      'Cancel',
+                                      isAccepted ? 'Accept' : 'Reject',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontFamily: "Roboto",
@@ -1415,220 +1577,174 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 20.w,
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    print(_cubit.isBottomSheetOpened);
-                                    if(_cubit.isBottomSheetOpened) {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                    } else{
-                                      Navigator.of(context).pop();
-                                    }
-                                   var b= await _cubit.acceptOrRejectRequest(
-                                        requestNumber,
-                                        isAccepted ? 1 : 2,
-                                        _textController.text);
-                                   print('hello');
-                                   if(b??false){
-                                     print('hello');
-                                     print(b);
-                                     _cubit.removeRequest(requestNumber);
-                                   }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                    ),
-                                    side: BorderSide(
-                                      width: 2.0.w,
-                                      color: isAccepted ? mainColor : redColor,
-                                    ),
-                                    primary: isAccepted ? mainColor : redColor,
-                                    onPrimary: Colors.white,
-                                  ),
-                                  child: Text(
-                                    isAccepted ? 'Accept' : 'Reject',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: "Roboto",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-      //     Dialog(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
-      //   child: ClipPath(
-      //     clipper: MyClipper(),
-      //     child: Container(
-      //       decoration: BoxDecoration(
-      //       color: Colors.white,
-      //         borderRadius: BorderRadius.circular(6.r),
-      //       ),
-      //       padding: const EdgeInsets.all(8.0),
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         mainAxisSize: MainAxisSize.min,
-      //         children: [
-      //           Text(
-      //             isAccepted?'Approve and send your note':'Reject and send your note',
-      //             textAlign: TextAlign.center,
-      //             style: TextStyle(
-      //               color:  isAccepted?mainColor:redColor,
-      //               fontSize: 18.sp,
-      //               fontFamily: "Cairo",
-      //               fontWeight: FontWeight.w700,
-      //             ),
-      //           ),
-      //           TextFormField(
-      //             keyboardType: TextInputType.multiline,
-      //             maxLines: 3,
-      //             style: const TextStyle(
-      //                 fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
-      //             decoration:
-      //             InputDecoration(
-      //               isDense: true,
-      //               // contentPadding: EdgeInsets.symmetric(vertical: 0),
-      //               suffixIconConstraints:
-      //               BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
-      //               prefixIconConstraints: BoxConstraints(maxHeight: 103.h, minWidth: 50.w) ,
-      //               prefixIcon: Column(
-      //                 children: [
-      //                   Icon(CustomIcons.clipboard_regular),
-      //                 ],
-      //               ),
-      //               border: OutlineInputBorder(),
-      //               labelText: 'Notes',
-      //               hintText: 'Enter Your Notes',
-      //               hintStyle: TextStyle(color: Color(0xffc1c1c1)),
-      //               floatingLabelBehavior: FloatingLabelBehavior.always,
-      //             ),
-      //           ),
-      //           SizedBox(
-      //             height: 8,
-      //           ),
-      //           SizedBox(
-      //             width: double.infinity,
-      //             child: ElevatedButton(
-      //               onPressed: () {
-      //                 showMessageDialog(
-      //                   context: context,
-      //                   isSucceeded: true,
-      //                   message: isAccepted
-      //                       ? 'Request Accepted!'
-      //                       : 'Request Rejected!',
-      //                   onPressedOk: () {
-      //                     Navigator.popUntil(
-      //                         context, ModalRoute.withName(HomeScreen.routeName));
-      //                   },
-      //                 );
-      //               },
-      //               child: const Text('Confirm'),
-      //               style: ElevatedButton.styleFrom(primary: mainColor),
-      //             ),
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
-    );
-  }
-}
-
-showInfo(BuildContext context, User user) {
-  showDialog(
-      barrierColor: Colors.transparent,
-      context: context,
-      builder: (_) {
-        return Dialog(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20),
-              color: mainColor,
-              child: const Center(
-                child: Text(
-                  'Employee Information',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
+                  )
+                ],
               ),
             ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.person),
-              title: Text('Name: ${user.employeeName ?? ''}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.pin),
-              title: Text('Employee Number: ${user.employeeNumber}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.sell),
-              title: Text('Sap Number: ${user.sapNumber}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.domain),
-              title: Text('Department: ${user.departmentName ?? ''}'),
-            ),
-            // ListTile(
-            //   dense: true,
-            //   leading: Icon(Icons.person),
-            //   title: Text('supervisorName: ${user.supervisorName ?? ''}'),
-            // ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.cake),
-              title: Text('Birth Date: ${user.birthDate}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.accessibility),
-              title: Text('Payroll Area: ${user.collar}'),
-            ),
-          ]),
-        );
-      });
-}
+          );
+        },
+        //     Dialog(
+        //   backgroundColor: Colors.transparent,
+        //   elevation: 0,
+        //   insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+        //   child: ClipPath(
+        //     clipper: MyClipper(),
+        //     child: Container(
+        //       decoration: BoxDecoration(
+        //       color: Colors.white,
+        //         borderRadius: BorderRadius.circular(6.r),
+        //       ),
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         mainAxisSize: MainAxisSize.min,
+        //         children: [
+        //           Text(
+        //             isAccepted?'Approve and send your note':'Reject and send your note',
+        //             textAlign: TextAlign.center,
+        //             style: TextStyle(
+        //               color:  isAccepted?mainColor:redColor,
+        //               fontSize: 18.sp,
+        //               fontFamily: "Cairo",
+        //               fontWeight: FontWeight.w700,
+        //             ),
+        //           ),
+        //           TextFormField(
+        //             keyboardType: TextInputType.multiline,
+        //             maxLines: 3,
+        //             style: const TextStyle(
+        //                 fontWeight: FontWeight.w400, fontFamily: 'Roboto'),
+        //             decoration:
+        //             InputDecoration(
+        //               isDense: true,
+        //               // contentPadding: EdgeInsets.symmetric(vertical: 0),
+        //               suffixIconConstraints:
+        //               BoxConstraints(maxHeight: 20.h, minWidth: 50.w),
+        //               prefixIconConstraints: BoxConstraints(maxHeight: 103.h, minWidth: 50.w) ,
+        //               prefixIcon: Column(
+        //                 children: [
+        //                   Icon(CustomIcons.clipboard_regular),
+        //                 ],
+        //               ),
+        //               border: OutlineInputBorder(),
+        //               labelText: 'Notes',
+        //               hintText: 'Enter Your Notes',
+        //               hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+        //               floatingLabelBehavior: FloatingLabelBehavior.always,
+        //             ),
+        //           ),
+        //           SizedBox(
+        //             height: 8,
+        //           ),
+        //           SizedBox(
+        //             width: double.infinity,
+        //             child: ElevatedButton(
+        //               onPressed: () {
+        //                 showMessageDialog(
+        //                   context: context,
+        //                   isSucceeded: true,
+        //                   message: isAccepted
+        //                       ? 'Request Accepted!'
+        //                       : 'Request Rejected!',
+        //                   onPressedOk: () {
+        //                     Navigator.popUntil(
+        //                         context, ModalRoute.withName(HomeScreen.routeName));
+        //                   },
+        //                 );
+        //               },
+        //               child: const Text('Confirm'),
+        //               style: ElevatedButton.styleFrom(primary: mainColor),
+        //             ),
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
+      );
+    }
+  }
 
-class MyClipper extends CustomClipper<Path> {
+  showInfo(BuildContext context, User user) {
+    showDialog(
+        barrierColor: Colors.transparent,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                color: mainColor,
+                child: const Center(
+                  child: Text(
+                    'Employee Information',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.person),
+                title: Text('Name: ${user.employeeName ?? ''}'),
+              ),
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.pin),
+                title: Text('Employee Number: ${user.employeeNumber}'),
+              ),
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.sell),
+                title: Text('Sap Number: ${user.sapNumber}'),
+              ),
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.domain),
+                title: Text('Department: ${user.departmentName ?? ''}'),
+              ),
+              // ListTile(
+              //   dense: true,
+              //   leading: Icon(Icons.person),
+              //   title: Text('supervisorName: ${user.supervisorName ?? ''}'),
+              // ),
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.cake),
+                title: Text('Birth Date: ${user.birthDate}'),
+              ),
+              ListTile(
+                dense: true,
+                leading: Icon(Icons.accessibility),
+                title: Text('Payroll Area: ${user.collar}'),
+              ),
+            ]),
+          );
+        });
+  }
+
+  class MyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    print(size.height);
-    Path path = Path();
-    path.lineTo(0.0, size.height);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 0.0);
-    path.addOval(
-        Rect.fromCircle(center: Offset(0.0, size.height / 1.4), radius: 15.0));
-    path.addOval(Rect.fromCircle(
-        center: Offset(size.width, size.height / 1.4), radius: 15.0));
+  print(size.height);
+  Path path = Path();
+  path.lineTo(0.0, size.height);
+  path.lineTo(size.width, size.height);
+  path.lineTo(size.width, 0.0);
+  path.addOval(
+  Rect.fromCircle(center: Offset(0.0, size.height / 1.4), radius: 15.0));
+  path.addOval(Rect.fromCircle(
+  center: Offset(size.width, size.height / 1.4), radius: 15.0));
 
-    return path;
+  return path;
   }
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
+  }

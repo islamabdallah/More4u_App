@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +11,19 @@ import 'package:more4u/data/models/user_model.dart';
 
 
 main() {
+
+    test(
+      'test time',
+      () async {
+        //arrange
+        String time = '2022-07-07T12:48:58.5341151';
+        DateTime t = DateTime.parse(time);
+        //act
+        String newTime = timeago.format(t);
+        //assert
+        print(newTime);
+      },
+    );
 
     test(
       'test FakeRemoteDataSource',

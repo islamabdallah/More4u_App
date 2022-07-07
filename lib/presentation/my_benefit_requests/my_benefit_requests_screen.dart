@@ -4,6 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 import 'package:more4u/presentation/my_benefit_requests/cubits/my_benefit_requests_cubit.dart';
@@ -203,8 +206,8 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                   width: 6.w,
                                 ),
                                 Text(
-                                  //todo chahe to time ago
-                                  '1 hour ago',
+
+                                    timeago.format(DateTime.parse(request.requestedat??'')),
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontFamily: "Roboto",
@@ -401,7 +404,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                 ),
                               ],
                             ),
-                            if (request.message != null)
+                            if (request.message != null&&request.message!.trim().isNotEmpty)
                               RichText(
                                 text: TextSpan(children: [
                                   TextSpan(
@@ -597,7 +600,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                                 child: Container(
                                                   margin: EdgeInsets.symmetric(
                                                       vertical: 2.h),
-                                                  height: 30.h,
+                                                  height: 50.h,
                                                   width: 2.w,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -675,20 +678,19 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                                   //         fontFamily:
                                                   //             'Roboto')),
                                                   //todo fix this
-                                                  // Text('at ${request.requestWorkFlowAPIs![index].replayDate}'),
+                                                  request.requestWorkFlowAPIs![index].replayDate!.contains('0001')?
+                                                      SizedBox():
+                                                  Text('${DateFormat('yyyy-MM-dd hh:mm aaa').format(DateTime.parse(request.requestWorkFlowAPIs![index].replayDate!))}'),
                                                 ],
                                               ),
-                                              Padding(
-                                                padding: EdgeInsets.only(left: 11.w),
-                                                child: Text(
-                                                    request
-                                                            .requestWorkFlowAPIs![
-                                                                index]
-                                                            .notes ??
-                                                        '',
-                                                    style: TextStyle(
-                                                        fontFamily: 'Roboto',color: greyColor)),
-                                              ),
+                                              Text(
+                                                  request
+                                                          .requestWorkFlowAPIs![
+                                                              index]
+                                                          .notes ??
+                                                      '',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Roboto',color: greyColor)),
                                             ],
                                           ),
                                         ),
@@ -739,17 +741,14 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                 style: TextStyle(color: redColor),
                                 textAlign: TextAlign.center)
                             : request.status=='Approved'?Column(children: [
-                              SizedBox(
-                                width: 128,
-                                child: Text(
-                                  "Congratulations",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: greenColor,
-                                    fontSize: 18.sp,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                              Text(
+                                "Congratulations",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: greenColor,
+                                  fontSize: 18.sp,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                               Text(
@@ -763,17 +762,14 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                 ),
                               ),
                             ],):Column(children: [
-                              SizedBox(
-                                width: 128,
-                                child: Text(
-                                  "OOPs, Sorry",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: redColor,
-                                    fontSize: 18.sp,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                              Text(
+                                "OOPs, Sorry",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: redColor,
+                                  fontSize: 18.sp,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                               Text(

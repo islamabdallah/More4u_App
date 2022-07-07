@@ -108,6 +108,21 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   @override
   Future<List<BenefitRequest>> getBenefitsToManage(
       {required int employeeNumber, FilteredSearch? search}) async {
+
+
+if(search!=null)
+    print(jsonEncode({
+      "selectedBenefitType": search.selectedBenefitType,
+      "selectedRequestStatus": search.selectedRequestStatus,
+      "employeeNumberSearch": search.employeeNumberSearch,
+      "selectedDepartmentId": search.selectedDepartmentId,
+      "selectedTimingId": search.selectedTimingId,
+      "hasWarningMessage": search.hasWarningMessage,
+      "searchDateFrom": search.searchDateFrom,
+      "searchDateTo": search.searchDateTo,
+      "selectedAll": false,
+      "employeeNumber": employeeNumber,
+    }));
     final response = search != null
         ? await client.post(Uri.parse(showRequests),
             headers: {
@@ -119,6 +134,9 @@ class RemoteDataSourceImpl extends RemoteDataSource {
               "employeeNumberSearch": search.employeeNumberSearch,
               "selectedDepartmentId": search.selectedDepartmentId,
               "selectedTimingId": search.selectedTimingId,
+              "hasWarningMessage": search.hasWarningMessage,
+              "searchDateFrom": search.searchDateFrom,
+              "searchDateTo": search.searchDateTo,
               "selectedAll": false,
               "employeeNumber": employeeNumber,
             }))

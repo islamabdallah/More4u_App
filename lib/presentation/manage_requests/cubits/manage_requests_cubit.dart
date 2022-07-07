@@ -22,7 +22,6 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   List<BenefitRequest> benefitRequests = [];
   bool isBottomSheetOpened = false;
 
-
   getBenefitsToManage({FilteredSearch? search}) async {
     emit(GetRequestsToManageLoadingState());
 
@@ -37,28 +36,27 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
     });
   }
 
-  removeRequest(int requestNumber){
-    benefitRequests.removeWhere((element) => element.requestNumber==requestNumber);
+  removeRequest(int requestNumber) {
+    benefitRequests
+        .removeWhere((element) => element.requestNumber == requestNumber);
     emit(RemoveRequestSuccessState());
   }
 
-
-  Future<bool?> acceptOrRejectRequest(int requestNumber,int status,String message)async{
+  Future<bool?> acceptOrRejectRequest(
+      int requestNumber, int status, String message) async {
     emit(AddRequestResponseLoadingState());
     final result = await addRequestResponseUsecase(
         employeeNumber: userData!.employeeNumber,
         status: status,
         requestNumber: requestNumber,
-      message: message
-    );
+        message: message);
 
     bool? isSuccess;
     result.fold((failure) {
-      isSuccess=false;
+      isSuccess = false;
       emit(AddRequestResponseErrorState(failure.message));
-
     }, (message) {
-      isSuccess=true;
+      isSuccess = true;
       emit(AddRequestResponseSuccessState(message));
       return true;
     });
@@ -74,7 +72,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   TextEditingController toText = TextEditingController();
   int statusCurrentIndex = -1;
   int typeCurrentIndex = -1;
-  bool containWarning = false;
+  bool hasWarning = false;
 
   DateTime? fromDate;
   DateTime? toDate;
@@ -108,7 +106,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   }
 
   changeContainWarning(bool value) {
-    containWarning = value;
+    hasWarning = value;
     emit(ChangeFiltration());
   }
 
@@ -122,10 +120,13 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
         selectedRequestStatus: statusCurrentIndex,
         selectedBenefitType: typeCurrentIndex,
         employeeNumberSearch: int.parse(employeeNumberSearch.text.isEmpty
-            ? '0'
+            ? '-1'
             : employeeNumberSearch.text),
         selectedDepartmentId: -1,
-        selectedTimingId: -1);
+        selectedTimingId: -1,
+        hasWarningMessage: hasWarning,
+        searchDateFrom: fromText.text.isEmpty ? "0001-01-01" : fromText.text,
+        searchDateTo: toText.text.isEmpty ? "0001-01-01" : toText.text);
     getBenefitsToManage(search: search);
   }
 }

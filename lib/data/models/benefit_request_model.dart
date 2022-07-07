@@ -19,7 +19,7 @@ class BenefitRequestModel extends BenefitRequest {
     int? sendToID,
     User? sendToModel,
     int? employeeNumber,
-    String? requestedAt,
+    String? requestedat,
     List<String>? documents,
 
     //benefit data
@@ -38,6 +38,7 @@ class BenefitRequestModel extends BenefitRequest {
     User? createdBy,
     String? warningMessage,
     bool? employeeCanResponse,
+    MyAction? myAction,
   }) : super(
           requestNumber: requestNumber,
           from: from,
@@ -51,7 +52,7 @@ class BenefitRequestModel extends BenefitRequest {
           sendToID: sendToID,
           sendToModel: sendToModel,
           employeeNumber: employeeNumber,
-          requestedAt: requestedAt,
+          requestedat: requestedat,
           documents: documents,
           benefitId: benefitId,
           benefitName: benefitName,
@@ -64,52 +65,55 @@ class BenefitRequestModel extends BenefitRequest {
           createdBy: createdBy,
           warningMessage: warningMessage,
           employeeCanResponse: employeeCanResponse,
+          myAction: myAction,
         );
 
   factory BenefitRequestModel.fromJson(Map<String, dynamic> json) =>
       BenefitRequestModel(
-        requestNumber: json['requestNumber'],
-        from: json['from'],
-        to: json['to'],
-        message: json['message'],
-        groupName: json['groupName'],
-        selectedEmployeeNumbers: json['selectedEmployeeNumbers'],
-        // participants: json['participants'],
-        participantsData: json['participantsData'] != null
-            ? List<Participant>.from(json['participantsData']
-                .map((x) => ParticipantModel.fromJson(x))
-                .toList())
-            : null,
-        fullParticipantsData: json['fullParticipantsData'] != null
-            ? List<User>.from(json['fullParticipantsData']
-                .map((x) => UserModel.fromJson(x))
-                .toList())
-            : null,
-        sendToID: json['sendToID'],
-        sendToModel: json['sendToModel'] != null
-            ? UserModel.fromJson(json['sendToModel'])
-            : null,
-        employeeNumber: json['employeeNumber'],
-        requestedAt: json['requestedAt'],
-        documents: json['documents']?.cast<String>(),
-        benefitId: json['benefitId'],
-        benefitName: json['benefitName'],
-        benefitType: json['benefitType'],
-        status: json['status'],
-        requestStatusId: json['requestStatusId'],
-        canCancel: json['canCancel'],
-        canEdit: json['canEdit'],
-        requestWorkFlowAPIs: json['requestWorkFlowAPIs'] != null
-            ? List<RequestWorkFlowAPIsModel>.from(json['requestWorkFlowAPIs']
-                .map((x) => RequestWorkFlowAPIsModel.fromJson(x))
-                .toList())
-            : null,
-        createdBy: json['createdBy'] != null
-            ? UserModel.fromJson(json['createdBy'])
-            : null,
-        warningMessage: json['warningMessage'],
-        employeeCanResponse: json['employeeCanResponse'],
-      );
+          requestNumber: json['requestNumber'],
+          from: json['from'],
+          to: json['to'],
+          message: json['message'],
+          groupName: json['groupName'],
+          selectedEmployeeNumbers: json['selectedEmployeeNumbers'],
+          // participants: json['participants'],
+          participantsData: json['participantsData'] != null
+              ? List<Participant>.from(json['participantsData']
+                  .map((x) => ParticipantModel.fromJson(x))
+                  .toList())
+              : null,
+          fullParticipantsData: json['fullParticipantsData'] != null
+              ? List<User>.from(json['fullParticipantsData']
+                  .map((x) => UserModel.fromJson(x))
+                  .toList())
+              : null,
+          sendToID: json['sendToID'],
+          sendToModel: json['sendToModel'] != null
+              ? UserModel.fromJson(json['sendToModel'])
+              : null,
+          employeeNumber: json['employeeNumber'],
+          requestedat: json['requestedat'],
+          documents: json['documents']?.cast<String>(),
+          benefitId: json['benefitId'],
+          benefitName: json['benefitName'],
+          benefitType: json['benefitType'],
+          status: json['status'],
+          requestStatusId: json['requestStatusId'],
+          canCancel: json['canCancel'],
+          canEdit: json['canEdit'],
+          requestWorkFlowAPIs: json['requestWorkFlowAPIs'] != null
+              ? List<RequestWorkFlowAPIsModel>.from(json['requestWorkFlowAPIs']
+                  .map((x) => RequestWorkFlowAPIsModel.fromJson(x))
+                  .toList())
+              : null,
+          createdBy: json['createdBy'] != null
+              ? UserModel.fromJson(json['createdBy'])
+              : null,
+          warningMessage: json['warningMessage'],
+          employeeCanResponse: json['employeeCanResponse'],
+          myAction: json['myAction'] != null
+              ? MyActionModel.fromJson(json['myAction'])
+              : null);
 
   Map<String, dynamic> toJson() {
     return {
@@ -122,7 +126,7 @@ class BenefitRequestModel extends BenefitRequest {
       "from": from,
       "to": to,
       "message": message,
-      'documents':documents,
+      'documents': documents,
     };
   }
 
@@ -169,5 +173,23 @@ class RequestWorkFlowAPIsModel extends RequestWorkFlowAPIs {
         status: json['status'],
         replayDate: json['replayDate'],
         notes: json['notes'],
+      );
+}
+
+class MyActionModel extends MyAction {
+  const MyActionModel({
+    String? action,
+    String? note,
+    String? replayDate,
+  }) : super(
+          action: action,
+          note: note,
+          replayDate: replayDate,
+        );
+
+  factory MyActionModel.fromJson(Map<String, dynamic> json) => MyActionModel(
+        action: json['action'],
+        note: json['note'],
+        replayDate: json['replayDate'],
       );
 }

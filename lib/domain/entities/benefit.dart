@@ -26,8 +26,7 @@ class Benefit extends Equatable {
 
   //other
   final String? lastStatus;
-
-  //todo add benefitStatses to count requests
+  final int? totalRequestsCount;
 
   const Benefit({
     required this.id,
@@ -49,6 +48,7 @@ class Benefit extends Equatable {
     this.dateToMatch,
     this.certainDate,
     this.lastStatus,
+    this.totalRequestsCount,
   });
 
   @override
@@ -70,6 +70,7 @@ class Benefit extends Equatable {
         dateToMatch,
         certainDate,
         lastStatus,
+        totalRequestsCount,
       ];
 }
 
@@ -99,18 +100,19 @@ class BenefitConditions extends Equatable {
 
   @override
   List<Object?> get props => [
-  type,
-  workDuration,
-  dateToMatch,
-  gender,
-  maritalStatus,
-  requiredDocuments,
-  age,
-  minParticipant,
-  maxParticipant,
-  payrollArea,
-  ];
+        type,
+        workDuration,
+        dateToMatch,
+        gender,
+        maritalStatus,
+        requiredDocuments,
+        age,
+        minParticipant,
+        maxParticipant,
+        payrollArea,
+      ];
 }
+
 class BenefitApplicable extends Equatable {
   final bool? type;
   final bool? workDuration;
@@ -125,29 +127,29 @@ class BenefitApplicable extends Equatable {
 
   const BenefitApplicable(
       {this.type,
-        this.workDuration,
-        this.dateToMatch,
-        this.gender,
-        this.maritalStatus,
-        this.requiredDocuments,
-        this.age,
-        this.minParticipant,
-        this.maxParticipant,
-        this.payrollArea});
+      this.workDuration,
+      this.dateToMatch,
+      this.gender,
+      this.maritalStatus,
+      this.requiredDocuments,
+      this.age,
+      this.minParticipant,
+      this.maxParticipant,
+      this.payrollArea});
 
   @override
   List<Object?> get props => [
-    type,
-    workDuration,
-    dateToMatch,
-    gender,
-    maritalStatus,
-    requiredDocuments,
-    age,
-    minParticipant,
-    maxParticipant,
-    payrollArea,
-  ];
+        type,
+        workDuration,
+        dateToMatch,
+        gender,
+        maritalStatus,
+        requiredDocuments,
+        age,
+        minParticipant,
+        maxParticipant,
+        payrollArea,
+      ];
 }
 //
 // class BenefitType extends Equatable {

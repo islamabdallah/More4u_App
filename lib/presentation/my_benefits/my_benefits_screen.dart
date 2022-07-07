@@ -414,7 +414,7 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                                 child: Row(
                                   children: [
                                     Text(
-                                      '7 Requests',
+                                      '${benefit.totalRequestsCount} Requests',
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           fontFamily: "Roboto",

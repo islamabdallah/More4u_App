@@ -16,7 +16,7 @@ class BenefitRequest extends Equatable {
   final int? sendToID;
   final User? sendToModel;
   final int? employeeNumber;
-  final String? requestedAt;
+  final String? requestedat;
   final List<String>? documents;
 
   //benefit data
@@ -35,6 +35,7 @@ class BenefitRequest extends Equatable {
   final User? createdBy;
   final String? warningMessage;
   final bool? employeeCanResponse;
+  final MyAction? myAction;
 
   const BenefitRequest(
       {this.requestNumber,
@@ -49,7 +50,7 @@ class BenefitRequest extends Equatable {
       this.sendToID,
       this.sendToModel,
       this.employeeNumber,
-      this.requestedAt,
+      this.requestedat,
       this.documents,
       this.benefitId,
       this.benefitName,
@@ -61,7 +62,9 @@ class BenefitRequest extends Equatable {
       this.requestWorkFlowAPIs,
       this.createdBy,
       this.warningMessage,
-      this.employeeCanResponse});
+      this.employeeCanResponse,
+        this.myAction,
+      });
 
   @override
   List<Object?> get props => [
@@ -77,7 +80,7 @@ class BenefitRequest extends Equatable {
         sendToID,
         sendToModel,
         employeeNumber,
-        requestedAt,
+        requestedat,
         documents,
         benefitId,
         benefitName,
@@ -90,6 +93,7 @@ class BenefitRequest extends Equatable {
         createdBy,
         warningMessage,
         employeeCanResponse,
+        myAction,
       ];
 
   String get statusString {
@@ -144,4 +148,15 @@ class RequestWorkFlowAPIs {
 //       return 'Any';
 //   }
 // }
+}
+
+class MyAction extends Equatable{
+  final String? action;
+  final String? note;
+  final String? replayDate;
+
+  const MyAction({this.action, this.note, this.replayDate});
+
+  @override
+  List<Object?> get props => [action,note,replayDate];
 }
