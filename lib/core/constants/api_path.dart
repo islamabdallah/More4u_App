@@ -13,3 +13,4 @@ const String confirmRequest = baseUrl + '/BenefitAPI/ConfirmRequest';
 const String showRequestsDefault = baseUrl + '/BenefitAPI/ShowRequestsDefault';
 const String showRequests = baseUrl + '/BenefitAPI/ShowRequests';
 const String addRequestResponse = baseUrl + '/BenefitAPI/AddResponse';
+const String showNotifications = baseUrl + '/BenefitAPI/ShowNotifications';

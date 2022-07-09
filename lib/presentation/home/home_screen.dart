@@ -85,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       );
                     }),
                     Badge(
+                      ignorePointer: true,
                       position: BadgePosition(bottom: -2, end: 3),
                       badgeColor: redColor,
                       // badgeContent: SizedBox(

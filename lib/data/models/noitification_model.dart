@@ -1,7 +1,7 @@
 import '../../domain/entities/notification.dart';
 
 class NotificationModel extends Notification {
-  NotificationModel({
+  const NotificationModel({
     employeeNumber,
     employeeFullName,
     employeeProfilePicture,

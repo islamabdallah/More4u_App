@@ -234,9 +234,34 @@ if(search!=null)
 
   @override
   Future<List<NotificationModel>> getNotifications(
-      {required int employeeNumber}) {
-    // TODO: implement getNotifications
-    throw UnimplementedError();
+      {required int employeeNumber}) async {
+
+    final response = await client.post(
+      Uri.parse(showNotifications).replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      List<NotificationModel> notifications = [];
+
+      for (var notification in result['data']) {
+        notifications.add(NotificationModel.fromJson(notification));
+      }
+      return notifications;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
   }
 
   @override

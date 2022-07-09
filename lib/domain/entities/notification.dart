@@ -5,12 +5,12 @@ class Notification extends Equatable {
   final String? employeeFullName;
   final String? employeeProfilePicture;
   final String? notificationType;
-  final dynamic message;
+  final String? message;
   final String? requestStatus;
   final String? date;
   final String? time;
 
-  Notification({
+  const Notification({
     this.employeeNumber,
     this.employeeFullName,
     this.employeeProfilePicture,

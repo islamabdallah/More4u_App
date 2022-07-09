@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:more4u/core/constants/app_constants.dart';
 import 'package:more4u/custom_icons.dart';
 import 'package:more4u/presentation/home/home_screen.dart';
 import 'package:more4u/presentation/manage_requests/manage_requests_screen.dart';
