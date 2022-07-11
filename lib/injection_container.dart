@@ -77,9 +77,6 @@ Future<void> init() async {
 
 // Datasources
 
-  //todo uncomment this when api is published
-  // sl.registerLazySingleton<LoginRemoteDataSource>(
-  //     () => LoginRemoteDataSourceImpl(client: sl()));
 
   sl.registerLazySingleton<RemoteDataSource>(
       () => RemoteDataSourceImpl(client: sl()));
