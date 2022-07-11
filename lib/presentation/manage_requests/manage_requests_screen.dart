@@ -519,6 +519,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             // FlutterAppBadger.updateBadgeCount(10);
                             // FlutterAppBadger.removeBadge();
                             Navigator.pop(context);
+                            _cubit.search();
                           },
                           child: Text('Done'),
                           style: ElevatedButton.styleFrom(
@@ -598,9 +599,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     alignment: Alignment.centerLeft,
                                   ),
                                 ),
-
-                                //todo add containt document flag for request
-                                if (request.warningMessage != null)
+                                if (request.warningMessage != null || (request.documents!=null&&request.documents!.isNotEmpty))
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 5.w, vertical: 8.h),
@@ -1088,7 +1087,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                           onPressed: () {
                             Navigator.pushNamed(
                                 context, ProfileScreen.routeName,
-                                arguments: request.createdBy);
+                                arguments: {'user':request.createdBy});
                           },
                           child: Text(
                             "View Profile",
@@ -1252,7 +1251,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                 selectIndex: (_) {
                                   Navigator.pushNamed(
                                       context, ProfileScreen.routeName,
-                                      arguments: participant);
+                                      arguments: {'user':participant} );
                                 }))
                             .toList()
                       ],

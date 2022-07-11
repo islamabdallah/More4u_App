@@ -27,6 +27,7 @@ class Benefit extends Equatable {
   //other
   final String? lastStatus;
   final int? totalRequestsCount;
+  final bool? hasHoldingRequests;
 
   const Benefit({
     required this.id,
@@ -49,6 +50,7 @@ class Benefit extends Equatable {
     this.certainDate,
     this.lastStatus,
     this.totalRequestsCount,
+    this.hasHoldingRequests,
   });
 
   @override
@@ -71,6 +73,7 @@ class Benefit extends Equatable {
         certainDate,
         lastStatus,
         totalRequestsCount,
+        hasHoldingRequests,
       ];
 }
 

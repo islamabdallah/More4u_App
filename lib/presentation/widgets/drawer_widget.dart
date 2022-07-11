@@ -95,7 +95,7 @@ class DrawerWidget extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(top: 8.h),
                           child: Text(
-                            userData!.email??'',
+                            userData!.email ?? '',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -121,8 +121,9 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () {
                       if (ModalRoute.of(context)?.settings.name ==
                           HomeScreen.routeName) {
-                        Navigator.pushNamed(
-                            context, MyBenefitsScreen.routeName).whenComplete(() => HomeCubit.get(context).getHomeData());
+                        Navigator.pushNamed(context, MyBenefitsScreen.routeName)
+                            .whenComplete(
+                                () => HomeCubit.get(context).getHomeData());
                         print('hhhhh');
                       } else {
                         Navigator.pushReplacementNamed(
@@ -154,8 +155,11 @@ class DrawerWidget extends StatelessWidget {
                     title: 'Profile',
                     leading: CustomIcons.user,
                     onTap: () {
-                      if(ModalRoute.of(context)?.settings.name!=ProfileScreen.routeName)
-                      Navigator.pushNamed(context, ProfileScreen.routeName,arguments: userData);
+                      if (ModalRoute.of(context)?.settings.name !=
+                          ProfileScreen.routeName) {
+                        Navigator.pushNamed(context, ProfileScreen.routeName,
+                            arguments: {'user': userData, 'isProfile': true});
+                      }
                     },
                   ),
                   Divider(),
@@ -170,7 +174,9 @@ class DrawerWidget extends StatelessWidget {
                         if (ModalRoute.of(context)?.settings.name ==
                             HomeScreen.routeName) {
                           Navigator.pushNamed(
-                              context, ManageRequestsScreen.routeName).whenComplete(() => HomeCubit.get(context).getHomeData());
+                                  context, ManageRequestsScreen.routeName)
+                              .whenComplete(
+                                  () => HomeCubit.get(context).getHomeData());
                         } else {
                           Navigator.pushReplacementNamed(
                               context, ManageRequestsScreen.routeName);
@@ -182,19 +188,19 @@ class DrawerWidget extends StatelessWidget {
                     context,
                     title: 'Logout',
                     leading: CustomIcons.sign_out_alt,
-                    onTap: ()  {
-                        PushNotificationService.deleteDeviceToken();
-                        SharedPreferences.getInstance()
-                            .then((value) => value.remove(CACHED_USER));
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            LoginScreen.routeName, (Route<dynamic> route) => false);
-                      },
+                    onTap: () {
+                      PushNotificationService.deleteDeviceToken();
+                      SharedPreferences.getInstance()
+                          .then((value) => value.remove(CACHED_USER));
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          LoginScreen.routeName,
+                          (Route<dynamic> route) => false);
+                    },
                   ),
                   Spacer(),
                   Align(
-                    alignment: Alignment.bottomCenter,
-                    child: PoweredByCemex()
-                  ),
+                      alignment: Alignment.bottomCenter,
+                      child: PoweredByCemex()),
                   // ListTile(
                   //   dense: true,
                   //   minLeadingWidth: 0,

@@ -32,7 +32,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return BlocConsumer(
       bloc: _cubit,
       listener: (context, state) {
-        // TODO: implement listener
+
       },
       builder: (context, state) {
         return Scaffold(

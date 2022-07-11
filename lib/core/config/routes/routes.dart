@@ -23,9 +23,11 @@ class AppRoutes {
         return _materialRoute(const LoginScreen(), LoginScreen.routeName);
 
       case ProfileScreen.routeName:
+        Map<String,dynamic> args = settings.arguments as Map<String,dynamic>;
         return _materialRoute(
             ProfileScreen(
-              user: settings.arguments as User,
+              user: args['user'],
+              isProfile : args['isProfile']??false,
             ),
             ProfileScreen.routeName);
 

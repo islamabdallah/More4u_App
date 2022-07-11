@@ -677,7 +677,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                                   //     style: TextStyle(
                                                   //         fontFamily:
                                                   //             'Roboto')),
-                                                  //todo fix this
+
                                                   request.requestWorkFlowAPIs![index].replayDate!.contains('0001')?
                                                       SizedBox():
                                                   Text('${DateFormat('yyyy-MM-dd hh:mm aaa').format(DateTime.parse(request.requestWorkFlowAPIs![index].replayDate!))}'),

@@ -1,21 +1,40 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:more4u/presentation/profile/cubits/profile_cubit.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 
 import '../../core/constants/constants.dart';
 import '../../custom_icons.dart';
 import '../../domain/entities/user.dart';
+import '../../injection_container.dart';
 import '../notification/notification_screen.dart';
 import '../widgets/drawer_widget.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static const routeName = 'ProfileScreen';
 
   final User user;
+  final bool? isProfile;
 
-  const ProfileScreen({Key? key,required this.user}) : super(key: key);
+
+  const ProfileScreen({Key? key,required this.user, this.isProfile=false}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late ProfileCubit _cubit;
+
+
+  @override
+  void initState() {
+    _cubit = sl<ProfileCubit>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +154,252 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        if(widget.isProfile!)
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(context: context, builder:(context) {
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                                insetPadding: EdgeInsets.symmetric(
+                                    horizontal: 20.w, vertical: 8),
+                                child: SingleChildScrollView(
+                                  child: Container(
+                                    width: 500.0.w,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 12.h, horizontal: 14.w),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      children: [
+                                        Text(
+                                          "Edit Profile",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: mainColor,
+                                            fontSize: 20.sp,
+                                            fontFamily: "Cairo",
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        Divider(),
+                                        Text(
+                                          "Change your profile picture",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: redColor,
+                                            fontSize: 14.sp,
+                                            fontFamily: "Cairo",
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: mainColor, width: 2),
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            height: 130.h,
+                                            width: 132.h,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(6),
+                                              child: Image.network(
+                                                'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Divider(),
+                                        Text(
+                                          "Change your Password",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: redColor,
+                                            fontSize: 14.sp,
+                                            fontFamily: "Cairo",
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        SizedBox(height: 16.h,),
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400, color: mainColor),
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                            // suffixIconConstraints:
+                                            //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
+                                            prefixIcon: Icon(CustomIcons.lock2),
+                                            suffixIcon: Material(
+                                              color: Colors.transparent,
+                                              type: MaterialType.circle,
+                                              clipBehavior: Clip.antiAlias,
+                                              borderOnForeground: true,
+                                              elevation: 0,
+                                              child: IconButton(
+
+                                                onPressed: () {
+                                                  // _cubit.changeTextVisibility(
+                                                  //     !_cubit.isTextVisible);
+                                                },
+                                                icon: true
+                                                    ? Icon(
+                                                  Icons.visibility_off_outlined,
+                                                  size: 30.r,
+                                                )
+                                                    : Icon(
+                                                  Icons.remove_red_eye_outlined,
+                                                  size: 30.r,
+                                                ),
+                                              ),
+                                            ),
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                            hintText: 'Enter Your Password',
+                                            hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          ),
+                                          keyboardType: TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          validator:  (String? value) {
+                                            if (value!.isEmpty) return 'required';
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(height: 25.h,),
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400, color: mainColor),
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                            // suffixIconConstraints:
+                                            //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
+                                            prefixIcon: Icon(CustomIcons.lock2),
+                                            suffixIcon: Material(
+                                              color: Colors.transparent,
+                                              type: MaterialType.circle,
+                                              clipBehavior: Clip.antiAlias,
+                                              borderOnForeground: true,
+                                              elevation: 0,
+                                              child: IconButton(
+
+                                                onPressed: () {
+                                                  // _cubit.changeTextVisibility(
+                                                  //     !_cubit.isTextVisible);
+                                                },
+                                                icon: true
+                                                    ? Icon(
+                                                  Icons.visibility_off_outlined,
+                                                  size: 30.r,
+                                                )
+                                                    : Icon(
+                                                  Icons.remove_red_eye_outlined,
+                                                  size: 30.r,
+                                                ),
+                                              ),
+                                            ),
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                            hintText: 'Enter Your Password',
+                                            hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          ),
+                                          keyboardType: TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          validator:  (String? value) {
+                                            if (value!.isEmpty) return 'required';
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(height: 25.h,),
+                                        TextFormField(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400, color: mainColor),
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                            // suffixIconConstraints:
+                                            //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
+                                            prefixIcon: Icon(CustomIcons.lock2),
+                                            suffixIcon: Material(
+                                              color: Colors.transparent,
+                                              type: MaterialType.circle,
+                                              clipBehavior: Clip.antiAlias,
+                                              borderOnForeground: true,
+                                              elevation: 0,
+                                              child: IconButton(
+
+                                                onPressed: () {
+                                                  // _cubit.changeTextVisibility(
+                                                  //     !_cubit.isTextVisible);
+                                                },
+                                                icon: true
+                                                    ? Icon(
+                                                  Icons.visibility_off_outlined,
+                                                  size: 30.r,
+                                                )
+                                                    : Icon(
+                                                  Icons.remove_red_eye_outlined,
+                                                  size: 30.r,
+                                                ),
+                                              ),
+                                            ),
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Password',
+                                            hintText: 'Enter Your Password',
+                                            hintStyle: TextStyle(color: Color(0xffc1c1c1)),
+                                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          ),
+                                          keyboardType: TextInputType.visiblePassword,
+                                          obscureText: true,
+                                          validator:  (String? value) {
+                                            if (value!.isEmpty) return 'required';
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(height: 50.h,),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: SizedBox(
+                                            height: 55.h,
+                                            width: 200.w,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                // _cubit.loginUser(User(
+                                                //     username: 'nabeh', pass: '123'));
+                                                // _cubit.login();
+                                                // if (_formKey.currentState!.validate()) {
+                                                //   _cubit.login();
+                                                // }
+                                              },
+                                              child: Text(
+                                                'Save Changes',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 18.sp),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 40.h,),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+
+                            );
+                          },
                           child: Text(
                             "Edit Profile",
                             textAlign: TextAlign.center,
@@ -158,7 +421,7 @@ class ProfileScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            user.employeeName??'',
+                            widget.user.employeeName??'',
                             style: TextStyle(
                               color: Color(0xff182756),
                               fontSize: 20.sp,
@@ -173,7 +436,7 @@ class ProfileScreen extends StatelessWidget {
                                 width: 6.w,
                               ),
                               Text(
-                                user.email??'',
+                                widget.user.email??'',
                                 style: TextStyle(
                                     fontSize: 13.sp,
                                     color: greyColor,
@@ -203,7 +466,7 @@ class ProfileScreen extends StatelessWidget {
                                 width: 6.w,
                               ),
                               Text(
-                               user.phoneNumber??'',
+                               widget.user.phoneNumber??'',
                                 style: TextStyle(
                                     fontSize: 13.sp,
                                     color: greyColor,
@@ -218,7 +481,7 @@ class ProfileScreen extends StatelessWidget {
                                 width: 6.w,
                               ),
                               Text(
-                                user.employeeNumber.toString(),
+                                widget.user.employeeNumber.toString(),
                                 style: TextStyle(
                                     fontSize: 13.sp,
                                     color: greyColor,
@@ -258,7 +521,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.birthDate??'',
+                      widget.user.birthDate??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -280,7 +543,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.gender??'',
+                      widget.user.gender??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -302,7 +565,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.workDuration??'',
+                      widget.user.workDuration??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -324,7 +587,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.maritalStatus??'',
+                      widget.user.maritalStatus??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -346,7 +609,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.departmentName??'',
+                      widget.user.departmentName??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -368,7 +631,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.collar??'',
+                      widget.user.collar??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -390,7 +653,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.sapNumber.toString(),
+                      widget.user.sapNumber.toString(),
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -412,7 +675,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.company??'',
+                      widget.user.company??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -434,7 +697,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.joinDate??'',
+                      widget.user.joinDate??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -456,7 +719,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.address??'',
+                      widget.user.address??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -478,7 +741,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.nationality??'',
+                      widget.user.nationality??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,
@@ -500,7 +763,7 @@ class ProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.supervisorName??'',
+                      widget.user.supervisorName??'',
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: greyColor,

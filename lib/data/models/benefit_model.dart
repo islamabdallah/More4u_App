@@ -24,6 +24,7 @@ class BenefitModel extends Benefit {
     String? certainDate,
     String? lastStatus,
     int? totalRequestsCount,
+    bool? hasHoldingRequests,
   }) : super(
           id: id,
           name: name,
@@ -45,6 +46,7 @@ class BenefitModel extends Benefit {
           certainDate: certainDate,
           lastStatus: lastStatus,
           totalRequestsCount: totalRequestsCount,
+          hasHoldingRequests: hasHoldingRequests,
         );
 
   factory BenefitModel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +75,7 @@ class BenefitModel extends Benefit {
       certainDate: json['certainDate'],
       lastStatus: json['lastStatus'],
       totalRequestsCount: json['totalRequestsCount'],
+      hasHoldingRequests: json['hasHoldingRequests'],
     );
   }
 }

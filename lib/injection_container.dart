@@ -9,6 +9,7 @@ import 'package:more4u/presentation/benefit_details/cubits/benefit_details_cubit
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 import 'package:more4u/presentation/manage_requests/cubits/manage_requests_cubit.dart';
 import 'package:more4u/presentation/notification/cubits/notification_cubit.dart';
+import 'package:more4u/presentation/profile/cubits/profile_cubit.dart';
 
 import 'core/network/network_info.dart';
 import 'package:get_it/get_it.dart';
@@ -40,6 +41,7 @@ Future<void> init() async {
 // Cubits
   sl.registerFactory(() => LoginCubit(loginUser: sl()));
   sl.registerFactory(() => HomeCubit(loginUser: sl()));
+  sl.registerFactory(() => ProfileCubit());
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
   sl.registerFactory(
       () => RedeemCubit(getParticipantsUsecase: sl(), redeemCardUsecase: sl()));

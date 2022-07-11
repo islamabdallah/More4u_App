@@ -87,7 +87,11 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                           ),
                           Text(
                             '${widget.benefit.timesEmployeeReceiveThisBenefit}/${widget.benefit.times}',
-                            style: TextStyle(fontSize: 14.sp, color: greyColor, fontFamily: 'Roboto',),
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: greyColor,
+                              fontFamily: 'Roboto',
+                            ),
                           ),
                         ],
                       ),
@@ -153,13 +157,15 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                                   padding: EdgeInsets.only(right: 8.w),
                                   children: [
                                     conditionItem(
-                                        prefix: _cubit.benefit?.benefitConditions
+                                        prefix: _cubit
+                                                    .benefit
+                                                    ?.benefitConditions
                                                     ?.type! ==
                                                 'Individual'
                                             ? CustomIcons.user
                                             : CustomIcons.users_alt,
-                                        suffix: _cubit.benefit?.benefitApplicable
-                                                    ?.type ==
+                                        suffix: _cubit.benefit
+                                                    ?.benefitApplicable?.type ==
                                                 true
                                             ? CustomIcons.circle_check_regular
                                             : CustomIcons.circle_xmark_regular,
@@ -168,17 +174,19 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                                             .benefit?.benefitConditions?.type),
                                     conditionItem(
                                         prefix: CustomIcons.stats,
-                                        suffix: _cubit.benefit?.benefitApplicable
-                                                    ?.age ==
+                                        suffix: _cubit.benefit
+                                                    ?.benefitApplicable?.age ==
                                                 true
                                             ? CustomIcons.circle_check_regular
                                             : CustomIcons.circle_xmark_regular,
                                         label: 'Age',
-                                        value:
-                                            _cubit.benefit?.benefitConditions?.age),
+                                        value: _cubit
+                                            .benefit?.benefitConditions?.age),
                                     conditionItem(
                                         prefix: CustomIcons.clock,
-                                        suffix: _cubit.benefit?.benefitApplicable
+                                        suffix: _cubit
+                                                    .benefit
+                                                    ?.benefitApplicable
                                                     ?.workDuration ==
                                                 true
                                             ? CustomIcons.circle_check_regular
@@ -188,7 +196,9 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                                             ?.workDuration),
                                     conditionItem(
                                         prefix: Icons.event_available,
-                                        suffix: _cubit.benefit?.benefitApplicable
+                                        suffix: _cubit
+                                                    .benefit
+                                                    ?.benefitApplicable
                                                     ?.dateToMatch ==
                                                 true
                                             ? CustomIcons.circle_check_regular
@@ -198,17 +208,21 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                                             ?.dateToMatch),
                                     conditionItem(
                                         prefix: CustomIcons.venus_mars,
-                                        suffix: _cubit.benefit?.benefitApplicable
+                                        suffix: _cubit
+                                                    .benefit
+                                                    ?.benefitApplicable
                                                     ?.gender ==
                                                 true
                                             ? CustomIcons.circle_check_regular
                                             : CustomIcons.circle_xmark_regular,
                                         label: 'Gender',
-                                        value: _cubit
-                                            .benefit?.benefitConditions?.gender),
+                                        value: _cubit.benefit?.benefitConditions
+                                            ?.gender),
                                     conditionItem(
                                         prefix: CustomIcons.bitmap,
-                                        suffix: _cubit.benefit?.benefitApplicable
+                                        suffix: _cubit
+                                                    .benefit
+                                                    ?.benefitApplicable
                                                     ?.maritalStatus ==
                                                 true
                                             ? CustomIcons.circle_check_regular
@@ -218,7 +232,9 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                                             ?.maritalStatus),
                                     conditionItem(
                                         prefix: Icons.trending_down,
-                                        suffix: _cubit.benefit?.benefitApplicable
+                                        suffix: _cubit
+                                                    .benefit
+                                                    ?.benefitApplicable
                                                     ?.minParticipant ==
                                                 true
                                             ? CustomIcons.circle_check_regular
@@ -228,7 +244,9 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                                             ?.minParticipant),
                                     conditionItem(
                                         prefix: Icons.trending_up,
-                                        suffix: _cubit.benefit?.benefitApplicable
+                                        suffix: _cubit
+                                                    .benefit
+                                                    ?.benefitApplicable
                                                     ?.maxParticipant ==
                                                 true
                                             ? CustomIcons.circle_check_regular
@@ -238,7 +256,9 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                                             ?.maxParticipant),
                                     conditionItem(
                                         prefix: CustomIcons.person_solid,
-                                        suffix: _cubit.benefit?.benefitApplicable
+                                        suffix: _cubit
+                                                    .benefit
+                                                    ?.benefitApplicable
                                                     ?.payrollArea ==
                                                 true
                                             ? CustomIcons.circle_check_regular
@@ -331,22 +351,30 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                           ],
                         ),
                       ),
-                      //todo add && widget.benefit.isInProggress
-                      if(widget.benefit.times==widget.benefit.timesEmployeeReceiveThisBenefit)
-                      Row(
-                      mainAxisAlignment: MainAxisAlignment.center
-                      ,children: [
-                        Icon(CustomIcons.exclamation,color: redColor,),
-                        SizedBox(width: 3.w,),
-                        Text(
-                          "You did used this card before",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: redColor,
-                            fontSize: 12.sp,
-                          ),
-                        )
-                      ],),
+                      if (widget.benefit.times ==
+                              widget.benefit.timesEmployeeReceiveThisBenefit ||
+                          (widget.benefit.hasHoldingRequests != null &&
+                              widget.benefit.hasHoldingRequests!))
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              CustomIcons.exclamation,
+                              color: redColor,
+                            ),
+                            SizedBox(
+                              width: 4.w,
+                            ),
+                            Text(
+                              "You did used this card before",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: redColor,
+                                fontSize: 12.sp,
+                              ),
+                            )
+                          ],
+                        ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
