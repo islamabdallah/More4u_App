@@ -68,7 +68,6 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
             isSucceeded: false,
             message: state.message,
             onPressedOk: () => Navigator.pop(context),
-            onPressedRetry: () => _cubit.getParticipants(),
           );
         }
         if (state is RedeemSuccessState) {
@@ -350,9 +349,10 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                               validator: (text) {
                                 if (_cubit.dateToMatch != null) {
                                   if (_cubit.dateToMatch !=
-                                      _cubit.startDate.text && (text?.isEmpty??true)) {
+                                          _cubit.startDate.text &&
+                                      (text?.isEmpty ?? true)) {
                                     print(_cubit.dateToMatch);
-                                    print( _cubit.startDate.text);
+                                    print(_cubit.startDate.text);
 
                                     return 'required';
                                   }
@@ -387,94 +387,119 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            if(_cubit.benefit.requiredDocumentsArray!=null)
-                            SizedBox(
-                              height: 120.h,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemBuilder: (_, index) {
-                                    return
-                                      Padding(padding: EdgeInsets.symmetric(horizontal: 8.w),
-                                    child:
-                                      _cubit.myDocs.values.elementAt(index) == null
-                                        ? SizedBox(
-                                      height: 120.h,
-                                          width: 120.h,
-                                          child: TextButton(
-                                              style: TextButton.styleFrom(
-                                                side: BorderSide(color: redColor, width: 2),
-                                                shape: const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(Radius.circular(5))),
-                                              ),
-                                              onPressed: () async {
-                                                _cubit.pickImage(
-                                                    _cubit.myDocs.keys.elementAt(index));
-                                              },
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    _cubit.myDocs.keys.elementAt(index),
-                                                    style: TextStyle(
-                                                      color: redColor,
-                                                      fontSize: 13.sp,
-                                                      fontFamily: "Roboto",
-                                                      fontWeight: FontWeight.w700,
-                                                    ),textAlign: TextAlign.center,
-                                                    maxLines: 3,
-                                                    softWrap: true,
-                                                    overflow: TextOverflow.fade,
+                            if (_cubit.benefit.requiredDocumentsArray != null)
+                              SizedBox(
+                                height: 120.h,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemBuilder: (_, index) {
+                                      return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8.w),
+                                          child: _cubit.myDocs.values
+                                                      .elementAt(index) ==
+                                                  null
+                                              ? SizedBox(
+                                                  height: 120.h,
+                                                  width: 120.h,
+                                                  child: TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      side: BorderSide(
+                                                          color: redColor,
+                                                          width: 2),
+                                                      shape: const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          5))),
+                                                    ),
+                                                    onPressed: () async {
+                                                      _cubit.pickImage(_cubit
+                                                          .myDocs.keys
+                                                          .elementAt(index));
+                                                    },
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          _cubit.myDocs.keys
+                                                              .elementAt(index),
+                                                          style: TextStyle(
+                                                            color: redColor,
+                                                            fontSize: 13.sp,
+                                                            fontFamily:
+                                                                "Roboto",
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          maxLines: 3,
+                                                          softWrap: true,
+                                                          overflow:
+                                                              TextOverflow.fade,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 5.0,
+                                                        ),
+                                                        Icon(
+                                                          CustomIcons
+                                                              .cloud_upload__2_,
+                                                          size: 30.r,
+                                                          color: redColor,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                  const SizedBox(
-                                                    width: 5.0,
-                                                  ),
-                                                   Icon(
-                                                    CustomIcons.cloud_upload__2_,
-                                                     size: 30.r,
-                                                     color: redColor,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                        )
-                                        : Stack(fit: StackFit.loose, children: <Widget>[
-                                            Image(
-                                              image: MemoryImage(base64Decode(
-                                                  _cubit.myDocs.values.elementAt(index)!)),
-                                              fit: BoxFit.fill,
-                                              width: 120.h,
-                                              height: 120.h,
-                                            ),
-                                            Positioned(
-                                              right: 5,
-                                              top: 5,
-                                              child: Container(
-                                                width: 25,
-                                                height: 25,
-                                                child: IconButton(
-                                                  iconSize: 20,
-                                                  padding: EdgeInsets.zero,
-                                                  icon: Icon(
-                                                    Icons.remove_circle,
-                                                    size: 20,
-                                                    color: Colors.red,
-                                                  ),
-                                                  onPressed: () {
-                                                    _cubit.removeImage(index);
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ])
-                                      )
-                                    ;
-                                  },
-                                  itemCount: _cubit.myDocs.length),
-                            ),
+                                                )
+                                              : Stack(
+                                                  fit: StackFit.loose,
+                                                  children: <Widget>[
+                                                      Image(
+                                                        image: MemoryImage(
+                                                            base64Decode(_cubit
+                                                                .myDocs.values
+                                                                .elementAt(
+                                                                    index)!)),
+                                                        fit: BoxFit.fill,
+                                                        width: 120.h,
+                                                        height: 120.h,
+                                                        gaplessPlayback: true,
+                                                      ),
+                                                      Positioned(
+                                                        right: 5,
+                                                        top: 5,
+                                                        child: Container(
+                                                          width: 25,
+                                                          height: 25,
+                                                          child: IconButton(
+                                                            iconSize: 20,
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .remove_circle,
+                                                              size: 20,
+                                                              color: Colors.red,
+                                                            ),
+                                                            onPressed: () {
+                                                              _cubit
+                                                                  .removeImage(
+                                                                      index);
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ]));
+                                    },
+                                    itemCount: _cubit.myDocs.length),
+                              ),
 
-                            if(_cubit.missingDocs!=null)
+                            if (_cubit.missingDocs != null)
                               Text(_cubit.missingDocs!),
 
                             SizedBox(
@@ -485,8 +510,10 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                 width: 187.w,
                                 child: ElevatedButton(
                                     onPressed: () {
-                                      if((_formKey.currentState!.validate() && _cubit.validateParticipants() && _cubit.validateDocuments())){
-                                      _cubit.redeemCard();
+                                      if ((_formKey.currentState!.validate() &&
+                                          _cubit.validateParticipants() &&
+                                          _cubit.validateDocuments())) {
+                                        _cubit.redeemCard();
                                       }
                                     },
                                     child: Text('Redeem')),

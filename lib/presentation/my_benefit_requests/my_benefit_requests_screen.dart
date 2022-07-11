@@ -652,7 +652,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                         ),
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(bottom: 8),
+                                               EdgeInsets.only(bottom: 8.h,top: 4.h),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -668,16 +668,6 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  // Text(
-                                                  //     request
-                                                  //             .requestWorkFlowAPIs![
-                                                  //                 index]
-                                                  //             .status ??
-                                                  //         '',
-                                                  //     style: TextStyle(
-                                                  //         fontFamily:
-                                                  //             'Roboto')),
-
                                                   request.requestWorkFlowAPIs![index].replayDate!.contains('0001')?
                                                       SizedBox():
                                                   Text('${DateFormat('yyyy-MM-dd hh:mm aaa').format(DateTime.parse(request.requestWorkFlowAPIs![index].replayDate!))}'),
@@ -735,10 +725,10 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding:  EdgeInsets.symmetric(vertical: 12.h,horizontal: 14.w),
                             child: (request.status=='Pending'||request.status=='InProgress')? Text(
                                 'Follow up your request to know if aproved or not, Good luck',
-                                style: TextStyle(color: redColor),
+                                style: TextStyle(color: redColor,fontFamily: 'Roboto'),
                                 textAlign: TextAlign.center)
                             : request.status=='Approved'?Column(children: [
                               Text(

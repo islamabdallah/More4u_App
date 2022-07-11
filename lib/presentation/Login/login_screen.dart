@@ -107,9 +107,7 @@ class LoginScreenState extends State<LoginScreen> {
                         context: context,
                         message: state.message,
                         isSucceeded: false,
-                        onPressedRetry: () {
-                          print('ha');
-                        });
+                        );
                   }
                   if (state is LoginSuccessState) {
                     Navigator.pop(context);

@@ -6,7 +6,6 @@ showMessageDialog({
   String? message,
   required bool isSucceeded,
   VoidCallback? onPressedOk,
-  VoidCallback? onPressedRetry,
 }) {
   showDialog(
     barrierDismissible: false,
@@ -41,36 +40,15 @@ showMessageDialog({
                           Text(
                             message??'',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 18.sp),
+                            style: TextStyle(fontSize: 18.sp,fontFamily: 'Roboto'),
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
                             maxLines: 3,
                           ),
                           Spacer(),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              if (!isSucceeded) ...[
-                                SizedBox(
-                                  width: 110.w,
-                                  height: 50.h,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      onPressedRetry?.call();
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red,
-                                    ),
-                                    child: Text(
-                                      'Retry',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 16.sp),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 24.w,
-                                ),
-                              ],
                               SizedBox(
                                 width: 100.w,
                                 height: 50.h,
