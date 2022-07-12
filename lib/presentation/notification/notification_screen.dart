@@ -51,7 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    iconSize: 50.w,
+                    iconSize: 40.w,
                     icon:SvgPicture.asset(
                       'assets/images/back.svg',
                       fit: BoxFit.cover,

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
@@ -26,6 +27,8 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var _cubit =  HomeCubit.get(context);
+
     return SizedBox(
       width: 273.w,
       child: Drawer(
@@ -110,6 +113,7 @@ class DrawerWidget extends StatelessWidget {
                     title: 'Home',
                     leading: CustomIcons.home__2_,
                     onTap: () {
+                      Navigator.pop(context);
                       Navigator.popUntil(
                           context, ModalRoute.withName(HomeScreen.routeName));
                     },
@@ -118,17 +122,22 @@ class DrawerWidget extends StatelessWidget {
                     context,
                     title: 'My Requests',
                     leading: CustomIcons.ticket,
-                    onTap: () {
+                    onTap: () async {
+
+                      Navigator.pop(context);
+
                       if (ModalRoute.of(context)?.settings.name ==
                           HomeScreen.routeName) {
                         Navigator.pushNamed(context, MyBenefitsScreen.routeName)
                             .whenComplete(
-                                () => HomeCubit.get(context).getHomeData());
-                        print('hhhhh');
+                                () {
+                                  _cubit.getHomeData();
+                                });
                       } else {
-                        Navigator.pushReplacementNamed(
-                            context, MyBenefitsScreen.routeName);
-                        print('nnnnnn');
+                        final completer = Completer();
+                        final result = await Navigator.pushReplacementNamed(
+                            context, MyBenefitsScreen.routeName,result: completer.future);
+                        completer.complete(result);
                       }
                       // Navigator.pushNamedAndRemoveUntil(context, MyQuestions.routeName, ModalRoute.withName(SearchScreen.routeName));
                     },
@@ -138,16 +147,9 @@ class DrawerWidget extends StatelessWidget {
                     title: 'Notifications',
                     leading: CustomIcons.bell,
                     onTap: () {
-                      if (ModalRoute.of(context)?.settings.name ==
-                          HomeScreen.routeName) {
-                        Navigator.pushNamed(
-                            context, NotificationScreen.routeName);
-                        print('hhhhh');
-                      } else {
-                        Navigator.pushReplacementNamed(
-                            context, NotificationScreen.routeName);
-                        print('nnnnnn');
-                      }
+                      Navigator.pop(context);
+                      Navigator.pushNamed(
+                          context, NotificationScreen.routeName);
                     },
                   ),
                   buildListTile(
@@ -155,9 +157,15 @@ class DrawerWidget extends StatelessWidget {
                     title: 'Profile',
                     leading: CustomIcons.user,
                     onTap: () {
-                      if (ModalRoute.of(context)?.settings.name !=
-                          ProfileScreen.routeName) {
+                      Navigator.pop(context);
+
+                      if (ModalRoute.of(context)?.settings.name ==
+                          HomeScreen.routeName) {
                         Navigator.pushNamed(context, ProfileScreen.routeName,
+                            arguments: {'user': userData, 'isProfile': true});
+                      } else {
+                        Navigator.pushReplacementNamed(
+                            context, ProfileScreen.routeName,
                             arguments: {'user': userData, 'isProfile': true});
                       }
                     },
@@ -170,16 +178,20 @@ class DrawerWidget extends StatelessWidget {
                       context,
                       title: 'Manage Requests',
                       leading: CustomIcons.business_time,
-                      onTap: () {
+                      onTap: () async {
+                        Navigator.pop(context);
                         if (ModalRoute.of(context)?.settings.name ==
                             HomeScreen.routeName) {
                           Navigator.pushNamed(
                                   context, ManageRequestsScreen.routeName)
                               .whenComplete(
-                                  () => HomeCubit.get(context).getHomeData());
+                                  () => _cubit.getHomeData());
                         } else {
-                          Navigator.pushReplacementNamed(
-                              context, ManageRequestsScreen.routeName);
+                          final completer = Completer();
+                          final result = await Navigator.pushReplacementNamed(
+                              context, ManageRequestsScreen.routeName,result: completer.future);
+                          completer.complete(result);
+
                         }
                       },
                     ),
@@ -189,6 +201,7 @@ class DrawerWidget extends StatelessWidget {
                     title: 'Logout',
                     leading: CustomIcons.sign_out_alt,
                     onTap: () {
+                      Navigator.pop(context);
                       PushNotificationService.deleteDeviceToken();
                       SharedPreferences.getInstance()
                           .then((value) => value.remove(CACHED_USER));
@@ -211,7 +224,7 @@ class DrawerWidget extends StatelessWidget {
                   //     "My Benefits",
                   //     style: style,
                   //   ),
-                  //   onTap: () {
+                  //   onTap: () { Navigator.pop(context);
                   //     if (ModalRoute.of(context)?.settings.name ==
                   //         HomeScreen.routeName) {
                   //       Navigator.pushNamed(context, MyBenefitsScreen.routeName);
@@ -239,7 +252,7 @@ class DrawerWidget extends StatelessWidget {
                   //     "Notifications",
                   //     style: style,
                   //   ),
-                  //   onTap: () {
+                  //   onTap: () { Navigator.pop(context);
                   //     // if (ModalRoute.of(context)?.settings.name ==
                   //     //     SearchScreen.routeName) {
                   //     //   Navigator.pushNamed(context, NotificationScreen.routeName);
@@ -261,7 +274,7 @@ class DrawerWidget extends StatelessWidget {
                   //     'Profile',
                   //     style: style,
                   //   ),
-                  //   onTap: () {
+                  //   onTap: () { Navigator.pop(context);
                   //     // Navigator.of(context).pushNamedAndRemoveUntil(
                   //     //     LoginScreen.routeName, (Route<dynamic> route) => false);
                   //   },
@@ -276,7 +289,7 @@ class DrawerWidget extends StatelessWidget {
                   //     'Manage Requests',
                   //     style: style,
                   //   ),
-                  //   onTap: () {
+                  //   onTap: () { Navigator.pop(context);
                   //     if (ModalRoute.of(context)?.settings.name ==
                   //         HomeScreen.routeName) {
                   //       Navigator.pushNamed(
@@ -298,7 +311,7 @@ class DrawerWidget extends StatelessWidget {
                   //     'Logout',
                   //     style: style,
                   //   ),
-                  //   onTap: () {
+                  //   onTap: () { Navigator.pop(context);
                   //     PushNotificationService.deleteDeviceToken();
                   //     SharedPreferences.getInstance()
                   //         .then((value) => value.remove(CACHED_USER));

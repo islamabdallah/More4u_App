@@ -299,6 +299,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                 Expanded(
                   child: _cubit.benefitRequests.isNotEmpty
                       ? ListView.builder(
+                    padding: EdgeInsets.zero,
                           // shrinkWrap: true,
                           itemBuilder: (context, index) =>
                               requestCard(_cubit.benefitRequests[index]),
@@ -860,577 +861,588 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               location: BannerLocation.topEnd,
               color: getBenefitStatusColor(request.status ?? ''),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  controller: scrollController,
-                  children: [
-                    SizedBox(height: 25.h),
-                    Text(
-                      request.benefitName ?? '',
-                      style: TextStyle(
-                        color: mainColor,
-                        fontSize: 20.sp,
-                        fontFamily: "Roboto",
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 8,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6.r),
-                                border: Border.all(
-                                  color: Color(0xFFE7E7E7),
-                                )),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6.r),
-                              child: Image.asset('assets/images/hbd.png'),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Expanded(
-                          flex: 10,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Name    ',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.createdBy?.employeeName ?? '',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Number    ',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '${request.requestNumber}',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Type    ',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.benefitType ?? '',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Required Date    ',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.from ?? '',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'To    ',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.to ?? '',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Wrap(
-                      children: [
-                        if (request.message != null&&request.message!.trim().isNotEmpty)
-
-                          RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: 'Message: ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: request.message ?? '',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ]),
-                          ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Row(
+                padding: EdgeInsets.only(top: 16.h),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      controller: scrollController,
                       children: [
                         Text(
-                          "Created By",
+                          request.benefitName ?? '',
                           style: TextStyle(
                             color: mainColor,
-                            fontSize: 14.sp,
+                            fontSize: 20.sp,
                             fontFamily: "Roboto",
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Spacer(),
-                        if (request.requestedat != null)
-                          RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: 'At ',
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: greyColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text:
-                                    '${DateFormat('yyyy-MM-dd hh:mm aaa').format(DateTime.parse(request.requestedat ?? ''))}',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: greyColor,
-                                ),
-                              ),
-                            ]),
-                          ),
-                      ],
-                    ),
-                    Divider(),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            Expanded(
+                              flex: 8,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6.r),
+                                    border: Border.all(
+                                      color: Color(0xFFE7E7E7),
+                                    )),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6.r),
+                                  child: Image.asset('assets/images/hbd.png'),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8.w,
+                            ),
+                            Expanded(
+                              flex: 10,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Name    ',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.createdBy?.employeeName ?? '',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Number    ',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        '${request.requestNumber}',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Type    ',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.benefitType ?? '',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Required Date    ',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.from ?? '',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'To    ',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.to ?? '',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Wrap(
+                          children: [
+                            if (request.message != null&&request.message!.trim().isNotEmpty)
+
+                              RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                    text: 'Message: ',
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: greyColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: request.message ?? '',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: greyColor,
+                                    ),
+                                  ),
+                                ]),
+                              ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        Divider(),
+                        Row(
+                          children: [
                             Text(
-                              request.createdBy?.employeeName ?? '',
+                              "Created By",
                               style: TextStyle(
-                                color: greyColor,
+                                color: mainColor,
                                 fontSize: 14.sp,
                                 fontFamily: "Roboto",
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            SizedBox(
-                              height: 4.h,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: mainColor, width: 2),
-                                borderRadius: BorderRadius.circular(6),
+                            Spacer(),
+                            if (request.requestedat != null)
+                              RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                    text: 'At ',
+                                    style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: greyColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '${DateFormat('yyyy-MM-dd hh:mm aaa').format(DateTime.parse(request.requestedat ?? ''))}',
+                                    style: TextStyle(
+                                      fontSize: 13.sp,
+                                      color: greyColor,
+                                    ),
+                                  ),
+                                ]),
                               ),
-                              height: 130.h,
-                              width: 132.h,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: Image.network(
-                                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, ProfileScreen.routeName,
-                                    arguments: {'user':request.createdBy});
-                              },
-                              child: Text(
-                                "View Profile",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            )
                           ],
                         ),
                         SizedBox(
-                          width: 8.w,
+                          height: 8.h,
                         ),
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(CustomIcons.hastag),
-                                  SizedBox(
-                                    width: 6.w,
-                                  ),
-                                  Text(
-                                    'Employee Number    ',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.createdBy?.employeeNumber.toString() ??
-                                        '',
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(CustomIcons.seedling_solid__1_),
-                                  SizedBox(
-                                    width: 6.w,
-                                  ),
-                                  Text(
-                                    'Sap Number    ',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.createdBy?.sapNumber.toString() ?? '',
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(CustomIcons.apps),
-                                  SizedBox(
-                                    width: 6.w,
-                                  ),
-                                  Text(
-                                    'Department    ',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.createdBy?.departmentName ?? '',
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(CustomIcons.cake_birthday),
-                                  SizedBox(
-                                    width: 6.w,
-                                  ),
-                                  Text(
-                                    'Birthday    ',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.createdBy?.birthDate ?? '',
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(CustomIcons.person_solid),
-                                  SizedBox(
-                                    width: 6.w,
-                                  ),
-                                  Text(
-                                    'Payroll Area    ',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    request.createdBy?.collar ?? '',
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    if (request.fullParticipantsData != null) ...[
-                      Text(
-                        "Participants",
-                        style: TextStyle(
-                          color: mainColor,
-                          fontSize: 14.sp,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Center(
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          alignment: WrapAlignment.center,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            ...request.fullParticipantsData!
-                                .map((participant) => SelectionChip(
-                                    label: participant.employeeName ?? '',
-                                    index: 0,
-                                    selectedIndex: 1,
-                                    selectIndex: (_) {
-                                      Navigator.pushNamed(
-                                          context, ProfileScreen.routeName,
-                                          arguments: {'user':participant} );
-                                    }))
-                                .toList()
-                          ],
-                        ),
-                      ),
-                    ],
-                    if (request.documents != null &&
-                        request.documents!.isNotEmpty) ...[
-                          Divider(),
-                      Text(
-                        "Documents",
-                        style: TextStyle(
-                          color: mainColor,
-                          fontSize: 14.sp,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(height: 8.h,),
-                      SizedBox(
-                        height: 120.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: (){
-                                openGallery(index: 0);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: mainColor, width: 2),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Image.memory(
-                                    base64Decode(request.documents![index]),
-                                    width: 120.h,
-                                    height: 120.h,
-                                    fit: BoxFit.fill,
-                                    gaplessPlayback: true),
-                              ),
-                            );
-                          },
-                          itemCount: request.documents!.length,
-                        ),
-                      )
-                    ],
-                    if (request.warningMessage != null)
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'Warning: ',
-                            style: TextStyle(
-                                color: redColor,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: request.warningMessage ?? '',
-                            style: TextStyle(color: redColor, fontFamily: 'Roboto'),
-                          ),
-                        ]),
-                      ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    request.myAction == null
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 130.w,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: redColor,
-                                  ),
-                                  onPressed: () =>
-                                      acceptOrReject(false, request.requestNumber!),
-                                  child: Text(
-                                    'Reject',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16.w,
-                              ),
-                              SizedBox(
-                                width: 130.w,
-                                child: ElevatedButton(
-                                  onPressed: () =>
-                                      acceptOrReject(true, request.requestNumber!),
-                                  child: Text(
-                                    'Accept',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Align(
-                            alignment: Alignment.center,
-                            child: Column(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                RichText(
-                                    softWrap: true,
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                        text: 'You ',
-                                        style: TextStyle(
-                                          color: greyColor,
-                                          fontSize: 14.sp,
-                                        ),
+                                Text(
+                                  request.createdBy?.employeeName ?? '',
+                                  style: TextStyle(
+                                    color: greyColor,
+                                    fontSize: 14.sp,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: mainColor, width: 2),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  height: 130.h,
+                                  width: 132.h,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.network(
+                                      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, ProfileScreen.routeName,
+                                        arguments: {'user':request.createdBy});
+                                  },
+                                  child: Text(
+                                    "View Profile",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              width: 8.w,
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(CustomIcons.hastag),
+                                      SizedBox(
+                                        width: 6.w,
                                       ),
-                                      TextSpan(
-                                        text: request.myAction?.action ?? '',
+                                      Text(
+                                        'Employee Number    ',
                                         style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: getBenefitStatusColor(
-                                              request.myAction?.action ?? ''),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: ' this request ',
-                                        style: TextStyle(
-                                          color: greyColor,
-                                          fontSize: 14.sp,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: timeago.format(DateTime.parse(
-                                            request.myAction?.replayDate ?? '')),
-                                        style: TextStyle(
+                                            fontSize: 13.sp,
                                             color: greyColor,
-                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                    ])),
-                                if (request.myAction?.notes != null)
-                                  RichText(
-                                      softWrap: true,
-                                      text: TextSpan(children: [
-                                        TextSpan(
-                                          text: 'Notes: ',
-                                          style: TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.bold),
+                                      Text(
+                                        request.createdBy?.employeeNumber.toString() ??
+                                            '',
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
                                         ),
-                                        TextSpan(
-                                          text: request.myAction?.notes ?? 'test',
-                                          style: TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14.sp,),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(CustomIcons.seedling_solid__1_),
+                                      SizedBox(
+                                        width: 6.w,
+                                      ),
+                                      Text(
+                                        'Sap Number    ',
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.createdBy?.sapNumber.toString() ?? '',
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
                                         ),
-                                      ])),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(CustomIcons.apps),
+                                      SizedBox(
+                                        width: 6.w,
+                                      ),
+                                      Text(
+                                        'Department    ',
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.createdBy?.departmentName ?? '',
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(CustomIcons.cake_birthday),
+                                      SizedBox(
+                                        width: 6.w,
+                                      ),
+                                      Text(
+                                        'Birthday    ',
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.createdBy?.birthDate ?? '',
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(CustomIcons.person_solid),
+                                      SizedBox(
+                                        width: 6.w,
+                                      ),
+                                      Text(
+                                        'Payroll Area    ',
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        request.createdBy?.collar ?? '',
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        if (request.fullParticipantsData != null) ...[
+
+                          Divider(),
+                          Text(
+                            "Participants",
+                            style: TextStyle(
+                              color: mainColor,
+                              fontSize: 14.sp,
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(height: 8.h,),
+                          Center(
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              alignment: WrapAlignment.center,
+                              children: [
+                                ...request.fullParticipantsData!
+                                    .map((participant) => SelectionChip(
+                                        label: participant.employeeName ?? '',
+                                        index: 0,
+                                        selectedIndex: 1,
+                                        selectIndex: (_) {
+                                          Navigator.pushNamed(
+                                              context, ProfileScreen.routeName,
+                                              arguments: {'user':participant} );
+                                        }))
+                                    .toList()
                               ],
                             ),
                           ),
-                    SizedBox(
-                      height: 20.h,
+                        ],
+                        if (request.documents != null &&
+                            request.documents!.isNotEmpty) ...[
+                              Divider(),
+                          Text(
+                            "Documents",
+                            style: TextStyle(
+                              color: mainColor,
+                              fontSize: 14.sp,
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(height: 8.h,),
+                          SizedBox(
+                            height: 120.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: (){
+                                    openGallery(index: 0);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: mainColor, width: 2),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Image.memory(
+                                        base64Decode(request.documents![index]),
+                                        width: 120.h,
+                                        height: 120.h,
+                                        fit: BoxFit.fill,
+                                        gaplessPlayback: true),
+                                  ),
+                                );
+                              },
+                              itemCount: request.documents!.length,
+                            ),
+                          )
+                        ],
+                        if (request.warningMessage != null)
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: 'Warning: ',
+                                style: TextStyle(
+                                    color: redColor,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: request.warningMessage ?? '',
+                                style: TextStyle(color: redColor, fontFamily: 'Roboto'),
+                              ),
+                            ]),
+                          ),
+                        SizedBox(
+                          height: 16.h,
+                        ),
+                        request.myAction == null
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 130.w,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: redColor,
+                                      ),
+                                      onPressed: () =>
+                                          acceptOrReject(false, request.requestNumber!),
+                                      child: Text(
+                                        'Reject',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16.w,
+                                  ),
+                                  SizedBox(
+                                    width: 130.w,
+                                    child: ElevatedButton(
+                                      onPressed: () =>
+                                          acceptOrReject(true, request.requestNumber!),
+                                      child: Text(
+                                        'Accept',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Align(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  children: [
+                                    RichText(
+                                        softWrap: true,
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                            text: 'You ',
+                                            style: TextStyle(
+                                              color: greyColor,
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: request.myAction?.action ?? '',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: getBenefitStatusColor(
+                                                  request.myAction?.action ?? ''),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' this request ',
+                                            style: TextStyle(
+                                              color: greyColor,
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: timeago.format(DateTime.parse(
+                                                request.myAction?.replayDate ?? '')),
+                                            style: TextStyle(
+                                                color: greyColor,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ])),
+                                    if (request.myAction?.notes != null)
+                                      RichText(
+                                          softWrap: true,
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                              text: 'Notes: ',
+                                              style: TextStyle(
+                                                  color: greyColor,
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            TextSpan(
+                                              text: request.myAction?.notes ?? 'test',
+                                              style: TextStyle(
+                                                  color: greyColor,
+                                                  fontSize: 14.sp,),
+                                            ),
+                                          ])),
+                                  ],
+                                ),
+                              ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
