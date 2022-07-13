@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../entities/login_response.dart';
-import '../repositories/login_repository.dart';
+import '../repositories/user_repository.dart';
 
 class LoginUserUsecase {
-  LoginRepository repository;
+  UserRepository repository;
 
   LoginUserUsecase(this.repository);
 

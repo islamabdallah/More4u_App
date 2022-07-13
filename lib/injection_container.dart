@@ -1,6 +1,6 @@
 import 'package:more4u/data/datasources/remote_data_source.dart';
 import 'package:more4u/data/repositories/benefit_repository_impl.dart';
-import 'package:more4u/data/repositories/login_repository_impl.dart';
+import 'package:more4u/data/repositories/user_repository_impl.dart';
 import 'package:more4u/data/repositories/redeem_repository_impl.dart';
 import 'package:more4u/domain/repositories/benefit_repository.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
@@ -18,7 +18,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/datasources/local_data_source.dart';
-import 'domain/repositories/login_repository.dart';
+import 'domain/repositories/user_repository.dart';
 import 'domain/repositories/redeem_repository.dart';
 import 'domain/usecases/add_response.dart';
 import 'domain/usecases/cancel_request.dart';
@@ -66,7 +66,7 @@ Future<void> init() async {
 
 // Repository
 
-  sl.registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(
+  sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(
       localDataSource: sl(), remoteDataSource: sl(), networkInfo: sl()));
 
   sl.registerLazySingleton<BenefitRepository>(

@@ -4,17 +4,17 @@ import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
 import '../../domain/entities/login_response.dart';
-import '../../domain/repositories/login_repository.dart';
+import '../../domain/repositories/user_repository.dart';
 import '../datasources/remote_data_source.dart';
 import '../datasources/local_data_source.dart';
 import '../models/login_response_model.dart';
 
-class LoginRepositoryImpl extends LoginRepository {
+class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
   final RemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  LoginRepositoryImpl(
+  UserRepositoryImpl(
       {required this.localDataSource,
       required this.remoteDataSource,
       required this.networkInfo});
