@@ -20,6 +20,7 @@ import '../../data/datasources/local_data_source.dart';
 import '../Login/login_screen.dart';
 import '../home/cubits/home_cubit.dart';
 import '../notification/notification_screen.dart';
+import 'helpers.dart';
 import 'powered_by_cemex.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -202,12 +203,7 @@ class DrawerWidget extends StatelessWidget {
                     leading: CustomIcons.sign_out_alt,
                     onTap: () {
                       Navigator.pop(context);
-                      PushNotificationService.deleteDeviceToken();
-                      SharedPreferences.getInstance()
-                          .then((value) => value.remove(CACHED_USER));
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          LoginScreen.routeName,
-                          (Route<dynamic> route) => false);
+                      logOut(context);
                     },
                   ),
                   Spacer(),

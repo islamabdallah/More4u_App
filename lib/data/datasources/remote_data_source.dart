@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +13,7 @@ import '../models/benefit_request_model.dart';
 import '../models/login_response_model.dart';
 import '../models/noitification_model.dart';
 import '../models/participant_model.dart';
+import '../models/user_model.dart';
 
 abstract class RemoteDataSource {
   Future<LoginResponseModel> loginUser({
@@ -19,6 +21,15 @@ abstract class RemoteDataSource {
     required String pass,
   });
 
+  Future<UserModel> updateProfilePicture(
+      {required int employeeNumber, required String photo});
+
+  Future<String> changePassword({
+    required int employeeNumber,
+    required String oldPassword,
+    required String newPassword,
+    required String confirmPassword,
+  });
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
@@ -107,21 +118,19 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   @override
   Future<List<BenefitRequest>> getBenefitsToManage(
       {required int employeeNumber, FilteredSearch? search}) async {
-
-
-if(search!=null)
-    print(jsonEncode({
-      "selectedBenefitType": search.selectedBenefitType,
-      "selectedRequestStatus": search.selectedRequestStatus,
-      "employeeNumberSearch": search.employeeNumberSearch,
-      "selectedDepartmentId": search.selectedDepartmentId,
-      "selectedTimingId": search.selectedTimingId,
-      "hasWarningMessage": search.hasWarningMessage,
-      "searchDateFrom": search.searchDateFrom,
-      "searchDateTo": search.searchDateTo,
-      "selectedAll": false,
-      "employeeNumber": employeeNumber,
-    }));
+    if (search != null)
+      print(jsonEncode({
+        "selectedBenefitType": search.selectedBenefitType,
+        "selectedRequestStatus": search.selectedRequestStatus,
+        "employeeNumberSearch": search.employeeNumberSearch,
+        "selectedDepartmentId": search.selectedDepartmentId,
+        "selectedTimingId": search.selectedTimingId,
+        "hasWarningMessage": search.hasWarningMessage,
+        "searchDateFrom": search.searchDateFrom,
+        "searchDateTo": search.searchDateTo,
+        "selectedAll": false,
+        "employeeNumber": employeeNumber,
+      }));
     final response = search != null
         ? await client.post(Uri.parse(showRequests),
             headers: {
@@ -234,7 +243,6 @@ if(search!=null)
   @override
   Future<List<NotificationModel>> getNotifications(
       {required int employeeNumber}) async {
-
     final response = await client.post(
       Uri.parse(showNotifications).replace(queryParameters: {
         "employeeNumber": employeeNumber.toString(),
@@ -429,6 +437,69 @@ if(search!=null)
       }
     }
   }
+
+  @override
+  Future<UserModel> updateProfilePicture(
+      {required int employeeNumber, required String photo}) async {
+
+    final response = await client.post(
+      Uri.parse(updateProfilePictureEndPoint).replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+      }),
+      body: jsonEncode({'photo':photo}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+
+      UserModel user = UserModel.fromJson(result['data']);
+      return user;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
+
+  @override
+  Future<String> changePassword({required int employeeNumber, required String oldPassword, required String newPassword, required String confirmPassword}) async {
+
+    final response = await client.post(
+      Uri.parse(changePasswordEndPoint),
+      body: jsonEncode({
+        "oldPassword": oldPassword,
+        "newPassword": newPassword,
+        "confirmPassword": confirmPassword,
+        "employeeNumber": employeeNumber
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+
+      return result['message'];
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
 }
 
 class FakeRemoteDataSourceImpl extends RemoteDataSource {
@@ -557,6 +628,17 @@ class FakeRemoteDataSourceImpl extends RemoteDataSource {
       required int status,
       required int requestNumber,
       required String message}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserModel> updateProfilePicture(
+      {required int employeeNumber, required String photo}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> changePassword({required int employeeNumber, required String oldPassword, required String newPassword, required String confirmPassword}) {
     throw UnimplementedError();
   }
 }

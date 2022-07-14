@@ -22,6 +22,7 @@ import 'domain/repositories/user_repository.dart';
 import 'domain/repositories/redeem_repository.dart';
 import 'domain/usecases/add_response.dart';
 import 'domain/usecases/cancel_request.dart';
+import 'domain/usecases/changePassword.dart';
 import 'domain/usecases/get_benefit_details.dart';
 import 'domain/usecases/get_benefits_to_manage.dart';
 import 'domain/usecases/get_my_benefit_requests.dart';
@@ -29,6 +30,7 @@ import 'domain/usecases/get_my_benefits.dart';
 import 'domain/usecases/get_notifications.dart';
 import 'domain/usecases/login_user.dart';
 import 'domain/usecases/redeem_card.dart';
+import 'domain/usecases/updateProfilePicture.dart';
 import 'presentation/benefit_redeem/cubits/redeem_cubit.dart';
 import 'presentation/my_benefit_requests/cubits/my_benefit_requests_cubit.dart';
 import 'presentation/my_benefits/cubits/my_benefits_cubit.dart';
@@ -41,7 +43,7 @@ Future<void> init() async {
 // Cubits
   sl.registerFactory(() => LoginCubit(loginUser: sl()));
   sl.registerFactory(() => HomeCubit(loginUser: sl()));
-  sl.registerFactory(() => ProfileCubit());
+  sl.registerFactory(() => ProfileCubit(updateProfilePictureUsecase: sl(),changePasswordUsecase: sl()));
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
   sl.registerFactory(
       () => RedeemCubit(getParticipantsUsecase: sl(), redeemCardUsecase: sl()));
@@ -54,6 +56,8 @@ Future<void> init() async {
 // Usecases
 
   sl.registerLazySingleton(() => LoginUserUsecase(sl()));
+  sl.registerLazySingleton(() => UpdateProfilePictureUsecase(sl()));
+  sl.registerLazySingleton(() => ChangePasswordUsecase(sl()));
   sl.registerLazySingleton(() => GetBenefitDetailsUsecase(sl()));
   sl.registerLazySingleton(() => GetParticipantsUsecase(sl()));
   sl.registerLazySingleton(() => GetMyBenefitsUsecase(sl()));

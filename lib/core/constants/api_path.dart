@@ -14,3 +14,5 @@ const String showRequestsDefault = baseUrl + '/BenefitAPI/ShowRequestsDefault';
 const String showRequests = baseUrl + '/BenefitAPI/ShowRequests';
 const String addRequestResponse = baseUrl + '/BenefitAPI/AddResponse';
 const String showNotifications = baseUrl + '/BenefitAPI/ShowNotifications';
+const String updateProfilePictureEndPoint = baseUrl + '/BenefitAPI/updateProfilePicture';
+const String changePasswordEndPoint = baseUrl + '/LoginAPI/ChangePassword';

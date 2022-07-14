@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:more4u/domain/entities/user.dart';
 
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
@@ -27,6 +28,44 @@ class UserRepositoryImpl extends UserRepository {
         LoginResponseModel result = await remoteDataSource.loginUser(
             employeeNumber: employeeNumber, pass: pass);
         localDataSource.cacheUser(employeeNumber, pass);
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> updateProfilePicture(
+      {required int employeeNumber, required String photo}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        User result = await remoteDataSource.updateProfilePicture(
+            employeeNumber: employeeNumber, photo: photo);
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> changePassword(
+      {required int employeeNumber,
+      required String oldPassword,
+      required String newPassword,
+      required String confirmPassword}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        String result = await remoteDataSource.changePassword(
+            employeeNumber: employeeNumber,
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
