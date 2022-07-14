@@ -115,13 +115,14 @@ class BenefitRepositoryImpl extends BenefitRepository {
 
   @override
   Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage(
-      {required int employeeNumber, FilteredSearch? search}) async {
+      {required int employeeNumber, FilteredSearch? search, int? requestNumber,}) async {
     if (await networkInfo.isConnected) {
       try {
         List<BenefitRequest> result =
             await remoteDataSource.getBenefitsToManage(
           employeeNumber: employeeNumber,
           search: search,
+              requestNumber:requestNumber
         );
         return Right(result);
       } on ServerException catch (e) {

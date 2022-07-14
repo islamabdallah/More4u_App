@@ -36,6 +36,7 @@ abstract class BenefitRepository {
   Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
+    int? requestNumber,
   });
 
   Future<Either<Failure, Unit>> redeemCard({

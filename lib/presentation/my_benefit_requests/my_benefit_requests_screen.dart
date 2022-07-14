@@ -30,9 +30,9 @@ import '../widgets/utils/message_dialog.dart';
 class MyBenefitRequestsScreen extends StatefulWidget {
   static const routeName = 'MyBenefitRequestsScreen';
 
-  final Benefit benefit;
+  final int benefitID;
 
-  const MyBenefitRequestsScreen({Key? key, required this.benefit})
+  const MyBenefitRequestsScreen({Key? key, required this.benefitID})
       : super(key: key);
 
   @override
@@ -47,7 +47,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
   void initState() {
     _cubit = sl<MyBenefitRequestsCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.getMyBenefitRequests(widget.benefit.id);
+      _cubit.getMyBenefitRequests(widget.benefitID);
     });
 
     super.initState();
@@ -80,7 +80,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
               isSucceeded: true,
               message: state.message,
               onPressedOk: () {
-                _cubit.getMyBenefitRequests(widget.benefit.id);
+                _cubit.getMyBenefitRequests(widget.benefitID);
               });
         }
         if (state is CancelRequestErrorState) {
@@ -91,7 +91,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
               message: state.message,
               onPressedOk: () {
                 Navigator.pop(context);
-                _cubit.getMyBenefitRequests(widget.benefit.id);
+                _cubit.getMyBenefitRequests(widget.benefitID);
               });
         }
       },
@@ -107,7 +107,8 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      widget.benefit.name,
+                      _cubit.myBenefitRequests.isNotEmpty?
+                      _cubit.myBenefitRequests.first.benefitName??'':'',
                       style: TextStyle(
                           fontSize: 24,
                           color: mainColor,
@@ -332,7 +333,8 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                               ),
                             ),
                             Text(
-                              widget.benefit.name,
+                              _cubit.myBenefitRequests.isNotEmpty?
+                              _cubit.myBenefitRequests.first.benefitName??'':'',
                               style: TextStyle(
                                   fontSize: 20.sp,
                                   color: mainColor,

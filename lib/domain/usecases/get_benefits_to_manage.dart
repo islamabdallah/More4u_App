@@ -14,9 +14,10 @@ class GetBenefitsToManageUsecase {
     required int employeeNumber,
 
     FilteredSearch? search,
+    int? requestNumber,
 
   }) {
     return repository.getBenefitsToManage(
-        employeeNumber: employeeNumber, search: search);
+        employeeNumber: employeeNumber, search: search,requestNumber:requestNumber);
   }
 }

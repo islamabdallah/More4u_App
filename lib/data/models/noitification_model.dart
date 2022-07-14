@@ -9,7 +9,8 @@ class NotificationModel extends Notification {
     message,
     requestStatus,
     date,
-    time,
+    requestNumber,
+    benefitId,
   }) : super(
           employeeNumber: employeeNumber,
           employeeFullName: employeeFullName,
@@ -18,7 +19,8 @@ class NotificationModel extends Notification {
           message: message,
           requestStatus: requestStatus,
           date: date,
-          time: time,
+    requestNumber: requestNumber,
+    benefitId: benefitId,
         );
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +32,7 @@ class NotificationModel extends Notification {
         message: json["message"],
         requestStatus: json["requestStatus"],
         date: json["date"],
-        time: json["time"],
+        requestNumber: json["requestNumber"],
+        benefitId: json["benefitId"],
       );
 }

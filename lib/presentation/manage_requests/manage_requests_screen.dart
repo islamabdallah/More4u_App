@@ -39,8 +39,9 @@ import 'cubits/manage_requests_cubit.dart';
 
 class ManageRequestsScreen extends StatefulWidget {
   static const routeName = 'ManageRequestsScreen';
+  final int requestNumber;
 
-  const ManageRequestsScreen({Key? key}) : super(key: key);
+  const ManageRequestsScreen({Key? key,this.requestNumber=0}) : super(key: key);
 
   @override
   State<ManageRequestsScreen> createState() => _ManageRequestsScreenState();
@@ -54,7 +55,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
   void initState() {
     _cubit = sl<ManageRequestsCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.getBenefitsToManage();
+      _cubit.getBenefitsToManage(requestNumber: widget.requestNumber);
     });
 
     super.initState();

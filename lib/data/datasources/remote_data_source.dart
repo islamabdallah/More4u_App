@@ -55,6 +55,7 @@ abstract class RemoteDataSource {
   Future<List<BenefitRequest>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
+    int? requestNumber,
   });
 
   Future<List<ParticipantModel>> getParticipants({
@@ -117,7 +118,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<List<BenefitRequest>> getBenefitsToManage(
-      {required int employeeNumber, FilteredSearch? search}) async {
+      {required int employeeNumber, FilteredSearch? search, int? requestNumber,}) async {
     if (search != null)
       print(jsonEncode({
         "selectedBenefitType": search.selectedBenefitType,
@@ -151,6 +152,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         : await client.post(
             Uri.parse(showRequestsDefault).replace(queryParameters: {
               "employeeNumber": employeeNumber.toString(),
+              "requestNumber":requestNumber.toString(),
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -501,144 +503,144 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     }
   }
 }
-
-class FakeRemoteDataSourceImpl extends RemoteDataSource {
-  @override
-  Future<LoginResponseModel> loginUser({
-    required String employeeNumber,
-    required String pass,
-  }) async {
-    // String response = await rootBundle.loadString('assets/response3.json');
-    String response =
-        await rootBundle.loadString('assets/endpoints/loginEndPoint.json');
-
-    return LoginResponseModel.fromJson(jsonDecode(response));
-  }
-
-  @override
-  Future<BenefitModel> getBenefitDetails({required int benefitId}) async {
-    String response =
-        await rootBundle.loadString('assets/benefit_details.json');
-    var json = jsonDecode(response);
-    return BenefitModel.fromJson(json['data']);
-  }
-
-  @override
-  Future<List<BenefitModel>> getMyBenefits(
-      {required int employeeNumber}) async {
-    // String response =
-    //     await rootBundle.loadString('assets/mybenefits_response.json');
-    String response = await rootBundle
-        .loadString('assets/endpoints/Benefits_I_requested.json');
-    var json = jsonDecode(response);
-    List<BenefitModel> myBenefits = [];
-    for (Map<String, dynamic> benefit in json['data']) {
-      print(benefit);
-      myBenefits.add(BenefitModel.fromJson(benefit));
-    }
-    print(myBenefits);
-    return myBenefits;
-  }
-
-  @override
-  Future<List<BenefitRequest>> getMyBenefitRequests(
-      {required int employeeNumber, required int benefitId}) async {
-    // String response =
-    //     await rootBundle.loadString('assets/my_benefit_requests.json');
-
-    String response =
-        await rootBundle.loadString('assets/endpoints/BenefitRequests.json');
-    var json = jsonDecode(response);
-    List<BenefitRequestModel> myBenefitRequests = [];
-    for (Map<String, dynamic> myBenefitRequest in json['data']) {
-      myBenefitRequests.add(BenefitRequestModel.fromJson(myBenefitRequest));
-    }
-    print(myBenefitRequests);
-    return myBenefitRequests;
-  }
-
-  @override
-  Future<List<BenefitRequest>> getBenefitsToManage(
-      {required int employeeNumber, FilteredSearch? search}) async {
-    // String response =
-    // await rootBundle.loadString('assets/manage_request_response.json');
-    String response = await rootBundle
-        .loadString('assets/endpoints/ManageRequestsDefault.json');
-    var json = jsonDecode(response);
-    List<BenefitRequestModel> benefitRequests = [];
-    for (Map<String, dynamic> benefitRequest in json['data']['requests']) {
-      benefitRequests.add(BenefitRequestModel.fromJson(benefitRequest));
-    }
-    print(benefitRequests);
-    return benefitRequests;
-  }
-
-  @override
-  Future<List<ParticipantModel>> getParticipants(
-      {required int employeeNumber,
-      required int benefitId,
-      required bool isGift}) async {
-    // String response = await rootBundle.loadString('assets/participants.json');
-    String response = await rootBundle
-        .loadString('assets/endpoints/WhoCanIGiveThisBenefit.json');
-    var json = jsonDecode(response);
-    List<ParticipantModel> participants = [];
-    for (Map<String, dynamic> participant in json['data']) {
-      participants.add(ParticipantModel.fromJson(participant));
-    }
-    print(participants);
-    return participants;
-
-    // return LoginResponseModel.fromJson(jsonDecode(response));
-  }
-
-  @override
-  Future<void> redeemCard({required BenefitRequestModel requestModel}) async {
-    print(requestModel.toJson());
-  }
-
-  @override
-  Future<List<NotificationModel>> getNotifications(
-      {required int employeeNumber}) async {
-    // String response = await rootBundle.loadString('assets/participants.json');
-    String response = await rootBundle
-        .loadString('assets/endpoints/NotificationEndPoint.json');
-    var json = jsonDecode(response);
-    List<NotificationModel> notifications = [];
-    for (Map<String, dynamic> notification in json['data']) {
-      notifications.add(NotificationModel.fromJson(notification));
-    }
-    print(notifications);
-    return notifications;
-
-    // return LoginResponseModel.fromJson(jsonDecode(response));
-  }
-
-  @override
-  Future<String> cancelRequest(
-      {required int employeeNumber,
-      required int benefitId,
-      required int requestNumber}) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String> addResponse(
-      {required int employeeNumber,
-      required int status,
-      required int requestNumber,
-      required String message}) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<UserModel> updateProfilePicture(
-      {required int employeeNumber, required String photo}) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String> changePassword({required int employeeNumber, required String oldPassword, required String newPassword, required String confirmPassword}) {
-    throw UnimplementedError();
-  }
-}
+//
+// class FakeRemoteDataSourceImpl extends RemoteDataSource {
+//   @override
+//   Future<LoginResponseModel> loginUser({
+//     required String employeeNumber,
+//     required String pass,
+//   }) async {
+//     // String response = await rootBundle.loadString('assets/response3.json');
+//     String response =
+//         await rootBundle.loadString('assets/endpoints/loginEndPoint.json');
+//
+//     return LoginResponseModel.fromJson(jsonDecode(response));
+//   }
+//
+//   @override
+//   Future<BenefitModel> getBenefitDetails({required int benefitId}) async {
+//     String response =
+//         await rootBundle.loadString('assets/benefit_details.json');
+//     var json = jsonDecode(response);
+//     return BenefitModel.fromJson(json['data']);
+//   }
+//
+//   @override
+//   Future<List<BenefitModel>> getMyBenefits(
+//       {required int employeeNumber}) async {
+//     // String response =
+//     //     await rootBundle.loadString('assets/mybenefits_response.json');
+//     String response = await rootBundle
+//         .loadString('assets/endpoints/Benefits_I_requested.json');
+//     var json = jsonDecode(response);
+//     List<BenefitModel> myBenefits = [];
+//     for (Map<String, dynamic> benefit in json['data']) {
+//       print(benefit);
+//       myBenefits.add(BenefitModel.fromJson(benefit));
+//     }
+//     print(myBenefits);
+//     return myBenefits;
+//   }
+//
+//   @override
+//   Future<List<BenefitRequest>> getMyBenefitRequests(
+//       {required int employeeNumber, required int benefitId}) async {
+//     // String response =
+//     //     await rootBundle.loadString('assets/my_benefit_requests.json');
+//
+//     String response =
+//         await rootBundle.loadString('assets/endpoints/BenefitRequests.json');
+//     var json = jsonDecode(response);
+//     List<BenefitRequestModel> myBenefitRequests = [];
+//     for (Map<String, dynamic> myBenefitRequest in json['data']) {
+//       myBenefitRequests.add(BenefitRequestModel.fromJson(myBenefitRequest));
+//     }
+//     print(myBenefitRequests);
+//     return myBenefitRequests;
+//   }
+//
+//   @override
+//   Future<List<BenefitRequest>> getBenefitsToManage(
+//       {required int employeeNumber, FilteredSearch? search}) async {
+//     // String response =
+//     // await rootBundle.loadString('assets/manage_request_response.json');
+//     String response = await rootBundle
+//         .loadString('assets/endpoints/ManageRequestsDefault.json');
+//     var json = jsonDecode(response);
+//     List<BenefitRequestModel> benefitRequests = [];
+//     for (Map<String, dynamic> benefitRequest in json['data']['requests']) {
+//       benefitRequests.add(BenefitRequestModel.fromJson(benefitRequest));
+//     }
+//     print(benefitRequests);
+//     return benefitRequests;
+//   }
+//
+//   @override
+//   Future<List<ParticipantModel>> getParticipants(
+//       {required int employeeNumber,
+//       required int benefitId,
+//       required bool isGift}) async {
+//     // String response = await rootBundle.loadString('assets/participants.json');
+//     String response = await rootBundle
+//         .loadString('assets/endpoints/WhoCanIGiveThisBenefit.json');
+//     var json = jsonDecode(response);
+//     List<ParticipantModel> participants = [];
+//     for (Map<String, dynamic> participant in json['data']) {
+//       participants.add(ParticipantModel.fromJson(participant));
+//     }
+//     print(participants);
+//     return participants;
+//
+//     // return LoginResponseModel.fromJson(jsonDecode(response));
+//   }
+//
+//   @override
+//   Future<void> redeemCard({required BenefitRequestModel requestModel}) async {
+//     print(requestModel.toJson());
+//   }
+//
+//   @override
+//   Future<List<NotificationModel>> getNotifications(
+//       {required int employeeNumber}) async {
+//     // String response = await rootBundle.loadString('assets/participants.json');
+//     String response = await rootBundle
+//         .loadString('assets/endpoints/NotificationEndPoint.json');
+//     var json = jsonDecode(response);
+//     List<NotificationModel> notifications = [];
+//     for (Map<String, dynamic> notification in json['data']) {
+//       notifications.add(NotificationModel.fromJson(notification));
+//     }
+//     print(notifications);
+//     return notifications;
+//
+//     // return LoginResponseModel.fromJson(jsonDecode(response));
+//   }
+//
+//   @override
+//   Future<String> cancelRequest(
+//       {required int employeeNumber,
+//       required int benefitId,
+//       required int requestNumber}) {
+//     throw UnimplementedError();
+//   }
+//
+//   @override
+//   Future<String> addResponse(
+//       {required int employeeNumber,
+//       required int status,
+//       required int requestNumber,
+//       required String message}) {
+//     throw UnimplementedError();
+//   }
+//
+//   @override
+//   Future<UserModel> updateProfilePicture(
+//       {required int employeeNumber, required String photo}) {
+//     throw UnimplementedError();
+//   }
+//
+//   @override
+//   Future<String> changePassword({required int employeeNumber, required String oldPassword, required String newPassword, required String confirmPassword}) {
+//     throw UnimplementedError();
+//   }
+// }

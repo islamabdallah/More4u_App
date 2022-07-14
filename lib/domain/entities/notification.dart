@@ -8,7 +8,8 @@ class Notification extends Equatable {
   final String? message;
   final String? requestStatus;
   final String? date;
-  final String? time;
+  final int? requestNumber;
+  final int? benefitId;
 
   const Notification({
     this.employeeNumber,
@@ -18,7 +19,8 @@ class Notification extends Equatable {
     this.message,
     this.requestStatus,
     this.date,
-    this.time,
+    this.requestNumber,
+    this.benefitId,
   });
 
   @override
@@ -30,6 +32,7 @@ class Notification extends Equatable {
         message,
         requestStatus,
         date,
-        time,
+        requestNumber,
+        benefitId,
       ];
 }
