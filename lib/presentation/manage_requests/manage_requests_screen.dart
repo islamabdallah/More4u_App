@@ -1490,6 +1490,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             fontWeight: FontWeight.w700,
                           ),
                         ),
+                        SizedBox(height: 8.h,),
                         TextFormField(
                           controller: _textController,
                           keyboardType: TextInputType.multiline,
@@ -1525,7 +1526,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                   left: 0,
                   right: 0,
                   child: Container(
-                    width: 500.0,
+                    width: 500.0.w,
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
@@ -1535,11 +1536,11 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                       children: [
                         Align(
                           alignment: Alignment.center,
-                          child: SizedBox(
-                            width: 300,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
                             child: DottedLine(
-                              dashLength: 10,
-                              dashGapLength: 5,
+                              dashLength: 8.w,
+                              dashGapLength: 7.w,
                               lineThickness: 2,
                               dashColor: Colors.grey,
                             ),
@@ -1788,9 +1789,9 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0.0);
     path.addOval(
-        Rect.fromCircle(center: Offset(0.0, size.height / 1.4), radius: 15.0));
+        Rect.fromCircle(center: Offset(0.0, size.height / 1.4), radius: 15.0.w));
     path.addOval(Rect.fromCircle(
-        center: Offset(size.width, size.height / 1.4), radius: 15.0));
+        center: Offset(size.width, size.height / 1.4), radius: 15.0.w));
 
     return path;
   }

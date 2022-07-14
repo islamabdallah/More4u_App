@@ -703,7 +703,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                     left: 0,
                     right: 0,
                     child: Container(
-                      width: 500.0,
+                      width: 500.0.w,
                       height: 97.h,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
@@ -714,11 +714,11 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                         children: [
                           Align(
                             alignment: Alignment.center,
-                            child: SizedBox(
-                              width: 300,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
                               child: DottedLine(
-                                dashLength: 10,
-                                dashGapLength: 5,
+                                dashLength: 8.w,
+                                dashGapLength: 7.w,
                                 lineThickness: 2,
                                 dashColor: Colors.grey,
                               ),
@@ -1019,9 +1019,9 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0.0);
     path.addOval(
-        Rect.fromCircle(center: Offset(0.0, size.height - 90.h), radius: 15.0));
+        Rect.fromCircle(center: Offset(0.0, size.height - 90.h), radius: 15.0.w));
     path.addOval(Rect.fromCircle(
-        center: Offset(size.width, size.height - 90.h), radius: 15.0));
+        center: Offset(size.width, size.height - 90.h), radius: 15.0.w));
 
     return path;
   }
