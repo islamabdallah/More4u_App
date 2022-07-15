@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:more4u/domain/entities/privilege.dart';
 import 'package:more4u/domain/entities/user.dart';
 
 import '../../../../../core/errors/exceptions.dart';
@@ -9,6 +10,7 @@ import '../../domain/repositories/user_repository.dart';
 import '../datasources/remote_data_source.dart';
 import '../datasources/local_data_source.dart';
 import '../models/login_response_model.dart';
+import '../models/privilege_model.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final LocalDataSource localDataSource;
@@ -67,6 +69,20 @@ class UserRepositoryImpl extends UserRepository {
             newPassword: newPassword,
             confirmPassword: confirmPassword);
         return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Privilege>>> getPrivileges() async {
+    if (await networkInfo.isConnected) {
+      try {
+        List<Privilege> privileges = await remoteDataSource.getPrivileges();
+        return Right(privileges);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
       }

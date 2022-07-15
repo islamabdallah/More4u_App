@@ -13,6 +13,7 @@ import '../models/benefit_request_model.dart';
 import '../models/login_response_model.dart';
 import '../models/noitification_model.dart';
 import '../models/participant_model.dart';
+import '../models/privilege_model.dart';
 import '../models/user_model.dart';
 
 abstract class RemoteDataSource {
@@ -34,6 +35,8 @@ abstract class RemoteDataSource {
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
+
+  Future<List<PrivilegeModel>> getPrivileges();
 
   Future<List<BenefitRequest>> getMyBenefitRequests({
     required int employeeNumber,
@@ -208,6 +211,34 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         myBenefitRequests.add(BenefitRequestModel.fromJson(myBenefitRequest));
       }
       return myBenefitRequests;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
+
+  @override
+  Future<List<PrivilegeModel>> getPrivileges() async {
+
+    final response = await client.get(
+      Uri.parse(getPrivilegesEndPoint),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      List<PrivilegeModel> privileges = [];
+      for (Map<String, dynamic> privilege in result['data']) {
+        privileges.add(PrivilegeModel.fromJson(privilege));
+      }
+      return privileges;
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       print(result);

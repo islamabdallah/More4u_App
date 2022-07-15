@@ -4,6 +4,7 @@ import 'package:more4u/data/repositories/user_repository_impl.dart';
 import 'package:more4u/data/repositories/redeem_repository_impl.dart';
 import 'package:more4u/domain/repositories/benefit_repository.dart';
 import 'package:more4u/domain/usecases/get_participants.dart';
+import 'package:more4u/domain/usecases/get_privileges.dart';
 import 'package:more4u/presentation/Login/cubits/login_cubit.dart';
 import 'package:more4u/presentation/benefit_details/cubits/benefit_details_cubit.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
@@ -62,6 +63,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetParticipantsUsecase(sl()));
   sl.registerLazySingleton(() => GetMyBenefitsUsecase(sl()));
   sl.registerLazySingleton(() => GetMyBenefitRequestsUsecase(sl()));
+  sl.registerLazySingleton(() => GetPrivilegesUsecase(sl()));
   sl.registerLazySingleton(() => CancelRequestsUsecase(sl()));
   sl.registerLazySingleton(() => AddRequestResponseUsecase(sl()));
   sl.registerLazySingleton(() => GetBenefitsToManageUsecase(sl()));

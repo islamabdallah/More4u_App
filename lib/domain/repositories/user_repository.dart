@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import '../../../../../core/errors/failures.dart';
 import '../entities/login_response.dart';
 import '../entities/user.dart';
+import '../entities/privilege.dart';
 
 abstract class UserRepository {
   Future<Either<Failure,LoginResponse>> loginUser({
@@ -22,5 +23,7 @@ abstract class UserRepository {
     required String newPassword,
     required String confirmPassword,
   });
+
+  Future<Either<Failure,List<Privilege>>> getPrivileges();
 
 }
