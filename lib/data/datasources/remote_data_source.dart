@@ -30,6 +30,7 @@ abstract class RemoteDataSource {
     required String newPassword,
     required String confirmPassword,
   });
+
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
@@ -37,6 +38,7 @@ abstract class RemoteDataSource {
   Future<List<BenefitRequest>> getMyBenefitRequests({
     required int employeeNumber,
     required int benefitId,
+    int? requestNumber,
   });
 
   Future<String> cancelRequest({
@@ -117,8 +119,11 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<List<BenefitRequest>> getBenefitsToManage(
-      {required int employeeNumber, FilteredSearch? search, int? requestNumber,}) async {
+  Future<List<BenefitRequest>> getBenefitsToManage({
+    required int employeeNumber,
+    FilteredSearch? search,
+    int? requestNumber,
+  }) async {
     if (search != null)
       print(jsonEncode({
         "selectedBenefitType": search.selectedBenefitType,
@@ -152,7 +157,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         : await client.post(
             Uri.parse(showRequestsDefault).replace(queryParameters: {
               "employeeNumber": employeeNumber.toString(),
-              "requestNumber":requestNumber.toString(),
+              "requestNumber": requestNumber.toString(),
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -182,11 +187,14 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<List<BenefitRequest>> getMyBenefitRequests(
-      {required int employeeNumber, required int benefitId}) async {
+      {required int employeeNumber,
+      required int benefitId,
+      int? requestNumber}) async {
     final response = await client.post(
       Uri.parse(showMyBenefitRequests).replace(queryParameters: {
         "EmployeeNumber": employeeNumber.toString(),
         "BenefitId": benefitId.toString(),
+        "requestNumber": requestNumber.toString()
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -443,12 +451,11 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   @override
   Future<UserModel> updateProfilePicture(
       {required int employeeNumber, required String photo}) async {
-
     final response = await client.post(
       Uri.parse(updateProfilePictureEndPoint).replace(queryParameters: {
         "employeeNumber": employeeNumber.toString(),
       }),
-      body: jsonEncode({'photo':photo}),
+      body: jsonEncode({'photo': photo}),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -472,8 +479,11 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<String> changePassword({required int employeeNumber, required String oldPassword, required String newPassword, required String confirmPassword}) async {
-
+  Future<String> changePassword(
+      {required int employeeNumber,
+      required String oldPassword,
+      required String newPassword,
+      required String confirmPassword}) async {
     final response = await client.post(
       Uri.parse(changePasswordEndPoint),
       body: jsonEncode({

@@ -21,10 +21,10 @@ class MyBenefitRequestsCubit extends Cubit<MyBenefitRequestsState> {
 
   List<BenefitRequest> myBenefitRequests = [];
 
-  getMyBenefitRequests(int benefitId) async {
+  getMyBenefitRequests({required int benefitId,int? requestNumber=0}) async {
     emit(MyBenefitRequestsLoadingState());
     final result = await getMyBenefitRequestsUsecase(
-        employeeNumber: userData!.employeeNumber, benefitId: benefitId);
+        employeeNumber: userData!.employeeNumber, benefitId: benefitId,requestNumber: requestNumber);
 
     result.fold((failure) {
       emit(MyBenefitRequestsErrorState(failure.message));

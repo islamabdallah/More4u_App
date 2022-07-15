@@ -18,6 +18,7 @@ abstract class BenefitRepository {
   Future<Either<Failure, List<BenefitRequest>>> getMyBenefitRequests({
     required int employeeNumber,
     required int benefitId,
+    int? requestNumber,
   });
 
   Future<Either<Failure, String>> cancelRequest({

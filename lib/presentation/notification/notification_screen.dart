@@ -12,6 +12,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../core/constants/constants.dart';
 import '../../injection_container.dart';
+import '../my_benefit_requests/my_benefit_requests_screen.dart';
 import 'cubits/notification_cubit.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -103,10 +104,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               .notifications[index].notificationType ==
                               'Request') {
                             final completer = Completer();
-
                             final result = await Navigator.pushReplacement(
                                 context, MaterialPageRoute(builder: (context) =>
                                 ManageRequestsScreen(requestNumber: _cubit
+                                    .notifications[index].requestNumber!,),),result: completer.future);
+                            completer.complete(result);
+                          } else if(_cubit
+                              .notifications[index].notificationType ==
+                              'Response'){
+                            final completer = Completer();
+                            final result = await Navigator.pushReplacement(
+                                context, MaterialPageRoute(builder: (context) =>
+                                MyBenefitRequestsScreen(benefitID:_cubit
+                                    .notifications[index].benefitId! ,requestNumber: _cubit
                                     .notifications[index].requestNumber!,),),result: completer.future);
                             completer.complete(result);
                           }

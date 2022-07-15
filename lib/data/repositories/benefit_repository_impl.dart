@@ -54,12 +54,13 @@ class BenefitRepositoryImpl extends BenefitRepository {
   Future<Either<Failure, List<BenefitRequest>>> getMyBenefitRequests({
     required int employeeNumber,
     required int benefitId,
+    int? requestNumber,
   }) async {
     if (await networkInfo.isConnected) {
       try {
         List<BenefitRequest> result =
             await remoteDataSource.getMyBenefitRequests(
-                employeeNumber: employeeNumber, benefitId: benefitId);
+                employeeNumber: employeeNumber, benefitId: benefitId,requestNumber:requestNumber);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));

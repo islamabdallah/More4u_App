@@ -31,8 +31,9 @@ class MyBenefitRequestsScreen extends StatefulWidget {
   static const routeName = 'MyBenefitRequestsScreen';
 
   final int benefitID;
+  final int requestNumber;
 
-  const MyBenefitRequestsScreen({Key? key, required this.benefitID})
+  const MyBenefitRequestsScreen({Key? key, required this.benefitID,this.requestNumber=0})
       : super(key: key);
 
   @override
@@ -47,7 +48,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
   void initState() {
     _cubit = sl<MyBenefitRequestsCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.getMyBenefitRequests(widget.benefitID);
+      _cubit.getMyBenefitRequests(benefitId: widget.benefitID,requestNumber: widget.requestNumber);
     });
 
     super.initState();
@@ -80,7 +81,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
               isSucceeded: true,
               message: state.message,
               onPressedOk: () {
-                _cubit.getMyBenefitRequests(widget.benefitID);
+                _cubit.getMyBenefitRequests(benefitId: widget.benefitID);
               });
         }
         if (state is CancelRequestErrorState) {
@@ -91,7 +92,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
               message: state.message,
               onPressedOk: () {
                 Navigator.pop(context);
-                _cubit.getMyBenefitRequests(widget.benefitID);
+                _cubit.getMyBenefitRequests(benefitId: widget.benefitID);
               });
         }
       },

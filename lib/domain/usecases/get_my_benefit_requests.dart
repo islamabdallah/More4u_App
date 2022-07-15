@@ -13,8 +13,9 @@ class GetMyBenefitRequestsUsecase {
   Future<Either<Failure, List<BenefitRequest>>> call({
     required int employeeNumber,
     required int benefitId,
+    int? requestNumber,
   }) {
     return repository.getMyBenefitRequests(
-        employeeNumber: employeeNumber, benefitId: benefitId);
+        employeeNumber: employeeNumber, benefitId: benefitId,requestNumber:requestNumber);
   }
 }
