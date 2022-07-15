@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -96,14 +98,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     itemCount: _cubit.notifications.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (_cubit
                               .notifications[index].notificationType ==
                               'Request') {
-                            Navigator.pushReplacement(
+                            final completer = Completer();
+
+                            final result = await Navigator.pushReplacement(
                                 context, MaterialPageRoute(builder: (context) =>
                                 ManageRequestsScreen(requestNumber: _cubit
-                                    .notifications[index].requestNumber!,),));
+                                    .notifications[index].requestNumber!,),),result: completer.future);
+                            completer.complete(result);
                           }
                         },
                         child: Row(

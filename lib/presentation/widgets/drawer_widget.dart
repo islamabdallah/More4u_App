@@ -28,7 +28,8 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _cubit =  HomeCubit.get(context);
+    var _cubit = HomeCubit.get(context);
+    final completer = Completer();
 
     return SizedBox(
       width: 273.w,
@@ -124,20 +125,22 @@ class DrawerWidget extends StatelessWidget {
                     title: 'My Requests',
                     leading: CustomIcons.ticket,
                     onTap: () async {
-
                       Navigator.pop(context);
 
                       if (ModalRoute.of(context)?.settings.name ==
                           HomeScreen.routeName) {
-                        Navigator.pushNamed(context, MyBenefitsScreen.routeName)
-                            .whenComplete(
-                                () {
-                                  _cubit.getHomeData();
-                                });
-                      } else {
                         final completer = Completer();
+                        final result = await Navigator.pushNamed(
+                                context, MyBenefitsScreen.routeName)
+                            .whenComplete(() {
+                          _cubit.getHomeData();
+                        });
+                        completer.complete(result);
+                        print('haha yes');
+                      } else {
                         final result = await Navigator.pushReplacementNamed(
-                            context, MyBenefitsScreen.routeName,result: completer.future);
+                            context, MyBenefitsScreen.routeName,
+                            result: completer.future);
                         completer.complete(result);
                       }
                       // Navigator.pushNamedAndRemoveUntil(context, MyQuestions.routeName, ModalRoute.withName(SearchScreen.routeName));
@@ -149,33 +152,42 @@ class DrawerWidget extends StatelessWidget {
                     leading: CustomIcons.bell,
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(
-                          context, NotificationScreen.routeName);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          NotificationScreen.routeName,
+                          ModalRoute.withName(HomeScreen.routeName)).whenComplete(() => _cubit.getHomeData());
                     },
                   ),
                   buildListTile(
                     context,
                     title: 'Profile',
                     leading: CustomIcons.user,
-                    onTap: () {
+                    onTap: () async {
                       Navigator.pop(context);
 
                       if (ModalRoute.of(context)?.settings.name ==
                           HomeScreen.routeName) {
                         Navigator.pushNamed(context, ProfileScreen.routeName,
-                            arguments: {'user': userData, 'isProfile': true});
+                            arguments: {
+                              'user': userData,
+                              'isProfile': true
+                            }).whenComplete(() => _cubit.getHomeData());
                       } else {
-                        Navigator.pushReplacementNamed(
+                        final result = await Navigator.pushReplacementNamed(
                             context, ProfileScreen.routeName,
-                            arguments: {'user': userData, 'isProfile': true});
+                            arguments: {
+                              'user': userData,
+                              'isProfile': true,
+                            },
+                            result: completer.future);
+                        completer.complete(result);
                       }
                     },
                   ),
                   Divider(),
 
-                  Visibility(
-                    visible: userData!.hasRequests!,
-                    child: buildListTile(
+                  if (userData!.hasRequests!)
+                    buildListTile(
                       context,
                       title: 'Manage Requests',
                       leading: CustomIcons.business_time,
@@ -185,18 +197,15 @@ class DrawerWidget extends StatelessWidget {
                             HomeScreen.routeName) {
                           Navigator.pushNamed(
                                   context, ManageRequestsScreen.routeName)
-                              .whenComplete(
-                                  () => _cubit.getHomeData());
+                              .whenComplete(() => _cubit.getHomeData());
                         } else {
-                          final completer = Completer();
                           final result = await Navigator.pushReplacementNamed(
-                              context, ManageRequestsScreen.routeName,result: completer.future);
+                              context, ManageRequestsScreen.routeName,
+                              result: completer.future);
                           completer.complete(result);
-
                         }
                       },
                     ),
-                  ),
                   buildListTile(
                     context,
                     title: 'Logout',

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 2, vsync: this);
-    var cubit = HomeCubit.get(context);
+    var _cubit = HomeCubit.get(context);
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         if(state is GetHomeDataLoadingState){
@@ -103,8 +105,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         color: Colors.transparent,
                         child: IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, NotificationScreen.routeName);
+                            final completer = Completer();
+                            final result = Navigator.pushNamed(
+                                context, NotificationScreen.routeName).whenComplete(() => _cubit.getHomeData());
+                            completer.complete(result);
                           },
                           iconSize: 30.w,
                           icon: SimpleShadow(
@@ -180,16 +184,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ListView.builder(
                       padding: EdgeInsets.zero,
                       itemBuilder: (context, index) =>
-                          BenefitCard(benefit: cubit.benefitModels[index]),
-                      itemCount: cubit.benefitModels.length,
+                          BenefitCard(benefit: _cubit.benefitModels[index]),
+                      itemCount: _cubit.benefitModels.length,
                     ),
-                    cubit.availableBenefitModels != null &&
-                            cubit.availableBenefitModels?.length != 0
+                    _cubit.availableBenefitModels != null &&
+                            _cubit.availableBenefitModels?.length != 0
                         ? ListView.builder(
                             itemBuilder: (context, index) => BenefitCard(
                                 benefit:
-                                    cubit.availableBenefitModels![index]),
-                            itemCount: cubit.availableBenefitModels?.length,
+                                    _cubit.availableBenefitModels![index]),
+                            itemCount: _cubit.availableBenefitModels?.length,
                           )
                         : Center(child: Text('No Benefits available')),
                   ]),
