@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-loadingAlertDialog(BuildContext context) {
+loadingAlertDialog(BuildContext context,{bool isDismissible=false}) {
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -10,7 +11,7 @@ loadingAlertDialog(BuildContext context) {
           children: [
             const CircularProgressIndicator(),
             Container(
-              margin: const EdgeInsets.only(left: 5),
+              margin: EdgeInsets.only(left: 16.w),
               child: const Text("Loading"),
             ),
           ],

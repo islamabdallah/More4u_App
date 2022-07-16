@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:more4u/data/datasources/local_data_source.dart';
 import 'package:more4u/presentation/Login/login_screen.dart';
+import 'package:more4u/presentation/widgets/helpers.dart';
 import 'package:more4u/presentation/widgets/powered_by_cemex.dart';
 import 'package:more4u/presentation/widgets/utils/message_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   String? user;
 
   _startDelay() {
-    Timer(const Duration(seconds: 2), _goNext);
+    Timer(const Duration(seconds: 1), _goNext);
   }
 
   _goNext() async {
@@ -45,7 +46,11 @@ class _SplashScreenState extends State<SplashScreen> {
       LoginUserUsecase login = sl<LoginUserUsecase>();
       final result = await login(employeeNumber: json['employeeNumber'],pass: json['pass']);
       result.fold((failure) {
-        showMessageDialog(context: context, isSucceeded: false);
+        showMessageDialog(context: context, isSucceeded: false,message: failure.message,onPressedOk: (){
+          if(failure.message != 'No internet Connection'){
+            logOut(context);
+          }
+        });
       }, (loginResponse) {
         userData = loginResponse.user;
         var homeCubit = HomeCubit.get(context);

@@ -104,7 +104,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
           Navigator.pop(context);
           showMessageDialog(
               context: context,
-              isSucceeded: true,
+              isSucceeded: false,
               message: state.message,
               onPressedOk: () {});
         }
@@ -832,6 +832,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               child: Padding(
                 padding: EdgeInsets.only(top: 16.h),
                 child: Scrollbar(
+                  controller: scrollController,
                   thumbVisibility: true,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
