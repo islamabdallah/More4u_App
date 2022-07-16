@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:more4u/domain/usecases/get_notifications.dart';
 
@@ -9,6 +10,8 @@ part 'notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
   final GetNotificationsUsecase getNotificationsUsecase;
+
+  static NotificationCubit get(context) => BlocProvider.of(context);
 
   NotificationCubit({required this.getNotificationsUsecase})
       : super(NotificationInitial());

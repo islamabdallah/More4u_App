@@ -30,7 +30,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   void initState() {
-    _cubit = sl<NotificationCubit>();
+    _cubit = NotificationCubit.get(context);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.getNotifications();
@@ -44,10 +44,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
       bloc: _cubit,
       listener: (context, state) {
         if (state is GetNotificationsLoadingState) {
-          loadingAlertDialog(context);
+          // loadingAlertDialog(context);
         }
         if (state is GetNotificationsSuccessState) {
-          Navigator.pop(context);
+          // Navigator.pop(context);
         }
         if (state is GetNotificationsErrorState) {
           Navigator.pop(context);
@@ -106,8 +106,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       color: mainColor,
                       fontWeight: FontWeight.bold),
                 ),
+                if(state is GetNotificationsLoadingState)
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child:  Center(child: LinearProgressIndicator(
+                    minHeight: 2.h,
+                    backgroundColor: mainColor.withOpacity(0.4),
+                  )),
+                ),
                 Expanded(
-                  child: _cubit.notifications.isNotEmpty ?
+                  child:
+                  _cubit.notifications.isNotEmpty ?
                   ListView.separated(
                     padding: EdgeInsets.only(top: 16.h),
                     itemCount: _cubit.notifications.length,
@@ -206,6 +215,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     return Divider();
                   },
                   )
+                      :
+                  (state is GetNotificationsLoadingState)&& _cubit.notifications.isEmpty?
+                      const Center(child: CircularProgressIndicator())
                       :
                   const Center(child: Text('No Notifications')),
                 ),

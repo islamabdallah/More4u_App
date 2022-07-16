@@ -23,6 +23,7 @@ import 'core/utils/services/local_storage/local_storage_service.dart';
 import 'injection_container.dart' as di;
 import 'presentation/manage_requests/manage_requests_screen.dart';
 import 'presentation/my_benefits/my_benefits_screen.dart';
+import 'presentation/notification/cubits/notification_cubit.dart';
 import 'presentation/splash/splash_screen.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -67,6 +68,9 @@ class MyApp extends StatelessWidget {
             providers: [
               BlocProvider<HomeCubit>(
                 create: (context) => sl<HomeCubit>(),
+              ),
+              BlocProvider<NotificationCubit>(
+                create: (context) => sl<NotificationCubit>(),
               ),
             ],
             child: MaterialApp(
