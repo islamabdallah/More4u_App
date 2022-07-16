@@ -645,7 +645,42 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
-                      child: request.myAction == null
+                      child:
+                      request.status =='Canceled'?
+                         Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: RichText(
+                softWrap: true,
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: 'The Request has been ',
+                    style: TextStyle(
+                      color: greyColor,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'Canceled ',
+                    style: TextStyle(
+                      color: redColor,
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                  TextSpan(
+                    text: timeago.format(DateTime.parse(
+                        request.myAction?.replayDate ??
+                            '')),
+                    style: TextStyle(
+                        color: greyColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ])),
+          ),
+        ):
+                      request.myAction == null
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
