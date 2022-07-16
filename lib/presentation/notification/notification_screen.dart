@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/manage_requests/manage_requests_screen.dart';
+import 'package:more4u/presentation/widgets/drawer_widget.dart';
 import 'package:more4u/presentation/widgets/utils/loading_dialog.dart';
 import 'package:more4u/presentation/widgets/utils/message_dialog.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -56,6 +57,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       },
       builder: (context, state) {
         return Scaffold(
+          drawer: const DrawerWidget(),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
@@ -63,24 +65,36 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
               children: [
                 SizedBox(height: 60.h,),
-                Container(
-                  height: 50.h,
-                  padding: EdgeInsets.only(top: 8.h),
-                  child: IconButton(
-                    splashRadius: 20.w,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    iconSize: 40.w,
-                    icon: SvgPicture.asset(
-                      'assets/images/back.svg',
-                      fit: BoxFit.cover,
-                      height: 50.w,
-                      width: 50.w,
-                      clipBehavior: Clip.none,
-                      color: mainColor,
-                    ),
-                  ),
+                Builder(
+                  builder: (context) {
+                    return Material(
+                      borderRadius: BorderRadius.circular(100),
+                      clipBehavior: Clip.antiAlias,
+                      color: Colors.transparent,
+                      child: IconButton(
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        iconSize: 45.w,
+                        icon: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Image.asset('assets/images/cadeau.png'),
+                            Padding(
+                              padding: EdgeInsets.only(top:24.0.h),
+                              child: SvgPicture.asset(
+                                'assets/images/menu.svg',
+                                // fit: BoxFit.cover,
+                                width: 25.h,
+                                height: 25.h,
+                                color: mainColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                 ),
 
                 SizedBox(height: 8.h,),

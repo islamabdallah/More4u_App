@@ -34,6 +34,7 @@ import '../widgets/benifit_card.dart';
 import '../widgets/custom_switch.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/helpers.dart';
+import '../widgets/my_app_bar.dart';
 import '../widgets/utils/loading_dialog.dart';
 import 'cubits/manage_requests_cubit.dart';
 
@@ -121,75 +122,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                 SizedBox(
                   height: 50.h,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Builder(builder: (context) {
-                      return Material(
-                        borderRadius: BorderRadius.circular(100),
-                        clipBehavior: Clip.antiAlias,
-                        color: Colors.transparent,
-                        child: IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          iconSize: 45.w,
-                          icon: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Image.asset('assets/images/cadeau.png'),
-                              Padding(
-                                padding: EdgeInsets.only(top: 24.0.h),
-                                child: SvgPicture.asset(
-                                  'assets/images/menu.svg',
-                                  // fit: BoxFit.cover,
-                                  width: 25.h,
-                                  height: 25.h,
-                                  color: mainColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                    Badge(
-                      position: BadgePosition(bottom: -2, end: 3),
-                      badgeColor: redColor,
-                      // badgeContent: SizedBox(
-                      //   width: 12.h,
-                      //   height: 12.h,
-                      // ),
-                      padding: EdgeInsets.all(8.r),
-                      badgeContent: Text(
-                        '3',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(150.r),
-                        clipBehavior: Clip.antiAlias,
-                        color: Colors.transparent,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, NotificationScreen.routeName);
-                          },
-                          iconSize: 30.w,
-                          icon: SimpleShadow(
-                              offset: Offset(0, 4),
-                              color: Colors.black.withOpacity(0.25),
-                              child: Icon(
-                                CustomIcons.bell,
-                                color: mainColor,
-                              )),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                const MyAppBar(),
                 Padding(
                   padding: EdgeInsets.zero,
                   child: Text(

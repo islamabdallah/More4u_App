@@ -18,6 +18,7 @@ import '../../injection_container.dart';
 import '../notification/notification_screen.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/helpers.dart';
+import '../widgets/my_app_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = 'ProfileScreen';
@@ -106,80 +107,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 8.h,
+                        height: 16.h,
                       ),
                       (widget.isProfile != null && widget.isProfile!)
-                          ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Builder(builder: (context) {
-                            return Material(
-                              borderRadius: BorderRadius.circular(100),
-                              clipBehavior: Clip.antiAlias,
-                              color: Colors.transparent,
-                              child: IconButton(
-                                onPressed: () {
-                                  Scaffold.of(context).openDrawer();
-                                },
-                                iconSize: 45.w,
-                                icon: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset(
-                                        'assets/images/cadeau.png'),
-                                    Padding(
-                                      padding:
-                                      EdgeInsets.only(top: 24.0.h),
-                                      child: SvgPicture.asset(
-                                        'assets/images/menu.svg',
-                                        // fit: BoxFit.cover,
-                                        width: 25.h,
-                                        height: 25.h,
-                                        color: mainColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                          Badge(
-                            position: BadgePosition(bottom: -2, end: 3),
-                            badgeColor: redColor,
-                            // badgeContent: SizedBox(
-                            //   width: 12.h,
-                            //   height: 12.h,
-                            // ),
-                            padding: EdgeInsets.all(8.r),
-                            badgeContent: Text(
-                              '3',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(150.r),
-                              clipBehavior: Clip.antiAlias,
-                              color: Colors.transparent,
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context,
-                                      NotificationScreen.routeName);
-                                },
-                                iconSize: 30.w,
-                                icon: SimpleShadow(
-                                    offset: Offset(0, 4),
-                                    color: Colors.black.withOpacity(0.25),
-                                    child: Icon(
-                                      CustomIcons.bell,
-                                      color: mainColor,
-                                    )),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
+                          ? const MyAppBar()
                           : Container(
                         height: 50.h,
                         padding: EdgeInsets.only(top: 8.h),
