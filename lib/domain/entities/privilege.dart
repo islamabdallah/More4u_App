@@ -6,18 +6,14 @@ class Privilege extends Equatable {
   final int? priority;
   final String? image;
 
-  const Privilege({
-    this.name,
-    this.description,
-    this.priority,
-    this.image,
-  });
+  const Privilege({this.name, this.description, this.priority, this.image});
 
   @override
+  // TODO: implement props
   List<Object?> get props => [
-        name,
-        description,
-        priority,
-        image,
-      ];
+    name,
+    description,
+    priority,
+    image,
+  ];
 }

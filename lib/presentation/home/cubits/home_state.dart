@@ -10,3 +10,10 @@ class GetHomeDataErrorState extends HomeState {
  final String message;
   GetHomeDataErrorState(this.message);
 }
+
+class GetPrivilegesLoadingState extends HomeState {}
+class GetPrivilegesSuccessState extends HomeState {}
+class GetPrivilegesErrorState extends HomeState {
+ final String message;
+ GetPrivilegesErrorState(this.message);
+}

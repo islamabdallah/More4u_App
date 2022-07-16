@@ -43,7 +43,7 @@ Future<void> init() async {
 
 // Cubits
   sl.registerFactory(() => LoginCubit(loginUser: sl()));
-  sl.registerFactory(() => HomeCubit(loginUser: sl()));
+  sl.registerFactory(() => HomeCubit(loginUser: sl(),getPrivilegesUsecase: sl()));
   sl.registerFactory(() => ProfileCubit(updateProfilePictureUsecase: sl(),changePasswordUsecase: sl()));
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
   sl.registerFactory(

@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:more4u/domain/entities/privilege.dart';
 import 'package:more4u/domain/entities/user.dart';
 
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
+import '../../domain/entities/privilege.dart';
 import '../../domain/entities/login_response.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../datasources/remote_data_source.dart';

@@ -14,6 +14,7 @@ import '../../custom_icons.dart';
 import '../notification/notification_screen.dart';
 import '../widgets/benifit_card.dart';
 import '../widgets/drawer_widget.dart';
+import '../widgets/privilege_card.dart';
 import '../widgets/utils/loading_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    TabController _tabController = TabController(length: 2, vsync: this);
+    TabController _tabController = TabController(length: 3, vsync: this);
     var _cubit = HomeCubit.get(context);
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
@@ -158,6 +159,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: redColor),
                       padding: EdgeInsets.zero,
                       labelPadding: EdgeInsets.zero,
+                      onTap:(index){
+                        if(index==2){
+                          _cubit.getPrivileges();
+                        }
+                      } ,
                       tabs: [
                         Tab(
                           child: Container(
@@ -174,6 +180,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             child: Align(
                               alignment: Alignment.center,
                               child: Text("Available"),
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text("Privileges"),
                             ),
                           ),
                         ),
@@ -196,6 +211,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             itemCount: _cubit.availableBenefitModels?.length,
                           )
                         : Center(child: Text('No Benefits available')),
+
+
+                        _cubit.privileges.isNotEmpty?
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) =>
+                         PrivilegeCard(privilege: _cubit.privileges[index]),
+                      itemCount: _cubit.privileges.length,
+                    )
+                    :Center(child: Text('No privileges available')),
                   ]),
                 ),
               ],

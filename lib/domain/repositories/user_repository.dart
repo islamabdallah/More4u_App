@@ -6,6 +6,7 @@ import '../entities/login_response.dart';
 import '../entities/user.dart';
 import '../entities/privilege.dart';
 
+
 abstract class UserRepository {
   Future<Either<Failure,LoginResponse>> loginUser({
     required String employeeNumber,
