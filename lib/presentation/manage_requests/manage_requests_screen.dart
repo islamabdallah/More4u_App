@@ -1152,11 +1152,16 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                             color: greyColor,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Text(
-                                        request.createdBy?.departmentName ?? '',
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: greyColor,
+                                      Flexible(
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            request.createdBy?.departmentName ?? '',
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -1213,8 +1218,39 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                         SizedBox(
                           height: 8.h,
                         ),
-                        if (request.fullParticipantsData != null) ...[
 
+                        if(request.sendToModel!=null)...[
+                          Divider(),
+                          Row(
+                            children: [
+                              Text(
+                                "Gifted To",
+                                style: TextStyle(
+                                  color: mainColor,
+                                  fontSize: 14.sp,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                                child: SelectionChip(
+                                    label: request.sendToModel?.employeeName ?? '',
+                                    index: 0,
+                                    selectedIndex: 1,
+                                    selectIndex: (_) {
+                                      Navigator.pushNamed(
+                                          context, ProfileScreen.routeName,
+                                          arguments: {'user':request.sendToModel} );
+                                    }),
+                              ),
+                            ],
+                          ),
+
+
+                        ],
+
+                        if (request.fullParticipantsData != null) ...[
                           Divider(),
                           Text(
                             "Participants",
@@ -1690,64 +1726,6 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
       // ),
     );
   }
-}
-
-showInfo(BuildContext context, User user) {
-  showDialog(
-      barrierColor: Colors.transparent,
-      context: context,
-      builder: (_) {
-        return Dialog(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20),
-              color: mainColor,
-              child: const Center(
-                child: Text(
-                  'Employee Information',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.person),
-              title: Text('Name: ${user.employeeName ?? ''}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.pin),
-              title: Text('Employee Number: ${user.employeeNumber}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.sell),
-              title: Text('Sap Number: ${user.sapNumber}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.domain),
-              title: Text('Department: ${user.departmentName ?? ''}'),
-            ),
-            // ListTile(
-            //   dense: true,
-            //   leading: Icon(Icons.person),
-            //   title: Text('supervisorName: ${user.supervisorName ?? ''}'),
-            // ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.cake),
-              title: Text('Birth Date: ${user.birthDate}'),
-            ),
-            ListTile(
-              dense: true,
-              leading: Icon(Icons.accessibility),
-              title: Text('Payroll Area: ${user.collar}'),
-            ),
-          ]),
-        );
-      });
 }
 
 class MyClipper extends CustomClipper<Path> {

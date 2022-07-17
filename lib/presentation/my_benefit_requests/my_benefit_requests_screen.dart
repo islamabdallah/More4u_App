@@ -433,7 +433,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                             ),
                             if(request.sendToModel!=null)
                              Row(children:[ Text(
-                                'Gifted to: ',
+                                'Gifted To: ',
                                 style: TextStyle(
                                     color: greyColor,
                                     fontSize: 16.sp,
