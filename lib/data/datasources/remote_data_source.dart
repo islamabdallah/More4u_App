@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:more4u/data/models/gift_model.dart';
 
 import '../../../../../core/errors/exceptions.dart';
 import '../../core/constants/api_path.dart';
@@ -35,6 +36,7 @@ abstract class RemoteDataSource {
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
+  Future<List<GiftModel>> getMyGifts({required int employeeNumber});
 
   Future<List<PrivilegeModel>> getPrivileges();
 
@@ -281,6 +283,36 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     }
   }
 
+  @override
+  Future<List<GiftModel>> getMyGifts(
+      {required int employeeNumber}) async {
+    final response = await client.post(
+      Uri.parse(showMyGifts).replace(queryParameters: {
+        "EmployeeNumber": employeeNumber.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      List<GiftModel> myGifts = [];
+
+      for (var gift in result['data']) {
+        myGifts.add(GiftModel.fromJson(gift));
+      }
+      return myGifts;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
   @override
   Future<List<NotificationModel>> getNotifications(
       {required int employeeNumber}) async {

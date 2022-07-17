@@ -7,6 +7,7 @@ const String userLogin = baseUrl + '/LoginAPI/userLogin';
 const String whoCanIGiveThisBenefit = baseUrl + '/BenefitAPI/WhoCanIGiveThisBenefit';
 const String whoCanRedeemThisGroupBenefit = baseUrl + '/BenefitAPI/WhoCanRedeemThisGroupBenefit';
 const String showMyBenefits = baseUrl + '/BenefitAPI/ShowMyBenefits';
+const String showMyGifts = baseUrl + '/BenefitAPI/ShowMyGifts';
 const String showMyBenefitRequests = baseUrl + '/BenefitAPI/ShowMyBenefitRequests';
 const String requestCancel = baseUrl + '/BenefitAPI/RequestCancel';
 const String confirmRequest = baseUrl + '/BenefitAPI/ConfirmRequest';

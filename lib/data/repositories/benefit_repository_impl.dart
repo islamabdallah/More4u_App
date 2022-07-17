@@ -8,6 +8,7 @@ import 'package:more4u/domain/entities/notification.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
+import '../../domain/entities/gift.dart';
 import '../../domain/repositories/benefit_repository.dart';
 import '../datasources/remote_data_source.dart';
 
@@ -50,6 +51,21 @@ class BenefitRepositoryImpl extends BenefitRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, List<Gift>>> getMyGifts(
+      {required int employeeNumber}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        List<Gift> result = await remoteDataSource.getMyGifts(
+            employeeNumber: employeeNumber);
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
   @override
   Future<Either<Failure, List<BenefitRequest>>> getMyBenefitRequests({
     required int employeeNumber,

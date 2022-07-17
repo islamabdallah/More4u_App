@@ -4,6 +4,7 @@ import 'package:more4u/domain/entities/benefit_request.dart';
 import '../../../../../core/errors/failures.dart';
 import '../entities/benefit.dart';
 import '../entities/filtered_search.dart';
+import '../entities/gift.dart';
 import '../entities/notification.dart';
 
 abstract class BenefitRepository {
@@ -20,6 +21,11 @@ abstract class BenefitRepository {
     required int benefitId,
     int? requestNumber,
   });
+
+  Future<Either<Failure, List<Gift>>> getMyGifts({
+    required int employeeNumber,
+  });
+
 
   Future<Either<Failure, String>> cancelRequest({
     required int employeeNumber,

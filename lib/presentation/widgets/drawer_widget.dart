@@ -19,6 +19,7 @@ import '../../core/firebase/push_notification_service.dart';
 import '../../data/datasources/local_data_source.dart';
 import '../Login/login_screen.dart';
 import '../home/cubits/home_cubit.dart';
+import '../my_gifts/my_gifts_screen.dart';
 import '../notification/notification_screen.dart';
 import 'helpers.dart';
 import 'powered_by_cemex.dart';
@@ -140,6 +141,32 @@ class DrawerWidget extends StatelessWidget {
                       } else {
                         final result = await Navigator.pushReplacementNamed(
                             context, MyBenefitsScreen.routeName,
+                            result: completer.future);
+                        completer.complete(result);
+                      }
+                      // Navigator.pushNamedAndRemoveUntil(context, MyQuestions.routeName, ModalRoute.withName(SearchScreen.routeName));
+                    },
+                  ),
+                  buildListTile(
+                    context,
+                    title: 'My Gifts',
+                    leading: CustomIcons.balloons,
+                    onTap: () async {
+                      Navigator.pop(context);
+
+                      if (ModalRoute.of(context)?.settings.name ==
+                          HomeScreen.routeName) {
+                        final completer = Completer();
+                        final result = await Navigator.pushNamed(
+                            context, MyGiftsScreen.routeName)
+                            .whenComplete(() {
+                          _cubit.getHomeData();
+                        });
+                        completer.complete(result);
+                        print('haha yes');
+                      } else {
+                        final result = await Navigator.pushReplacementNamed(
+                            context, MyGiftsScreen.routeName,
                             result: completer.future);
                         completer.complete(result);
                       }
@@ -338,24 +365,29 @@ class DrawerWidget extends StatelessWidget {
       required String title,
       void Function()? onTap}) {
     return SizedBox(
-      // height: 50.h,
-      child: ListTile(
-        dense: true,
-        minLeadingWidth: 0,
-        contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
-        leading: SimpleShadow(
-            offset: Offset(0, 4),
-            color: Colors.black,
-            child: Icon(leading, color: mainColor, size: 25.r)),
-        title: Text(
-          title,
-          style: TextStyle(
-            color: greyColor,
-            fontWeight: FontWeight.w700,
-            fontSize: 18.0.sp,
+      height: 55.h,
+      child: Material(
+        color: Colors.transparent,
+        elevation: 0,
+        child: ListTile(
+          dense: true,
+          minLeadingWidth: 0,
+          minVerticalPadding: 0,
+          contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
+          leading: SimpleShadow(
+              offset: Offset(0, 4),
+              color: Colors.black,
+              child: Icon(leading, color: mainColor, size: 25.r)),
+          title: Text(
+            title,
+            style: TextStyle(
+              color: greyColor,
+              fontWeight: FontWeight.w700,
+              fontSize: 16.0.sp,
+            ),
           ),
+          onTap: onTap,
         ),
-        onTap: onTap,
       ),
     );
   }

@@ -9,6 +9,7 @@ import '../../../presentation/benefit_redeem/BenefitRedeemScreen.dart';
 import '../../../presentation/home/home_screen.dart';
 import '../../../presentation/manage_requests/manage_requests_screen.dart';
 import '../../../presentation/my_benefits/my_benefits_screen.dart';
+import '../../../presentation/my_gifts/my_gifts_screen.dart';
 import '../../../presentation/notification/notification_screen.dart';
 import '../../../presentation/splash/splash_screen.dart';
 import '../../../presentation/profile/profile_screen.dart';
@@ -23,11 +24,11 @@ class AppRoutes {
         return _materialRoute(const LoginScreen(), LoginScreen.routeName);
 
       case ProfileScreen.routeName:
-        Map<String,dynamic> args = settings.arguments as Map<String,dynamic>;
+        Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
         return _materialRoute(
             ProfileScreen(
               user: args['user'],
-              isProfile : args['isProfile']??false,
+              isProfile: args['isProfile'] ?? false,
             ),
             ProfileScreen.routeName);
 
@@ -37,9 +38,14 @@ class AppRoutes {
 
       case HomeScreen.routeName:
         return _materialRoute(const HomeScreen(), HomeScreen.routeName);
-      case MyBenefitsScreen.routeName:
+
+        case MyBenefitsScreen.routeName:
         return _materialRoute(
             const MyBenefitsScreen(), MyBenefitsScreen.routeName);
+
+        case MyGiftsScreen.routeName:
+        return _materialRoute(
+            const MyGiftsScreen(), MyGiftsScreen.routeName);
 
       case ManageRequestsScreen.routeName:
         return _materialRoute(
