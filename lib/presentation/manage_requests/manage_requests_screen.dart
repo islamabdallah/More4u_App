@@ -42,7 +42,7 @@ class ManageRequestsScreen extends StatefulWidget {
   static const routeName = 'ManageRequestsScreen';
   final int requestNumber;
 
-  const ManageRequestsScreen({Key? key,this.requestNumber=0}) : super(key: key);
+  const ManageRequestsScreen({Key? key,this.requestNumber=-1}) : super(key: key);
 
   @override
   State<ManageRequestsScreen> createState() => _ManageRequestsScreenState();
@@ -484,6 +484,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
           _cubit.isBottomSheetOpened = true;
           print(_cubit.isBottomSheetOpened);
           buildShowDetailedModalBottomSheet(request);
+          _cubit.getRequestProfileAndDocuments(request.requestNumber!);
         },
         child: MyBanner(
           message: request.status ?? '',
@@ -796,7 +797,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
     void openGallery({int index = 0}) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => GalleryScreen(
-            base64Images: request.documents??[],
+            base64Images: _cubit.profileAndDocuments!.documents!,
             index: index,
           )));
     }
@@ -826,7 +827,10 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
           ScrollController scrollController,
           double bottomSheetOffset,
         ) {
-          return ClipRRect(
+          return BlocBuilder(
+            bloc: _cubit,
+  builder: (context, state) {
+    return ClipRRect(
             child: MyBanner(
               message: '${request.status}',
               textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
@@ -1289,8 +1293,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             ),
                           ),
                         ],
-                        if (request.documents != null &&
-                            request.documents!.isNotEmpty) ...[
+                        if (_cubit.profileAndDocuments?.documents != null && _cubit.profileAndDocuments!.documents!.isNotEmpty )
+                          ...[
                               Divider(),
                           Text(
                             "Documents",
@@ -1313,12 +1317,13 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     openGallery(index: 0);
                                   },
                                   child: Container(
+                                    margin: EdgeInsets.only(right: 8.w),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: mainColor, width: 2),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Image.memory(
-                                        base64Decode(request.documents![index]),
+                                        base64Decode(_cubit.profileAndDocuments!.documents![index]),
                                         width: 120.h,
                                         height: 120.h,
                                         fit: BoxFit.fill,
@@ -1326,7 +1331,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   ),
                                 );
                               },
-                              itemCount: request.documents!.length,
+                              itemCount: _cubit.profileAndDocuments!.documents!.length,
                             ),
                           )
                         ],
@@ -1460,6 +1465,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               ),
             ),
           );
+  },
+);
         }).whenComplete(() => _cubit.isBottomSheetOpened = false);
   }
 

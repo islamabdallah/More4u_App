@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:more4u/data/models/gift_model.dart';
+import 'package:more4u/data/models/profile_and_docuemnts_model.dart';
 
 import '../../../../../core/errors/exceptions.dart';
 import '../../core/constants/api_path.dart';
@@ -63,6 +64,11 @@ abstract class RemoteDataSource {
     required int employeeNumber,
     FilteredSearch? search,
     int? requestNumber,
+  });
+
+  Future<ProfileAndDocumentsModel> getRequestProfileAndDocuments({
+    required int employeeNumber,
+    required int requestNumber,
   });
 
   Future<List<ParticipantModel>> getParticipants({
@@ -179,6 +185,35 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         }
       }
       return benefitRequests;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
+
+
+  @override
+  Future<ProfileAndDocumentsModel> getRequestProfileAndDocuments(
+      {required int employeeNumber,
+        required int requestNumber}) async {
+    final response = await client.post(
+      Uri.parse(getProfilePictureAndRequestDocuments).replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+        "requestNumber": requestNumber.toString()
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      return ProfileAndDocumentsModel.fromJson(result['data']);
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       print(result);

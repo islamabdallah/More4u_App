@@ -6,6 +6,7 @@ import '../entities/benefit.dart';
 import '../entities/filtered_search.dart';
 import '../entities/gift.dart';
 import '../entities/notification.dart';
+import '../entities/profile_and_documents.dart';
 
 abstract class BenefitRepository {
   Future<Either<Failure, Benefit>> getBenefitDetails({
@@ -45,6 +46,12 @@ abstract class BenefitRepository {
     FilteredSearch? search,
     int? requestNumber,
   });
+
+  Future<Either<Failure, ProfileAndDocuments>> getRequestProfileAndDocuments({
+    required int employeeNumber,
+    required int requestNumber,
+  });
+
 
   Future<Either<Failure, Unit>> redeemCard({
     required BenefitRequest request,

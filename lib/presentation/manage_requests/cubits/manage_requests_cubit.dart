@@ -2,21 +2,26 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:more4u/core/constants/constants.dart';
+import 'package:more4u/domain/entities/profile_and_documents.dart';
 
 import '../../../domain/entities/benefit_request.dart';
 import '../../../domain/entities/filtered_search.dart';
 import '../../../domain/usecases/add_response.dart';
 import '../../../domain/usecases/get_benefits_to_manage.dart';
+import '../../../domain/usecases/get_request_Profile_and_documents.dart';
 
 part 'manage_requests_state.dart';
 
 class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   GetBenefitsToManageUsecase getBenefitsToManageUsecase;
   AddRequestResponseUsecase addRequestResponseUsecase;
+  GetRequestProfileAndDocumentsUsecase getRequestProfileAndDocumentsUsecase;
 
   ManageRequestsCubit(
       {required this.getBenefitsToManageUsecase,
-      required this.addRequestResponseUsecase})
+      required this.addRequestResponseUsecase,
+      required this.getRequestProfileAndDocumentsUsecase,
+      })
       : super(ManageRequestsInitial());
 
   List<BenefitRequest> benefitRequests = [];
@@ -32,6 +37,23 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
     }, (benefitRequests) {
       this.benefitRequests = benefitRequests;
       emit(GetRequestsToManageSuccessState());
+    });
+  }
+
+  ProfileAndDocuments? profileAndDocuments;
+  getRequestProfileAndDocuments(int requestNumber) async {
+    profileAndDocuments=null;
+    emit(GetRequestsToManageLoadingState());
+    final result = await getRequestProfileAndDocumentsUsecase(
+        employeeNumber: userData!.employeeNumber, requestNumber: requestNumber);
+
+    result.fold((failure) {
+      emit(GetRequestsToManageFailedState(failure.message));
+    }, (profileAndDocuments) {
+      this.profileAndDocuments = profileAndDocuments;
+      emit(GetRequestsToManageSuccessState());
+
+      print(profileAndDocuments.profilePicture?.length);
     });
   }
 

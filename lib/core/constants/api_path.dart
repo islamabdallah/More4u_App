@@ -12,6 +12,7 @@ const String showMyBenefitRequests = baseUrl + '/BenefitAPI/ShowMyBenefitRequest
 const String requestCancel = baseUrl + '/BenefitAPI/RequestCancel';
 const String confirmRequest = baseUrl + '/BenefitAPI/ConfirmRequest';
 const String showRequestsDefault = baseUrl + '/BenefitAPI/ShowRequestsDefault';
+const String getProfilePictureAndRequestDocuments = baseUrl + '/BenefitAPI/GetProfilePictureAndRequestDocuments';
 const String showRequests = baseUrl + '/BenefitAPI/ShowRequests';
 const String addRequestResponse = baseUrl + '/BenefitAPI/AddResponse';
 const String showNotifications = baseUrl + '/BenefitAPI/ShowFiftyNotifications';

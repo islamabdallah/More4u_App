@@ -9,6 +9,7 @@ import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
 import '../../domain/entities/gift.dart';
+import '../../domain/entities/profile_and_documents.dart';
 import '../../domain/repositories/benefit_repository.dart';
 import '../datasources/remote_data_source.dart';
 
@@ -140,6 +141,25 @@ class BenefitRepositoryImpl extends BenefitRepository {
           employeeNumber: employeeNumber,
           search: search,
               requestNumber:requestNumber
+        );
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProfileAndDocuments>> getRequestProfileAndDocuments(
+      {required int employeeNumber, required int requestNumber,}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        ProfileAndDocuments result =
+        await remoteDataSource.getRequestProfileAndDocuments(
+            employeeNumber: employeeNumber,
+            requestNumber:requestNumber
         );
         return Right(result);
       } on ServerException catch (e) {
