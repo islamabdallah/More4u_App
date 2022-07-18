@@ -57,14 +57,12 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
     return BlocConsumer(
       bloc: _cubit,
       listener: (context, state) {
-
-        if(state is GetMyBenefitsLoadingState){
+        if (state is GetMyBenefitsLoadingState) {
           loadingAlertDialog(context);
         }
-        if(state is GetMyBenefitsSuccessState){
+        if (state is GetMyBenefitsSuccessState) {
           Navigator.pop(context);
         }
-
       },
       builder: (context, state) {
         return Scaffold(
@@ -175,8 +173,7 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                                   benefit: _cubit.myPendingBenefits[index]),
                               itemCount: _cubit.myPendingBenefits.length,
                             )
-                          : const Center(
-                              child: Text('No Benefit available')),
+                          : const Center(child: Text('No Benefit available')),
                       _cubit.myInProgressBenefits.isNotEmpty
                           ? ListView.builder(
                               padding: EdgeInsets.zero,
@@ -184,30 +181,23 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                                   benefit: _cubit.myInProgressBenefits[index]),
                               itemCount: _cubit.myInProgressBenefits.length,
                             )
-                          : const Center(
-                              child: Text('No Benefit available')),
-
+                          : const Center(child: Text('No Benefit available')),
                       _cubit.myApprovedBenefits.isNotEmpty
                           ? ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) => myBenefitCard(
-                            benefit: _cubit.myApprovedBenefits[index]),
-                        itemCount: _cubit.myApprovedBenefits.length,
-                      )
-                          : const Center(
-                          child: Text('No Benefit available')),
-
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (context, index) => myBenefitCard(
+                                  benefit: _cubit.myApprovedBenefits[index]),
+                              itemCount: _cubit.myApprovedBenefits.length,
+                            )
+                          : const Center(child: Text('No Benefit available')),
                       _cubit.myRejectedBenefits.isNotEmpty
                           ? ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) => myBenefitCard(
-                            benefit: _cubit.myRejectedBenefits[index]),
-                        itemCount: _cubit.myRejectedBenefits.length,
-                      )
-                          : const Center(
-                          child: Text('No Benefit available')),
-
-
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (context, index) => myBenefitCard(
+                                  benefit: _cubit.myRejectedBenefits[index]),
+                              itemCount: _cubit.myRejectedBenefits.length,
+                            )
+                          : const Center(child: Text('No Benefit available')),
                     ],
                   ),
                 ),
@@ -236,9 +226,8 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
         child: InkWell(
           onTap: () {
             Navigator.pushNamed(context, MyBenefitRequestsScreen.routeName,
-                arguments: benefit.id).whenComplete(() =>
-                _cubit.getMyBenefits()
-            );
+                    arguments: benefit.id)
+                .whenComplete(() => _cubit.getMyBenefits());
           },
           child: MyBanner(
             message: '${benefit.lastStatus}',
@@ -263,7 +252,7 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                       ),
                       right: BorderSide(
                         width: 2.0,
-                        color:Color(0xFFE7E7E7),
+                        color: Color(0xFFE7E7E7),
                       ),
                     ),
                   ),
@@ -277,8 +266,13 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
                           decoration: BoxDecoration(
                               // border: Border.all()
                               ),
-                          child: Image.asset(
-                            'assets/images/hbd.png',
+                          child: Image.network(
+                            benefit.benefitCard,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                              'assets/images/more4u_card.png',
+                              fit: BoxFit.fill,
+                            ),
                             fit: BoxFit.fill,
                             alignment: Alignment.centerLeft,
                           ),

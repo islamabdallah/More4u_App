@@ -38,8 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    _cubit = sl<ProfileCubit>()
-      ..user = widget.user;
+    _cubit = sl<ProfileCubit>()..user = widget.user;
     super.initState();
   }
 
@@ -112,25 +111,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       (widget.isProfile != null && widget.isProfile!)
                           ? const MyAppBar()
                           : Container(
-                        height: 50.h,
-                        padding: EdgeInsets.only(top: 8.h),
-                        margin: EdgeInsets.only(top: 14.h, bottom: 8.h),
-                        child: IconButton(
-                          splashRadius: 20.w,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          iconSize: 40.w,
-                          icon: SvgPicture.asset(
-                            'assets/images/back.svg',
-                            fit: BoxFit.cover,
-                            height: 50.w,
-                            width: 50.w,
-                            clipBehavior: Clip.none,
-                            color: mainColor,
-                          ),
-                        ),
-                      ),
+                              height: 50.h,
+                              padding: EdgeInsets.only(top: 8.h),
+                              margin: EdgeInsets.only(top: 14.h, bottom: 8.h),
+                              child: IconButton(
+                                splashRadius: 20.w,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                iconSize: 40.w,
+                                icon: SvgPicture.asset(
+                                  'assets/images/back.svg',
+                                  fit: BoxFit.cover,
+                                  height: 50.w,
+                                  width: 50.w,
+                                  clipBehavior: Clip.none,
+                                  color: mainColor,
+                                ),
+                              ),
+                            ),
                       Padding(
                         padding: EdgeInsets.zero,
                         child: Text(
@@ -149,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Container(
                                 decoration: BoxDecoration(
                                   border:
-                                  Border.all(color: mainColor, width: 2),
+                                      Border.all(color: mainColor, width: 2),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 height: 130.h,
@@ -159,12 +158,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: Image.memory(
                                     base64Decode(
                                         _cubit.user?.profilePicture ?? ''),
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                        Image.network(
-                                          'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                                          fit: BoxFit.cover,
-                                        ),
+                                    errorBuilder: (context, error,
+                                            stackTrace) =>
+                                        Image.asset(
+                                            'assets/images/profile_avatar_placeholder.png',
+                                            fit: BoxFit.cover),
                                     fit: BoxFit.cover,
                                     gaplessPlayback: true,
                                   ),
@@ -174,521 +172,475 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ElevatedButton(
                                   onPressed: () {
                                     showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return BlocBuilder(
-                                            bloc: _cubit,
-                                            builder: (context, state) {
-                                              return StatefulBuilder(
-                                                  builder: (context, setState) {
+                                            context: context,
+                                            builder: (context) {
+                                              return BlocBuilder(
+                                                bloc: _cubit,
+                                                builder: (context, state) {
+                                                  return StatefulBuilder(
+                                                      builder:
+                                                          (context, setState) {
                                                     return Scaffold(
-                                                      backgroundColor: Colors.transparent,
+                                                      backgroundColor:
+                                                          Colors.transparent,
                                                       body: Dialog(
                                                         backgroundColor:
-                                                        Colors.transparent,
+                                                            Colors.transparent,
                                                         elevation: 0,
-                                                        insetPadding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 20.w,
-                                                            vertical: 0),
-                                                        child: SingleChildScrollView(
-
+                                                        insetPadding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    20.w,
+                                                                vertical: 0),
+                                                        child:
+                                                            SingleChildScrollView(
                                                           child: Container(
                                                             width: 500.0.w,
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.white,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color:
+                                                                  Colors.white,
                                                               borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
                                                             ),
-                                                            padding:
-                                                            EdgeInsets.symmetric(
-                                                                vertical: 12.h,
-                                                                horizontal: 14.w),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        12.h,
+                                                                    horizontal:
+                                                                        14.w),
                                                             child: Form(
-                                                              key: _cubit.formKey,
+                                                              key: _cubit
+                                                                  .formKey,
                                                               child: Column(
                                                                 mainAxisSize:
-                                                                MainAxisSize.min,
+                                                                    MainAxisSize
+                                                                        .min,
                                                                 crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                                    CrossAxisAlignment
+                                                                        .start,
                                                                 children: [
                                                                   Text(
                                                                     "Edit Profile",
                                                                     textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                    style: TextStyle(
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style:
+                                                                        TextStyle(
                                                                       color:
-                                                                      mainColor,
-                                                                      fontSize: 20
-                                                                          .sp,
+                                                                          mainColor,
+                                                                      fontSize:
+                                                                          20.sp,
                                                                       fontFamily:
-                                                                      "Cairo",
+                                                                          "Cairo",
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
+                                                                          FontWeight
+                                                                              .w700,
                                                                     ),
                                                                   ),
                                                                   Divider(),
                                                                   Text(
                                                                     "Change your profile picture",
                                                                     textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                    style: TextStyle(
-                                                                      color: mainColor,
-                                                                      fontSize: 14
-                                                                          .sp,
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color:
+                                                                          mainColor,
+                                                                      fontSize:
+                                                                          14.sp,
                                                                       fontFamily:
-                                                                      "Cairo",
+                                                                          "Cairo",
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                          FontWeight
+                                                                              .w500,
                                                                     ),
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 16.h,
+                                                                    height:
+                                                                        16.h,
                                                                   ),
                                                                   GestureDetector(
                                                                     onTap: () {
                                                                       _cubit
                                                                           .pickImage();
                                                                     },
-                                                                    child: Align(
+                                                                    child:
+                                                                        Align(
                                                                       alignment:
-                                                                      Alignment
-                                                                          .center,
+                                                                          Alignment
+                                                                              .center,
                                                                       child:
-                                                                      Container(
+                                                                          Container(
                                                                         decoration:
-                                                                        BoxDecoration(
-                                                                          border: Border
-                                                                              .all(
-                                                                              color:
-                                                                              mainColor,
-                                                                              width:
-                                                                              2),
+                                                                            BoxDecoration(
+                                                                          border: Border.all(
+                                                                              color: mainColor,
+                                                                              width: 2),
                                                                           borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                              6
-                                                                                  .r),
+                                                                              BorderRadius.circular(6.r),
                                                                         ),
-                                                                        height: 130
-                                                                            .h,
-                                                                        width: 132
-                                                                            .h,
+                                                                        height:
+                                                                            130.h,
+                                                                        width:
+                                                                            132.h,
                                                                         child:
-                                                                        ClipRRect(
+                                                                            ClipRRect(
                                                                           borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                              6
-                                                                                  .r),
-                                                                          child: _cubit
-                                                                              .pickedImage !=
-                                                                              null
-                                                                              ? Image
-                                                                              .memory(
-                                                                            base64Decode(
-                                                                                _cubit
-                                                                                    .pickedImage!),
-                                                                            fit:
-                                                                            BoxFit
-                                                                                .cover,
-                                                                          )
-                                                                              : Image
-                                                                              .memory(
-                                                                            base64Decode(
-                                                                                _cubit
-                                                                                    .user
-                                                                                    ?.profilePicture ??
-                                                                                    ''),
-                                                                            errorBuilder: (
-                                                                                context,
-                                                                                error,
-                                                                                stackTrace) =>
-                                                                                Image
-                                                                                    .network(
-                                                                                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                                                                                  fit: BoxFit
-                                                                                      .cover,
-                                                                                ),
-                                                                            fit:
-                                                                            BoxFit
-                                                                                .cover,
+                                                                              BorderRadius.circular(6.r),
+                                                                          child: _cubit.pickedImage != null
+                                                                              ? Image.memory(
+                                                                                  base64Decode(_cubit.pickedImage!),
+                                                                                  fit: BoxFit.cover,
                                                                             gaplessPlayback: true,
-                                                                          ),
+                                                                          )
+                                                                              : Image.memory(
+                                                                            base64Decode(
+                                                                                _cubit.user?.profilePicture ?? ''),
+                                                                            errorBuilder: (context, error,
+                                                                                stackTrace) =>
+                                                                                Image.asset(
+                                                                                    'assets/images/profile_avatar_placeholder.png',
+                                                                                    fit: BoxFit.cover),
+                                                                                  fit: BoxFit.cover,
+                                                                                  gaplessPlayback: true,
+                                                                                ),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   if (_cubit
-                                                                      .pickedImage !=
+                                                                          .pickedImage !=
                                                                       null) ...[
                                                                     SizedBox(
-                                                                      height: 16
-                                                                          .h,
+                                                                      height:
+                                                                          16.h,
                                                                     ),
                                                                     Align(
                                                                       alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                      child: SizedBox(
-                                                                        height: 55
-                                                                            .h,
+                                                                          Alignment
+                                                                              .center,
+                                                                      child:
+                                                                          SizedBox(
+                                                                        height:
+                                                                            55.h,
                                                                         child:
-                                                                        ElevatedButton(
+                                                                            ElevatedButton(
                                                                           onPressed:
                                                                               () {
-                                                                            _cubit
-                                                                                .updateProfileImage();
+                                                                            _cubit.updateProfileImage();
                                                                           },
-                                                                          child: Text(
+                                                                          child:
+                                                                              Text(
                                                                             'Save Image',
                                                                             style: TextStyle(
-                                                                                color: Colors
-                                                                                    .white,
-                                                                                fontWeight: FontWeight
-                                                                                    .w700,
-                                                                                fontSize:
-                                                                                14
-                                                                                    .sp),
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.w700,
+                                                                                fontSize: 14.sp),
                                                                           ),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ],
-                                                                  SizedBox(height: 16.h,),
+                                                                  SizedBox(
+                                                                    height:
+                                                                        16.h,
+                                                                  ),
                                                                   Divider(),
                                                                   Text(
                                                                     "Change your Password",
                                                                     textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                    style: TextStyle(
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style:
+                                                                        TextStyle(
                                                                       color:
-                                                                      mainColor,
-                                                                      fontSize: 14
-                                                                          .sp,
+                                                                          mainColor,
+                                                                      fontSize:
+                                                                          14.sp,
                                                                       fontFamily:
-                                                                      "Cairo",
+                                                                          "Cairo",
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                          FontWeight
+                                                                              .w500,
                                                                     ),
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 16.h,
+                                                                    height:
+                                                                        16.h,
                                                                   ),
                                                                   TextFormField(
                                                                       controller:
-                                                                      _cubit.currentPasswordController,
+                                                                          _cubit
+                                                                              .currentPasswordController,
                                                                       style: const TextStyle(
-                                                                          fontWeight:
-                                                                          FontWeight
+                                                                          fontWeight: FontWeight
                                                                               .w400,
                                                                           color:
-                                                                          mainColor),
+                                                                              mainColor),
                                                                       decoration:
-                                                                      InputDecoration(
-                                                                        isDense: true,
+                                                                          InputDecoration(
+                                                                        isDense:
+                                                                            true,
                                                                         contentPadding:
-                                                                        EdgeInsets
-                                                                            .symmetric(
-                                                                            vertical:
-                                                                            0),
+                                                                            EdgeInsets.symmetric(vertical: 0),
                                                                         // suffixIconConstraints:
                                                                         //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
-                                                                        prefixIcon: Icon(
-                                                                            CustomIcons
-                                                                                .lock2),
+                                                                        prefixIcon:
+                                                                            Icon(CustomIcons.lock2),
                                                                         suffixIcon:
-                                                                        Material(
-                                                                          color: Colors
-                                                                              .transparent,
-                                                                          type: MaterialType
-                                                                              .circle,
-                                                                          clipBehavior:
-                                                                          Clip
-                                                                              .antiAlias,
-                                                                          borderOnForeground:
-                                                                          true,
-                                                                          elevation:
-                                                                          0,
-                                                                          child:
-                                                                          IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              setState(
-                                                                                      () {
-                                                                                    _cubit.currentPassword =
-                                                                                    !_cubit.currentPassword;
-                                                                                  });
-                                                                            },
-                                                                            icon: !_cubit.currentPassword
-                                                                                ? Icon(
-                                                                              Icons
-                                                                                  .visibility_off_outlined,
-                                                                              size: 30
-                                                                                  .r,
-                                                                            )
-                                                                                : Icon(
-                                                                              Icons
-                                                                                  .remove_red_eye_outlined,
-                                                                              size: 30
-                                                                                  .r,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        border:
-                                                                        OutlineInputBorder(),
-                                                                        labelText:
-                                                                        'Current Password',
-                                                                        hintText:
-                                                                        'Enter Your Current Password',
-                                                                        errorMaxLines: 3,
-                                                                        hintStyle:
-                                                                        TextStyle(
-                                                                            color:
-                                                                            Color(
-                                                                                0xffc1c1c1)),
-                                                                        floatingLabelBehavior:
-                                                                        FloatingLabelBehavior
-                                                                            .always,
-                                                                      ),
-                                                                      keyboardType:
-                                                                      TextInputType
-                                                                          .visiblePassword,
-                                                                      obscureText:
-                                                                      !_cubit.currentPassword,
-                                                                      validator:
-                                                                      validatePassword),
-                                                                  SizedBox(
-                                                                    height: 25.h,
-                                                                  ),
-                                                                  TextFormField(
-                                                                      controller: _cubit.newPasswordController,
-                                                                      style: const TextStyle(
-                                                                          fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
+                                                                            Material(
                                                                           color:
-                                                                          mainColor),
-                                                                      decoration:
-                                                                      InputDecoration(
-                                                                        isDense: true,
-                                                                        contentPadding:
-                                                                        EdgeInsets
-                                                                            .symmetric(
-                                                                            vertical:
-                                                                            0),
-                                                                        // suffixIconConstraints:
-                                                                        //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
-                                                                        prefixIcon: Icon(
-                                                                            CustomIcons
-                                                                                .lock2),
-                                                                        suffixIcon:
-                                                                        Material(
-                                                                          color: Colors
-                                                                              .transparent,
-                                                                          type: MaterialType
-                                                                              .circle,
+                                                                              Colors.transparent,
+                                                                          type:
+                                                                              MaterialType.circle,
                                                                           clipBehavior:
-                                                                          Clip
-                                                                              .antiAlias,
+                                                                              Clip.antiAlias,
                                                                           borderOnForeground:
-                                                                          true,
+                                                                              true,
                                                                           elevation:
-                                                                          0,
+                                                                              0,
                                                                           child:
-                                                                          IconButton(
+                                                                              IconButton(
                                                                             onPressed:
                                                                                 () {
                                                                               setState(() {
-                                                                                _cubit.newPassword =
-                                                                                !_cubit.newPassword;
+                                                                                _cubit.currentPassword = !_cubit.currentPassword;
+                                                                              });
+                                                                            },
+                                                                            icon: !_cubit.currentPassword
+                                                                                ? Icon(
+                                                                                    Icons.visibility_off_outlined,
+                                                                                    size: 30.r,
+                                                                                  )
+                                                                                : Icon(
+                                                                                    Icons.remove_red_eye_outlined,
+                                                                                    size: 30.r,
+                                                                                  ),
+                                                                          ),
+                                                                        ),
+                                                                        border:
+                                                                            OutlineInputBorder(),
+                                                                        labelText:
+                                                                            'Current Password',
+                                                                        hintText:
+                                                                            'Enter Your Current Password',
+                                                                        errorMaxLines:
+                                                                            3,
+                                                                        hintStyle:
+                                                                            TextStyle(color: Color(0xffc1c1c1)),
+                                                                        floatingLabelBehavior:
+                                                                            FloatingLabelBehavior.always,
+                                                                      ),
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .visiblePassword,
+                                                                      obscureText:
+                                                                          !_cubit
+                                                                              .currentPassword,
+                                                                      validator:
+                                                                          validatePassword),
+                                                                  SizedBox(
+                                                                    height:
+                                                                        25.h,
+                                                                  ),
+                                                                  TextFormField(
+                                                                      controller:
+                                                                          _cubit
+                                                                              .newPasswordController,
+                                                                      style: const TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          color:
+                                                                              mainColor),
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        isDense:
+                                                                            true,
+                                                                        contentPadding:
+                                                                            EdgeInsets.symmetric(vertical: 0),
+                                                                        // suffixIconConstraints:
+                                                                        //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
+                                                                        prefixIcon:
+                                                                            Icon(CustomIcons.lock2),
+                                                                        suffixIcon:
+                                                                            Material(
+                                                                          color:
+                                                                              Colors.transparent,
+                                                                          type:
+                                                                              MaterialType.circle,
+                                                                          clipBehavior:
+                                                                              Clip.antiAlias,
+                                                                          borderOnForeground:
+                                                                              true,
+                                                                          elevation:
+                                                                              0,
+                                                                          child:
+                                                                              IconButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              setState(() {
+                                                                                _cubit.newPassword = !_cubit.newPassword;
                                                                               });
                                                                             },
                                                                             icon: !_cubit.newPassword
                                                                                 ? Icon(
-                                                                              Icons
-                                                                                  .visibility_off_outlined,
-                                                                              size: 30
-                                                                                  .r,
-                                                                            )
+                                                                                    Icons.visibility_off_outlined,
+                                                                                    size: 30.r,
+                                                                                  )
                                                                                 : Icon(
-                                                                              Icons
-                                                                                  .remove_red_eye_outlined,
-                                                                              size: 30
-                                                                                  .r,
-                                                                            ),
+                                                                                    Icons.remove_red_eye_outlined,
+                                                                                    size: 30.r,
+                                                                                  ),
                                                                           ),
                                                                         ),
                                                                         border:
-                                                                        OutlineInputBorder(),
+                                                                            OutlineInputBorder(),
                                                                         labelText:
-                                                                        'New Password',
+                                                                            'New Password',
                                                                         hintText:
-                                                                        'Enter Your New Password',
-                                                                        errorMaxLines: 3,
+                                                                            'Enter Your New Password',
+                                                                        errorMaxLines:
+                                                                            3,
                                                                         hintStyle:
-                                                                        TextStyle(
-                                                                            color:
-                                                                            Color(
-                                                                                0xffc1c1c1)),
+                                                                            TextStyle(color: Color(0xffc1c1c1)),
                                                                         floatingLabelBehavior:
-                                                                        FloatingLabelBehavior
-                                                                            .always,
+                                                                            FloatingLabelBehavior.always,
                                                                       ),
                                                                       keyboardType:
-                                                                      TextInputType
-                                                                          .visiblePassword,
+                                                                          TextInputType
+                                                                              .visiblePassword,
                                                                       obscureText:
-                                                                      !_cubit.newPassword,
+                                                                          !_cubit
+                                                                              .newPassword,
                                                                       validator:
-                                                                      validatePassword),
+                                                                          validatePassword),
                                                                   SizedBox(
-                                                                    height: 25.h,
+                                                                    height:
+                                                                        25.h,
                                                                   ),
                                                                   TextFormField(
-                                                                      controller: _cubit.confirmNewPasswordController,
+                                                                      controller:
+                                                                          _cubit
+                                                                              .confirmNewPasswordController,
                                                                       style: const TextStyle(
-                                                                          fontWeight:
-                                                                          FontWeight
+                                                                          fontWeight: FontWeight
                                                                               .w400,
                                                                           color:
-                                                                          mainColor),
+                                                                              mainColor),
                                                                       decoration:
-                                                                      InputDecoration(
-                                                                        isDense: true,
+                                                                          InputDecoration(
+                                                                        isDense:
+                                                                            true,
                                                                         contentPadding:
-                                                                        EdgeInsets
-                                                                            .symmetric(
-                                                                            vertical:
-                                                                            0),
+                                                                            EdgeInsets.symmetric(vertical: 0),
                                                                         // suffixIconConstraints:
                                                                         //     BoxConstraints(maxHeight: 50.h, minWidth: 50.w),
-                                                                        prefixIcon: Icon(
-                                                                            CustomIcons
-                                                                                .lock2),
+                                                                        prefixIcon:
+                                                                            Icon(CustomIcons.lock2),
                                                                         suffixIcon:
-                                                                        Material(
-                                                                          color: Colors
-                                                                              .transparent,
-                                                                          type: MaterialType
-                                                                              .circle,
+                                                                            Material(
+                                                                          color:
+                                                                              Colors.transparent,
+                                                                          type:
+                                                                              MaterialType.circle,
                                                                           clipBehavior:
-                                                                          Clip
-                                                                              .antiAlias,
+                                                                              Clip.antiAlias,
                                                                           borderOnForeground:
-                                                                          true,
+                                                                              true,
                                                                           elevation:
-                                                                          0,
+                                                                              0,
                                                                           child:
-                                                                          IconButton(
+                                                                              IconButton(
                                                                             onPressed:
                                                                                 () {
                                                                               setState(() {
-                                                                                _cubit.confirmNewPassword =
-                                                                                !_cubit.confirmNewPassword;
+                                                                                _cubit.confirmNewPassword = !_cubit.confirmNewPassword;
                                                                               });
                                                                             },
                                                                             icon: !_cubit.confirmNewPassword
                                                                                 ? Icon(
-                                                                              Icons
-                                                                                  .visibility_off_outlined,
-                                                                              size: 30
-                                                                                  .r,
-                                                                            )
+                                                                                    Icons.visibility_off_outlined,
+                                                                                    size: 30.r,
+                                                                                  )
                                                                                 : Icon(
-                                                                              Icons
-                                                                                  .remove_red_eye_outlined,
-                                                                              size: 30
-                                                                                  .r,
-                                                                            ),
+                                                                                    Icons.remove_red_eye_outlined,
+                                                                                    size: 30.r,
+                                                                                  ),
                                                                           ),
                                                                         ),
                                                                         border:
-                                                                        OutlineInputBorder(),
+                                                                            OutlineInputBorder(),
                                                                         labelText:
-                                                                        'Confirm New Password',
+                                                                            'Confirm New Password',
                                                                         hintText:
-                                                                        'ReEnter Your New Password',
-                                                                        errorMaxLines: 3,
+                                                                            'ReEnter Your New Password',
+                                                                        errorMaxLines:
+                                                                            3,
                                                                         hintStyle:
-                                                                        TextStyle(
-                                                                            color:
-                                                                            Color(
-                                                                                0xffc1c1c1)),
+                                                                            TextStyle(color: Color(0xffc1c1c1)),
                                                                         floatingLabelBehavior:
-                                                                        FloatingLabelBehavior
-                                                                            .always,
+                                                                            FloatingLabelBehavior.always,
                                                                       ),
                                                                       keyboardType:
-                                                                      TextInputType
-                                                                          .visiblePassword,
+                                                                          TextInputType
+                                                                              .visiblePassword,
                                                                       obscureText:
-                                                                      !_cubit.confirmNewPassword,
+                                                                          !_cubit
+                                                                              .confirmNewPassword,
                                                                       validator:
                                                                           (text) {
                                                                         if (text ==
-                                                                            null ||
-                                                                            text
-                                                                                .isEmpty) {
+                                                                                null ||
+                                                                            text.isEmpty) {
                                                                           return 'Please enter password';
-                                                                        }
-                                                                        else
-                                                                        if (text !=
-                                                                            _cubit.newPasswordController
-                                                                                .text) {
+                                                                        } else if (text !=
+                                                                            _cubit.newPasswordController.text) {
                                                                           return 'Confirmation password does not match with new password';
-                                                                        }
-                                                                        else {
+                                                                        } else {
                                                                           return null;
                                                                         }
-                                                                      }
-                                                                  ),
+                                                                      }),
                                                                   SizedBox(
-                                                                    height: 16.h,
+                                                                    height:
+                                                                        16.h,
                                                                   ),
                                                                   Align(
                                                                     alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                    child: SizedBox(
-                                                                      height: 55
-                                                                          .h,
-
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        SizedBox(
+                                                                      height:
+                                                                          55.h,
                                                                       child:
-                                                                      ElevatedButton(
+                                                                          ElevatedButton(
                                                                         onPressed:
                                                                             () {
-                                                                          if (_cubit.formKey
+                                                                          if (_cubit
+                                                                              .formKey
                                                                               .currentState!
                                                                               .validate()) {
                                                                             _cubit.changePassword();
                                                                           }
                                                                         },
-                                                                        child: Text(
+                                                                        child:
+                                                                            Text(
                                                                           'Save Password',
                                                                           style: TextStyle(
-                                                                              color: Colors
-                                                                                  .white,
-                                                                              fontWeight:
-                                                                              FontWeight
-                                                                                  .w700,
-                                                                              fontSize:
-                                                                              14
-                                                                                  .sp),
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.w700,
+                                                                              fontSize: 14.sp),
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   SizedBox(
-                                                                    height: 16.h,
+                                                                    height:
+                                                                        16.h,
                                                                   ),
                                                                 ],
                                                               ),
@@ -698,9 +650,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       ),
                                                     );
                                                   });
-                                            },
-                                          );
-                                        }).whenComplete(() => _cubit.clearDialog());
+                                                },
+                                              );
+                                            })
+                                        .whenComplete(
+                                            () => _cubit.clearDialog());
                                   },
                                   child: Text(
                                     "Edit Profile",

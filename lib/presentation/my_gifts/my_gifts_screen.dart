@@ -123,9 +123,7 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
         // height: 150.h,
         decoration: BoxDecoration(
           border: Border(
-            left: BorderSide(
-              width: 5.0,
-              color: mainColor),
+            left: BorderSide(width: 5.0, color: mainColor),
             right: BorderSide(
               width: 2.0,
               color: Color(0xFFE7E7E7),
@@ -143,10 +141,13 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        // border: Border.all()
-                      ),
-                      child: Image.asset(
-                        'assets/images/hbd.png',
+                          // border: Border.all()
+                          ),
+                      child: Image.network(
+                        gift.benefitCard!,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset('assets/images/more4u_card.png',
+                                fit: BoxFit.fill),
                         fit: BoxFit.fill,
                         alignment: Alignment.centerLeft,
                       ),
@@ -162,8 +163,7 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.h),
                   child: Column(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -177,8 +177,7 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        timeago.format(DateTime.parse(
-                            gift.date ?? '')),
+                        timeago.format(DateTime.parse(gift.date ?? '')),
                         style: TextStyle(
                           color: greyColor,
                           fontSize: 12.sp,
@@ -197,8 +196,7 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
-                            text: gift.employeeName ??
-                                '',
+                            text: gift.employeeName ?? '',
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: greyColor,
@@ -235,134 +233,133 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
     );
   }
 
-
 // Widget myGiftCard({required Gift gift}) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 2),
-  //     child: Card(
-  //       elevation: 5,
-  //       clipBehavior: Clip.antiAlias,
-  //       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-  //       margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0),
-  //       child: Container(
-  //         height: 150.h,
-  //         decoration: BoxDecoration(
-  //           border: Border(
-  //             left: BorderSide(
-  //               width: 5.0,
-  //               color: mainColor,
-  //             ),
-  //           ),
-  //         ),
-  //         child: Row(
-  //           mainAxisSize: MainAxisSize.min,
-  //           // crossAxisAlignment: CrossAxisAlignment.stretch,
-  //           children: [
-  //             Expanded(
-  //               flex: 2,
-  //               child: Container(
-  //                 decoration: BoxDecoration(
-  //                     // border: Border.all()
-  //                     ),
-  //                 child: Image.asset(
-  //                   'assets/images/hbd.png',
-  //                   fit: BoxFit.fill,
-  //                   alignment: Alignment.centerLeft,
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               width: 8,
-  //             ),
-  //             Expanded(
-  //               flex: 3,
-  //               child: Padding(
-  //                 padding: EdgeInsets.symmetric(vertical: 8.h),
-  //                 child: Column(
-  //                   mainAxisSize: MainAxisSize.min,
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Expanded(
-  //                       child: Text(
-  //                         gift.benefitName ?? '',
-  //                         style: TextStyle(
-  //                           color: mainColor,
-  //                           fontSize: 14.sp,
-  //                           fontFamily: "Roboto",
-  //                           fontWeight: FontWeight.w600,
-  //                         ),
-  //                         overflow: TextOverflow.ellipsis,
-  //                       ),
-  //                     ),
-  //                     Expanded(
-  //                       child: RichText(
-  //                         text: TextSpan(
-  //                           children: [
-  //                             TextSpan(
-  //                               text: 'From: ',
-  //                               style: TextStyle(
-  //                                   color: greyColor,
-  //                                   fontSize: 14.sp,
-  //                                   fontFamily: 'Roboto',
-  //                                   fontWeight: FontWeight.bold),
-  //                             ),
-  //                             TextSpan(
-  //                               text: gift.employeeName ?? '',
-  //                               style: TextStyle(
-  //                                   fontSize: 14.sp,
-  //                                   fontFamily: "Roboto",
-  //                                   color: greyColor),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     Expanded(
-  //                       child: RichText(
-  //                         text: TextSpan(
-  //                           children: [
-  //                             TextSpan(
-  //                               text: 'Department: ',
-  //                               style: TextStyle(
-  //                                   color: greyColor,
-  //                                   fontSize: 14.sp,
-  //                                   fontFamily: 'Roboto',
-  //                                   fontWeight: FontWeight.bold),
-  //                             ),
-  //                             TextSpan(
-  //                               text: gift.employeeDepartment ?? '',
-  //                               style: TextStyle(
-  //                                   fontSize: 14.sp,
-  //                                   fontFamily: "Roboto",
-  //                                   color: greyColor),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     Row(
-  //                       children: [
-  //                         Icon(CustomIcons.clock),
-  //                         SizedBox(
-  //                           width: 4.w,
-  //                         ),
-  //                         Text(
-  //                           timeago.format(DateTime.parse(gift.date ?? '')),
-  //                           style: TextStyle(
-  //                               color: greyColor,
-  //                               fontSize: 14.sp,
-  //                               fontWeight: FontWeight.bold),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+//   return Padding(
+//     padding: const EdgeInsets.symmetric(horizontal: 2),
+//     child: Card(
+//       elevation: 5,
+//       clipBehavior: Clip.antiAlias,
+//       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+//       margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0),
+//       child: Container(
+//         height: 150.h,
+//         decoration: BoxDecoration(
+//           border: Border(
+//             left: BorderSide(
+//               width: 5.0,
+//               color: mainColor,
+//             ),
+//           ),
+//         ),
+//         child: Row(
+//           mainAxisSize: MainAxisSize.min,
+//           // crossAxisAlignment: CrossAxisAlignment.stretch,
+//           children: [
+//             Expanded(
+//               flex: 2,
+//               child: Container(
+//                 decoration: BoxDecoration(
+//                     // border: Border.all()
+//                     ),
+//                 child: Image.asset(
+//                   'assets/images/hbd.png',
+//                   fit: BoxFit.fill,
+//                   alignment: Alignment.centerLeft,
+//                 ),
+//               ),
+//             ),
+//             SizedBox(
+//               width: 8,
+//             ),
+//             Expanded(
+//               flex: 3,
+//               child: Padding(
+//                 padding: EdgeInsets.symmetric(vertical: 8.h),
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Expanded(
+//                       child: Text(
+//                         gift.benefitName ?? '',
+//                         style: TextStyle(
+//                           color: mainColor,
+//                           fontSize: 14.sp,
+//                           fontFamily: "Roboto",
+//                           fontWeight: FontWeight.w600,
+//                         ),
+//                         overflow: TextOverflow.ellipsis,
+//                       ),
+//                     ),
+//                     Expanded(
+//                       child: RichText(
+//                         text: TextSpan(
+//                           children: [
+//                             TextSpan(
+//                               text: 'From: ',
+//                               style: TextStyle(
+//                                   color: greyColor,
+//                                   fontSize: 14.sp,
+//                                   fontFamily: 'Roboto',
+//                                   fontWeight: FontWeight.bold),
+//                             ),
+//                             TextSpan(
+//                               text: gift.employeeName ?? '',
+//                               style: TextStyle(
+//                                   fontSize: 14.sp,
+//                                   fontFamily: "Roboto",
+//                                   color: greyColor),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                     Expanded(
+//                       child: RichText(
+//                         text: TextSpan(
+//                           children: [
+//                             TextSpan(
+//                               text: 'Department: ',
+//                               style: TextStyle(
+//                                   color: greyColor,
+//                                   fontSize: 14.sp,
+//                                   fontFamily: 'Roboto',
+//                                   fontWeight: FontWeight.bold),
+//                             ),
+//                             TextSpan(
+//                               text: gift.employeeDepartment ?? '',
+//                               style: TextStyle(
+//                                   fontSize: 14.sp,
+//                                   fontFamily: "Roboto",
+//                                   color: greyColor),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                     Row(
+//                       children: [
+//                         Icon(CustomIcons.clock),
+//                         SizedBox(
+//                           width: 4.w,
+//                         ),
+//                         Text(
+//                           timeago.format(DateTime.parse(gift.date ?? '')),
+//                           style: TextStyle(
+//                               color: greyColor,
+//                               fontSize: 14.sp,
+//                               fontWeight: FontWeight.bold),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }
 }

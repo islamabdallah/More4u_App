@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:badges/badges.dart';
@@ -83,9 +84,17 @@ class DrawerWidget extends StatelessWidget {
                       width: 132.h,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6),
-                        child: Image.network(
-                            'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                            fit: BoxFit.cover),
+                        child: Image.memory(
+                          base64Decode(
+                              userData!.profilePicture ?? ''),
+                          fit: BoxFit.cover,
+                          gaplessPlayback: true,
+                          errorBuilder: (context, error,
+                              stackTrace) =>
+                              Image.asset(
+                                  'assets/images/profile_avatar_placeholder.png',
+                                  fit: BoxFit.cover),
+                        ),
                       ),
                     ),
                   ),

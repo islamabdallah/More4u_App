@@ -528,8 +528,11 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   decoration: BoxDecoration(
                                       // border: Border.all()
                                       ),
-                                  child: Image.asset(
-                                    'assets/images/hbd.png',
+                                  child: Image.network(
+                                    //todo fix this
+                                    request.benefitName!,
+                                    errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png',fit: BoxFit.fill),
+
                                     fit: BoxFit.fill,
                                     alignment: Alignment.centerLeft,
                                   ),
@@ -863,7 +866,11 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     )),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(6.r),
-                                  child: Image.asset('assets/images/hbd.png'),
+                                  //todo fix this
+                                  child: Image.network(request.benefitName!,
+                                    errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png'),
+
+                                  ),
                                 ),
                               ),
                             ),
@@ -986,7 +993,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   TextSpan(
                                     text: request.message ?? '',
                                     style: TextStyle(
-                                      fontSize: 12.sp,
+                                      fontSize: 14.sp,
                                       color: greyColor,
                                     ),
                                   ),

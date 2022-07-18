@@ -52,8 +52,9 @@ class BenefitCard extends StatelessWidget {
                       topRight: Radius.circular(10.r)),
                   child: Hero(
                     tag: benefit.id,
-                    child: Image.asset(
-                      'assets/images/hbd.png',
+                    child: Image.network(
+                    benefit.benefitCard,
+                      errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png'),
                     ),
                   ),
                 ),

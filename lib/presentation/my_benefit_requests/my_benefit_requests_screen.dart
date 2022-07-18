@@ -104,7 +104,12 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset('assets/images/hbd.png'),
+                  Image.network(
+                    //todo fix this
+                    _cubit.myBenefitRequests.isNotEmpty?
+                    _cubit.myBenefitRequests.first.benefitName??'':'',
+                    errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png',),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -292,7 +297,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
         return Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8),
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0),
           child: SingleChildScrollView(
             child: MeasureSize(
               onChange: (Size size) {
@@ -330,7 +335,11 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                   )),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6.r),
-                                child: Image.asset('assets/images/hbd.png'),
+                                child: Image.network(
+                                  //todo fix this
+                                  request.benefitName!,
+                                  errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png',),
+                                ),
                               ),
                             ),
                             Text(

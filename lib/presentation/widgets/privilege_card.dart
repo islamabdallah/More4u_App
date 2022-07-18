@@ -46,8 +46,10 @@ class PrivilegeCard extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10.r),
                     topRight: Radius.circular(10.r)),
-                child: Image.asset(
-                  'assets/images/hbd.png',
+                child: Image.network(
+                  privilege.image!,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Image.asset('assets/images/more4u_card.png'),
                 ),
               ),
               SizedBox(
