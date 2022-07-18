@@ -13,7 +13,8 @@ class GetMyGiftsUsecase {
 
   Future<Either<Failure, List<Gift>>> call({
     required int employeeNumber,
+    required int requestNumber,
   }) {
-    return repository.getMyGifts(employeeNumber: employeeNumber);
+    return repository.getMyGifts(employeeNumber: employeeNumber,requestNumber:requestNumber);
   }
 }

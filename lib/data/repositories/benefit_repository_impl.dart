@@ -54,11 +54,11 @@ class BenefitRepositoryImpl extends BenefitRepository {
 
   @override
   Future<Either<Failure, List<Gift>>> getMyGifts(
-      {required int employeeNumber}) async {
+      {required int employeeNumber, required int requestNumber}) async {
     if (await networkInfo.isConnected) {
       try {
         List<Gift> result = await remoteDataSource.getMyGifts(
-            employeeNumber: employeeNumber);
+            employeeNumber: employeeNumber, requestNumber: requestNumber);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
@@ -67,6 +67,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
       return const Left(ConnectionFailure('No internet Connection'));
     }
   }
+
   @override
   Future<Either<Failure, List<BenefitRequest>>> getMyBenefitRequests({
     required int employeeNumber,
@@ -77,7 +78,9 @@ class BenefitRepositoryImpl extends BenefitRepository {
       try {
         List<BenefitRequest> result =
             await remoteDataSource.getMyBenefitRequests(
-                employeeNumber: employeeNumber, benefitId: benefitId,requestNumber:requestNumber);
+                employeeNumber: employeeNumber,
+                benefitId: benefitId,
+                requestNumber: requestNumber);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
@@ -132,16 +135,18 @@ class BenefitRepositoryImpl extends BenefitRepository {
   }
 
   @override
-  Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage(
-      {required int employeeNumber, FilteredSearch? search, int? requestNumber,}) async {
+  Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage({
+    required int employeeNumber,
+    FilteredSearch? search,
+    int? requestNumber,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
         List<BenefitRequest> result =
             await remoteDataSource.getBenefitsToManage(
-          employeeNumber: employeeNumber,
-          search: search,
-              requestNumber:requestNumber
-        );
+                employeeNumber: employeeNumber,
+                search: search,
+                requestNumber: requestNumber);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
@@ -152,15 +157,15 @@ class BenefitRepositoryImpl extends BenefitRepository {
   }
 
   @override
-  Future<Either<Failure, ProfileAndDocuments>> getRequestProfileAndDocuments(
-      {required int employeeNumber, required int requestNumber,}) async {
+  Future<Either<Failure, ProfileAndDocuments>> getRequestProfileAndDocuments({
+    required int employeeNumber,
+    required int requestNumber,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
         ProfileAndDocuments result =
-        await remoteDataSource.getRequestProfileAndDocuments(
-            employeeNumber: employeeNumber,
-            requestNumber:requestNumber
-        );
+            await remoteDataSource.getRequestProfileAndDocuments(
+                employeeNumber: employeeNumber, requestNumber: requestNumber);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));

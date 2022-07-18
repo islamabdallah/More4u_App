@@ -33,7 +33,7 @@ class MyBenefitRequestsScreen extends StatefulWidget {
   final int benefitID;
   final int requestNumber;
 
-  const MyBenefitRequestsScreen({Key? key, required this.benefitID,this.requestNumber=0})
+  const MyBenefitRequestsScreen({Key? key, required this.benefitID,this.requestNumber=-1})
       : super(key: key);
 
   @override
@@ -70,6 +70,10 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
         }
         if (state is MyBenefitRequestsSuccessState) {
           Navigator.pop(context);
+        }
+        if (state is MyBenefitRequestsErrorState) {
+          Navigator.pop(context);
+          showMessageDialog(context: context, isSucceeded: false,message: state.message,onPressedOk: ()=>Navigator.pop(context));
         }
         if (state is CancelRequestLoadingState) {
           loadingAlertDialog(context);

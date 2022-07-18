@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 import 'package:more4u/presentation/my_benefit_requests/my_benefit_requests_screen.dart';
 import 'package:more4u/presentation/widgets/banner.dart';
+import 'package:more4u/presentation/widgets/utils/message_dialog.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -25,8 +26,9 @@ import 'cubits/my_gifts_cubit.dart';
 
 class MyGiftsScreen extends StatefulWidget {
   static const routeName = 'MyGiftsScreen';
+  final int requestNumber;
 
-  const MyGiftsScreen({Key? key}) : super(key: key);
+  const MyGiftsScreen({Key? key,this.requestNumber=-1}) : super(key: key);
 
   @override
   State<MyGiftsScreen> createState() => _MyGiftsScreenState();
@@ -39,7 +41,7 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
   void initState() {
     _cubit = sl<MyGiftsCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.getMyGifts();
+      _cubit.getMyGifts(requestNumber: widget.requestNumber);
     });
 
     super.initState();
@@ -61,6 +63,10 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
         }
         if (state is GetMyGiftsSuccessState) {
           Navigator.pop(context);
+        }
+        if (state is GetMyGiftsErrorState) {
+          Navigator.pop(context);
+          showMessageDialog(context: context, isSucceeded: false,message: state.message);
         }
       },
       builder: (context, state) {

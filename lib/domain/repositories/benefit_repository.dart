@@ -25,6 +25,7 @@ abstract class BenefitRepository {
 
   Future<Either<Failure, List<Gift>>> getMyGifts({
     required int employeeNumber,
+    required int requestNumber,
   });
 
 

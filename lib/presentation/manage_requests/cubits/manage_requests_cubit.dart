@@ -27,7 +27,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   List<BenefitRequest> benefitRequests = [];
   bool isBottomSheetOpened = false;
 
-  getBenefitsToManage({FilteredSearch? search,int? requestNumber=0}) async {
+  getBenefitsToManage({FilteredSearch? search,int? requestNumber=-1}) async {
     emit(GetRequestsToManageLoadingState());
     final result = await getBenefitsToManageUsecase(
         employeeNumber: userData!.employeeNumber, search: search,requestNumber: requestNumber);

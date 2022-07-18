@@ -19,10 +19,10 @@ class MyGiftsCubit extends Cubit<MyGiftsState> {
 
   List<Gift> myGifts = [];
 
-  getMyGifts() async {
+  getMyGifts({required int requestNumber}) async {
     emit(GetMyGiftsLoadingState());
     final result =
-        await getMyGiftsUsecase(employeeNumber: userData!.employeeNumber);
+        await getMyGiftsUsecase(employeeNumber: userData!.employeeNumber,requestNumber: requestNumber);
 
     result.fold((failure) {
       emit(GetMyGiftsErrorState(failure.message));

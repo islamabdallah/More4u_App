@@ -37,7 +37,7 @@ abstract class RemoteDataSource {
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
-  Future<List<GiftModel>> getMyGifts({required int employeeNumber});
+  Future<List<GiftModel>> getMyGifts({required int employeeNumber,required int requestNumber});
 
   Future<List<PrivilegeModel>> getPrivileges();
 
@@ -320,10 +320,11 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<List<GiftModel>> getMyGifts(
-      {required int employeeNumber}) async {
+      {required int employeeNumber,int? requestNumber}) async {
     final response = await client.post(
       Uri.parse(showMyGifts).replace(queryParameters: {
-        "EmployeeNumber": employeeNumber.toString(),
+        "employeeNumber": employeeNumber.toString(),
+        "requestNumber": requestNumber.toString(),
       }),
       headers: {
         'Content-Type': 'application/json',
