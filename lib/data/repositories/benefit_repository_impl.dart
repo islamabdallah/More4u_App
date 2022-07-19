@@ -9,9 +9,11 @@ import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/network/network_info.dart';
 import '../../domain/entities/gift.dart';
+import '../../domain/entities/manage_requests_response.dart';
 import '../../domain/entities/profile_and_documents.dart';
 import '../../domain/repositories/benefit_repository.dart';
 import '../datasources/remote_data_source.dart';
+import '../models/manage_requests_response_model.dart';
 
 class BenefitRepositoryImpl extends BenefitRepository {
   final RemoteDataSource remoteDataSource;
@@ -135,19 +137,20 @@ class BenefitRepositoryImpl extends BenefitRepository {
   }
 
   @override
-  Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage({
+  Future<Either<Failure, ManageRequestsResponse>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
     int? requestNumber,
   }) async {
     if (await networkInfo.isConnected) {
       try {
-        List<BenefitRequest> result =
-            await remoteDataSource.getBenefitsToManage(
-                employeeNumber: employeeNumber,
-                search: search,
-                requestNumber: requestNumber);
+
+        ManageRequestsResponse result = await remoteDataSource.getBenefitsToManage(
+            employeeNumber: employeeNumber,
+            search: search,
+            requestNumber: requestNumber);
         return Right(result);
+
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));
       }

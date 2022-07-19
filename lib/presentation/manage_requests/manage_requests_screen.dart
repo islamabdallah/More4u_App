@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:more4u/domain/entities/manage_requests_response.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +43,8 @@ class ManageRequestsScreen extends StatefulWidget {
   static const routeName = 'ManageRequestsScreen';
   final int requestNumber;
 
-  const ManageRequestsScreen({Key? key,this.requestNumber=-1}) : super(key: key);
+  const ManageRequestsScreen({Key? key, this.requestNumber = -1})
+      : super(key: key);
 
   @override
   State<ManageRequestsScreen> createState() => _ManageRequestsScreenState();
@@ -233,7 +235,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                 Expanded(
                   child: _cubit.benefitRequests.isNotEmpty
                       ? ListView.builder(
-                    padding: EdgeInsets.zero,
+                          padding: EdgeInsets.zero,
                           // shrinkWrap: true,
                           itemBuilder: (context, index) =>
                               requestCard(_cubit.benefitRequests[index]),
@@ -265,208 +267,266 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
             builder: (context, state) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: 51.w,
-                        height: 4.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Color(0xffd9d9d9),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 51.w,
+                          height: 4.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Color(0xffd9d9d9),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Filtration',
-                        style: TextStyle(
-                            color: mainColor,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold),
+                      SizedBox(
+                        height: 8.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: <Widget>[
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Filtration',
+                          style: TextStyle(
+                              color: mainColor,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            'Benefit Has Warning',
+                            style: TextStyle(
+                              color: Color(0xff7f7f7f),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ), //Text
+
+                          Spacer(),
+                          CustomSwitch(
+                            value: _cubit.hasWarning,
+                            onChanged: (bool? value) {
+                              _cubit.changeContainWarning(value!);
+                            },
+                            activeColor: mainColor,
+                          ), //Checkbox
+                        ], //<Widget>[]
+                      ),
+                      Text(
+                        "Action",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff7f7f7f),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Wrap(
+                        children: [
+                          SelectionChip(
+                              label: 'Holding',
+                              index: 1,
+                              selectedIndex: _cubit.actionCurrentIndex,
+                              selectIndex: _cubit.selectAction),
+                          SelectionChip(
+                              label: 'Approved',
+                              index: 3,
+                              selectedIndex: _cubit.actionCurrentIndex,
+                              selectIndex: _cubit.selectAction),
+                          SelectionChip(
+                              label: 'Rejected',
+                              index: 4,
+                              selectedIndex: _cubit.actionCurrentIndex,
+                              selectIndex: _cubit.selectAction),
+                        ],
+                      ),
+                      Text(
+                        "Benefit Type",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff7f7f7f),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Wrap(
+                        children: [
+                          SelectionChip(
+                              label: 'Individual',
+                              index: 2,
+                              selectedIndex: _cubit.typeCurrentIndex,
+                              selectIndex: _cubit.selectType),
+                          SelectionChip(
+                              label: 'Group',
+                              index: 3,
+                              selectedIndex: _cubit.typeCurrentIndex,
+                              selectIndex: _cubit.selectType),
+                        ],
+                      ),
+                      if (userData!.isAdmin!) ...[
                         Text(
-                          'Benefit Has Warning',
+                          "Department",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xff7f7f7f),
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w700,
                           ),
-                        ), //Text
-
-                        Spacer(),
-                        CustomSwitch(
-                          value: _cubit.hasWarning,
-                          onChanged: (bool? value) {
-                            _cubit.changeContainWarning(value!);
-                          },
-                          activeColor: mainColor,
-                        ), //Checkbox
-                      ], //<Widget>[]
-                    ),
-                    Text(
-                      "Action",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xff7f7f7f),
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Wrap(
-                      children: [
-                        SelectionChip(
-                            label: 'Holding',
-                            index: 1,
-                            selectedIndex: _cubit.statusCurrentIndex,
-                            selectIndex: _cubit.selectStatus),
-                        SelectionChip(
-                            label: 'Approved',
-                            index: 3,
-                            selectedIndex: _cubit.statusCurrentIndex,
-                            selectIndex: _cubit.selectStatus),
-                        SelectionChip(
-                            label: 'Rejected',
-                            index: 4,
-                            selectedIndex: _cubit.statusCurrentIndex,
-                            selectIndex: _cubit.selectStatus),
+                        ),
+                        DropdownButtonFormField<Department>(
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black87),
+                            value: _cubit.selectedDepartment,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              label: Text('Department'),
+                              border: OutlineInputBorder(),
+                              labelStyle:
+                                  TextStyle(fontWeight: FontWeight.w600),
+                              contentPadding: EdgeInsets.all(3.0),
+                              prefixIcon: const Icon(
+                                CustomIcons.apps,
+                              ),
+                            ),
+                            items: [
+                              DropdownMenuItem<Department>(
+                                child: Text('Any',
+                                    style: TextStyle(
+                                        color:
+                                            _cubit.departmentCurrentIndex == -1
+                                                ? mainColor
+                                                : Colors.black,
+                                       )),
+                                value: Department(name: 'Any', id: -1),
+                              ),
+                              ..._cubit.departments!
+                                  .map((e) => DropdownMenuItem<Department>(
+                                        child: Text(e.name!,
+                                            style: e ==
+                                                    _cubit.selectedDepartment
+                                                ? TextStyle(
+                                                    color: mainColor,
+                                                  )
+                                                : TextStyle(
+                                                    color: Colors.black87,
+                                                  )),
+                                        value: e,
+                                      ))
+                                  .toList()
+                            ],
+                            onChanged: (department) =>
+                                _cubit.selectDepartment(department!))
                       ],
-                    ),
-                    Text(
-                      "Benefit Type",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xff7f7f7f),
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
+                      Text(
+                        "Date",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff7f7f7f),
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    Wrap(
-                      children: [
-                        SelectionChip(
-                            label: 'Individual',
-                            index: 2,
-                            selectedIndex: _cubit.typeCurrentIndex,
-                            selectIndex: _cubit.selectType),
-                        SelectionChip(
-                            label: 'Group',
-                            index: 3,
-                            selectedIndex: _cubit.typeCurrentIndex,
-                            selectIndex: _cubit.selectType),
-                      ],
-                    ),
-                    Text(
-                      "Date",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xff7f7f7f),
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    DateTimeField(
-                      controller: _cubit.fromText,
-                      // validator: (value) => deliverDate == null ? translator.translate('required') : null,
+                      DateTimeField(
+                        controller: _cubit.fromText,
+                        // validator: (value) => deliverDate == null ? translator.translate('required') : null,
 
-                      decoration: InputDecoration(
-                          label: Text('From'),
+                        decoration: InputDecoration(
+                            label: Text('From'),
+                            border: OutlineInputBorder(),
+                            labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                            contentPadding: EdgeInsets.all(3.0),
+                            prefixIcon: const Icon(
+                              Icons.calendar_today,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                _cubit.changeFromDate(null);
+                              },
+                            )),
+
+                        format: DateFormat("yyyy-MM-dd"),
+                        onShowPicker: (context, currentValue) async {
+                          return showDatePicker(
+                            context: context,
+                            firstDate: DateTime(DateTime.now().year),
+                            initialDate: DateTime.now(),
+                            lastDate: DateTime(DateTime.now().year + 1)
+                                .add(Duration(days: -1)),
+                          );
+                        },
+                        onChanged: (date) {
+                          _cubit.changeFromDate(date);
+                        },
+                      ),
+                      SizedBox(height: 16.h),
+                      DateTimeField(
+                        controller: _cubit.toText,
+                        enabled: _cubit.fromDate != null,
+                        decoration: InputDecoration(
+                          label: Text('To'),
                           border: OutlineInputBorder(),
                           labelStyle: TextStyle(fontWeight: FontWeight.w600),
                           contentPadding: EdgeInsets.all(3.0),
                           prefixIcon: const Icon(
                             Icons.calendar_today,
                           ),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.close),
+                        ),
+                        format: DateFormat("yyyy-MM-dd"),
+                        resetIcon: null,
+                        onShowPicker: (context, currentValue) async {
+                          return showDatePicker(
+                              context: context,
+                              firstDate: _cubit.fromDate ?? DateTime.now(),
+                              initialDate: _cubit.toDate ?? DateTime.now(),
+                              lastDate: DateTime(DateTime.now().year + 1)
+                                  .add(Duration(days: -1)));
+                        },
+                        onChanged: (date) {
+                          _cubit.changeToDate(date);
+                        },
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          // height: 42.h,
+                          width: 187.w,
+                          child: ElevatedButton(
                             onPressed: () {
-                              _cubit.changeFromDate(null);
+                              // FlutterAppBadger.isAppBadgeSupported();
+                              // FlutterAppBadger.updateBadgeCount(10);
+                              // FlutterAppBadger.removeBadge();
+                              Navigator.pop(context);
+                              _cubit.search();
                             },
-                          )),
-
-                      format: DateFormat("yyyy-MM-dd"),
-                      onShowPicker: (context, currentValue) async {
-                        return showDatePicker(
-                          context: context,
-                          firstDate: DateTime(DateTime.now().year),
-                          initialDate: DateTime.now(),
-                          lastDate: DateTime(DateTime.now().year + 1)
-                              .add(Duration(days: -1)),
-                        );
-                      },
-                      onChanged: (date) {
-                        _cubit.changeFromDate(date);
-                      },
-                    ),
-                    SizedBox(height: 16.h),
-                    DateTimeField(
-                      controller: _cubit.toText,
-                      enabled: _cubit.fromDate != null,
-                      decoration: InputDecoration(
-                        label: Text('To'),
-                        border: OutlineInputBorder(),
-                        labelStyle: TextStyle(fontWeight: FontWeight.w600),
-                        contentPadding: EdgeInsets.all(3.0),
-                        prefixIcon: const Icon(
-                          Icons.calendar_today,
+                            child: Text('Done'),
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6.r))),
+                          ),
                         ),
                       ),
-                      format: DateFormat("yyyy-MM-dd"),
-                      resetIcon: null,
-                      onShowPicker: (context, currentValue) async {
-                        return showDatePicker(
-                            context: context,
-                            firstDate: _cubit.fromDate ?? DateTime.now(),
-                            initialDate: _cubit.toDate ?? DateTime.now(),
-                            lastDate: DateTime(DateTime.now().year + 1)
-                                .add(Duration(days: -1)));
-                      },
-                      onChanged: (date) {
-                        _cubit.changeToDate(date);
-                      },
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                        // height: 42.h,
-                        width: 187.w,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // FlutterAppBadger.isAppBadgeSupported();
-                            // FlutterAppBadger.updateBadgeCount(10);
-                            // FlutterAppBadger.removeBadge();
-                            Navigator.pop(context);
-                            _cubit.search();
-                          },
-                          child: Text('Done'),
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6.r))),
-                        ),
+                      SizedBox(
+                        height: 8.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             });
@@ -530,14 +590,19 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       // border: Border.all()
                                       ),
                                   child: Image.network(
-                                    request.benefitCard??'',
-                                    errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png',fit: BoxFit.fill),
-
+                                    request.benefitCard ?? '',
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Image.asset(
+                                                'assets/images/more4u_card.png',
+                                                fit: BoxFit.fill),
                                     fit: BoxFit.fill,
                                     alignment: Alignment.centerLeft,
                                   ),
                                 ),
-                                if (request.warningMessage != null || (request.hasDocuments!=null&&request.hasDocuments!))
+                                if (request.warningMessage != null ||
+                                    (request.hasDocuments != null &&
+                                        request.hasDocuments!))
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 5.w, vertical: 8.h),
@@ -648,98 +713,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 4.w, vertical: 6.h),
-                      child:
-                      request.status =='Canceled'?
-                         Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: RichText(
-                softWrap: true,
-                text: TextSpan(children: [
-                  TextSpan(
-                    text: 'The Request has been ',
-                    style: TextStyle(
-                      color: greyColor,
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'Canceled ',
-                    style: TextStyle(
-                      color: redColor,
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                  TextSpan(
-                    text: timeago.format(DateTime.parse(
-                        request.myAction?.replayDate ??
-                            '')),
-                    style: TextStyle(
-                        color: greyColor,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ])),
-          ),
-        ):
-                      request.myAction == null
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 72.w,
-                                  height: 40.h,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: redColor,
-                                    ),
-                                    onPressed: () => acceptOrReject(
-                                        false, request.requestNumber!),
-                                    child: Text(
-                                      'Reject',
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 16.w,
-                                ),
-                                SizedBox(
-                                  width: 72.w,
-                                  height: 40.h,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: mainColor,
-                                    ),
-                                    onPressed: () => acceptOrReject(
-                                        true, request.requestNumber!),
-                                    child: Text(
-                                      'Accept',
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  'Details',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 4.w,
-                                ),
-                                Icon(Icons.arrow_circle_right, size: 30.r),
-                              ],
-                            )
-                          : Padding(
+                      child: request.status == 'Canceled'
+                          ? Padding(
                               padding: EdgeInsets.symmetric(vertical: 8.h),
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -747,25 +722,16 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     softWrap: true,
                                     text: TextSpan(children: [
                                       TextSpan(
-                                        text: 'You ',
+                                        text: 'The Request has been ',
                                         style: TextStyle(
                                           color: greyColor,
                                           fontSize: 14.sp,
                                         ),
                                       ),
                                       TextSpan(
-                                        text: request.myAction?.action ?? '',
+                                        text: 'Canceled ',
                                         style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: getBenefitStatusColor(
-                                              request.myAction?.action ?? ''),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: ' this request ',
-                                        style: TextStyle(
-                                          color: greyColor,
+                                          color: redColor,
                                           fontSize: 14.sp,
                                         ),
                                       ),
@@ -780,7 +746,107 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       ),
                                     ])),
                               ),
-                            ),
+                            )
+                          : request.myAction == null
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 72.w,
+                                      height: 40.h,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: redColor,
+                                        ),
+                                        onPressed: () => acceptOrReject(
+                                            false, request.requestNumber!),
+                                        child: Text(
+                                          'Reject',
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 16.w,
+                                    ),
+                                    SizedBox(
+                                      width: 72.w,
+                                      height: 40.h,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: mainColor,
+                                        ),
+                                        onPressed: () => acceptOrReject(
+                                            true, request.requestNumber!),
+                                        child: Text(
+                                          'Accept',
+                                          style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      'Details',
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 4.w,
+                                    ),
+                                    Icon(Icons.arrow_circle_right, size: 30.r),
+                                  ],
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
+                                        softWrap: true,
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                            text: 'You ',
+                                            style: TextStyle(
+                                              color: greyColor,
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                request.myAction?.action ?? '',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: getBenefitStatusColor(
+                                                  request.myAction?.action ??
+                                                      ''),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' this request ',
+                                            style: TextStyle(
+                                              color: greyColor,
+                                              fontSize: 14.sp,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: timeago.format(DateTime.parse(
+                                                request.myAction?.replayDate ??
+                                                    '')),
+                                            style: TextStyle(
+                                                color: greyColor,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ])),
+                                  ),
+                                ),
                     ),
                   ],
                 ),
@@ -796,14 +862,19 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
     void openGallery({int index = 0}) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => GalleryScreen(
-            base64Images: _cubit.profileAndDocuments!.documents!,
-            index: index,
-          )));
+                base64Images: _cubit.profileAndDocuments!.documents!,
+                index: index,
+              )));
     }
+
     return showFlexibleBottomSheet(
         minHeight: 0,
-        initHeight: 1.0-MediaQuery.of(context).viewPadding.top/MediaQuery.of(context).size.height,
-        maxHeight: 1.0-MediaQuery.of(context).viewPadding.top/MediaQuery.of(context).size.height,
+        initHeight: 1.0 -
+            MediaQuery.of(context).viewPadding.top /
+                MediaQuery.of(context).size.height,
+        maxHeight: 1.0 -
+            MediaQuery.of(context).viewPadding.top /
+                MediaQuery.of(context).size.height,
         isExpand: false,
         bottomSheetColor: Colors.transparent,
         decoration: BoxDecoration(
@@ -828,423 +899,473 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
         ) {
           return BlocBuilder(
             bloc: _cubit,
-  builder: (context, state) {
-    return ClipRRect(
-            child: MyBanner(
-              message: '${request.status}',
-              textStyle: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
-              location: BannerLocation.topEnd,
-              color: getBenefitStatusColor(request.status ?? ''),
-              child: Padding(
-                padding: EdgeInsets.only(top: 16.h),
-                child: Scrollbar(
-                  controller: scrollController,
-                  thumbVisibility: true,
+            builder: (context, state) {
+              return ClipRRect(
+                child: MyBanner(
+                  message: '${request.status}',
+                  textStyle:
+                      TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
+                  location: BannerLocation.topEnd,
+                  color: getBenefitStatusColor(request.status ?? ''),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
+                    padding: EdgeInsets.only(top: 16.h),
+                    child: Scrollbar(
                       controller: scrollController,
-                      children: [
-                        Text(
-                          request.benefitName ?? '',
-                          style: TextStyle(
-                            color: mainColor,
-                            fontSize: 20.sp,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 8,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6.r),
-                                    border: Border.all(
-                                      color: Color(0xFFE7E7E7),
-                                    )),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6.r),
-                                  //todo fix this
-                                  child: Image.network(request.benefitName!,
-                                    errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png'),
-
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 8.w,
-                            ),
-                            Expanded(
-                              flex: 10,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Name    ',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        request.createdBy?.employeeName ?? '',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Number    ',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '${request.requestNumber}',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Type    ',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        request.benefitType ?? '',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Required Date    ',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        request.from ?? '',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'To    ',
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        request.to ?? '',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Wrap(
-                          children: [
-                            if (request.message != null&&request.message!.trim().isNotEmpty)
-
-                              RichText(
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                    text: 'Message: ',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: request.message ?? '',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ]),
-                              ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        Divider(),
-                        Row(
+                      thumbVisibility: true,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          controller: scrollController,
                           children: [
                             Text(
-                              "Created By",
+                              request.benefitName ?? '',
                               style: TextStyle(
                                 color: mainColor,
-                                fontSize: 14.sp,
+                                fontSize: 20.sp,
                                 fontFamily: "Roboto",
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Spacer(),
-                            if (request.requestedat != null)
-                              RichText(
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                    text: 'At ',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: greyColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text:
-                                        '${DateFormat('yyyy-MM-dd hh:mm aaa').format(DateTime.parse(request.requestedat ?? ''))}',
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: greyColor,
-                                    ),
-                                  ),
-                                ]),
-                              ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                Expanded(
+                                  flex: 8,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(6.r),
+                                        border: Border.all(
+                                          color: Color(0xFFE7E7E7),
+                                        )),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(6.r),
+                                      //todo fix this
+                                      child: Image.network(
+                                        request.benefitName!,
+                                        errorBuilder: (context, error,
+                                                stackTrace) =>
+                                            Image.asset(
+                                                'assets/images/more4u_card.png'),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8.w,
+                                ),
+                                Expanded(
+                                  flex: 10,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Name    ',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.createdBy?.employeeName ??
+                                                '',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Number    ',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            '${request.requestNumber}',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Type    ',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.benefitType ?? '',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Required Date    ',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.from ?? '',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'To    ',
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.to ?? '',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Wrap(
+                              children: [
+                                if (request.message != null &&
+                                    request.message!.trim().isNotEmpty)
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text: 'Message: ',
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text: request.message ?? '',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ]),
+                                  ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Divider(),
+                            Row(
+                              children: [
                                 Text(
-                                  request.createdBy?.employeeName ?? '',
+                                  "Created By",
                                   style: TextStyle(
-                                    color: greyColor,
+                                    color: mainColor,
                                     fontSize: 14.sp,
                                     fontFamily: "Roboto",
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 4.h,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: mainColor, width: 2),
-                                    borderRadius: BorderRadius.circular(6),
+                                Spacer(),
+                                if (request.requestedat != null)
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text: 'At ',
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: greyColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '${DateFormat('yyyy-MM-dd hh:mm aaa').format(DateTime.parse(request.requestedat ?? ''))}',
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: greyColor,
+                                        ),
+                                      ),
+                                    ]),
                                   ),
-                                  height: 130.h,
-                                  width: 132.h,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child:
-                                    state is GetRequestProfileAndDocumentsLoadingState?
-                                    Center(child: CircularProgressIndicator()):
-                                    Image.memory(
-                                      decodeImage(
-                                          _cubit.profileAndDocuments?.profilePicture??''),
-                                      fit: BoxFit.cover,
-                                      gaplessPlayback: true,
-                                      errorBuilder: (context, error,
-                                          stackTrace) =>
-                                          Image.asset(
-                                              'assets/images/profile_avatar_placeholder.png',
-                                              fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, ProfileScreen.routeName,
-                                        arguments: {'user':request.createdBy});
-                                  },
-                                  child: Text(
-                                    "View Profile",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
                             SizedBox(
-                              width: 8.w,
+                              height: 8.h,
                             ),
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(CustomIcons.hastag),
-                                      SizedBox(
-                                        width: 6.w,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      request.createdBy?.employeeName ?? '',
+                                      style: TextStyle(
+                                        color: greyColor,
+                                        fontSize: 14.sp,
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.w700,
                                       ),
-                                      Text(
-                                        'Employee Number    ',
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: mainColor, width: 2),
+                                        borderRadius: BorderRadius.circular(6),
                                       ),
-                                      Text(
-                                        request.createdBy?.employeeNumber.toString() ??
-                                            '',
+                                      height: 130.h,
+                                      width: 132.h,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(6),
+                                        child: state
+                                                is GetRequestProfileAndDocumentsLoadingState
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : Image.memory(
+                                                decodeImage(_cubit
+                                                        .profileAndDocuments
+                                                        ?.profilePicture ??
+                                                    ''),
+                                                fit: BoxFit.cover,
+                                                gaplessPlayback: true,
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    Image.asset(
+                                                        'assets/images/profile_avatar_placeholder.png',
+                                                        fit: BoxFit.cover),
+                                              ),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, ProfileScreen.routeName,
+                                            arguments: {
+                                              'user': request.createdBy
+                                            });
+                                      },
+                                      child: Text(
+                                        "View Profile",
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: greyColor,
+                                          color: Colors.white,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  Row(
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 8.w,
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Icon(CustomIcons.seedling_solid__1_),
-                                      SizedBox(
-                                        width: 6.w,
-                                      ),
-                                      Text(
-                                        'Sap Number    ',
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        request.createdBy?.sapNumber.toString() ?? '',
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(CustomIcons.apps),
-                                      SizedBox(
-                                        width: 6.w,
-                                      ),
-                                      Text(
-                                        'Department    ',
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Flexible(
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text(
-                                            request.createdBy?.departmentName ?? '',
+                                      Row(
+                                        children: [
+                                          Icon(CustomIcons.hastag),
+                                          SizedBox(
+                                            width: 6.w,
+                                          ),
+                                          Text(
+                                            'Employee Number    ',
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.createdBy?.employeeNumber
+                                                    .toString() ??
+                                                '',
                                             style: TextStyle(
                                               fontSize: 13.sp,
                                               color: greyColor,
                                             ),
                                           ),
-                                        ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(CustomIcons.seedling_solid__1_),
+                                          SizedBox(
+                                            width: 6.w,
+                                          ),
+                                          Text(
+                                            'Sap Number    ',
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.createdBy?.sapNumber
+                                                    .toString() ??
+                                                '',
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(CustomIcons.apps),
+                                          SizedBox(
+                                            width: 6.w,
+                                          ),
+                                          Text(
+                                            'Department    ',
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Flexible(
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                request.createdBy
+                                                        ?.departmentName ??
+                                                    '',
+                                                style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  color: greyColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(CustomIcons.cake_birthday),
+                                          SizedBox(
+                                            width: 6.w,
+                                          ),
+                                          Text(
+                                            'Birthday    ',
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.createdBy?.birthDate ?? '',
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(CustomIcons.person_solid),
+                                          SizedBox(
+                                            width: 6.w,
+                                          ),
+                                          Text(
+                                            'Payroll Area    ',
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: greyColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            request.createdBy?.collar ?? '',
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              color: greyColor,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    children: [
-                                      Icon(CustomIcons.cake_birthday),
-                                      SizedBox(
-                                        width: 6.w,
-                                      ),
-                                      Text(
-                                        'Birthday    ',
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        request.createdBy?.birthDate ?? '',
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            if (request.sendToModel != null) ...[
+                              Divider(),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Gifted To",
+                                    style: TextStyle(
+                                      color: mainColor,
+                                      fontSize: 14.sp,
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Icon(CustomIcons.person_solid),
-                                      SizedBox(
-                                        width: 6.w,
-                                      ),
-                                      Text(
-                                        'Payroll Area    ',
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: greyColor,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        request.createdBy?.collar ?? '',
-                                        style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: greyColor,
-                                        ),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 2.w),
+                                    child: SelectionChip(
+                                        label:
+                                            request.sendToModel?.employeeName ??
+                                                '',
+                                        index: 0,
+                                        selectedIndex: 1,
+                                        selectIndex: (_) {
+                                          Navigator.pushNamed(
+                                              context, ProfileScreen.routeName,
+                                              arguments: {
+                                                'user': request.sendToModel
+                                              });
+                                        }),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-
-                        if(request.sendToModel!=null)...[
-                          Divider(),
-                          Row(
-                            children: [
+                            ],
+                            if (request.fullParticipantsData != null) ...[
+                              Divider(),
                               Text(
-                                "Gifted To",
+                                "Participants",
                                 style: TextStyle(
                                   color: mainColor,
                                   fontSize: 14.sp,
@@ -1252,239 +1373,239 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                                child: SelectionChip(
-                                    label: request.sendToModel?.employeeName ?? '',
-                                    index: 0,
-                                    selectedIndex: 1,
-                                    selectIndex: (_) {
-                                      Navigator.pushNamed(
-                                          context, ProfileScreen.routeName,
-                                          arguments: {'user':request.sendToModel} );
-                                    }),
+                              SizedBox(
+                                height: 8.h,
                               ),
-                            ],
-                          ),
-
-
-                        ],
-
-                        if (request.fullParticipantsData != null) ...[
-                          Divider(),
-                          Text(
-                            "Participants",
-                            style: TextStyle(
-                              color: mainColor,
-                              fontSize: 14.sp,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 8.h,),
-                          Center(
-                            child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              alignment: WrapAlignment.center,
-                              children: [
-                                ...request.fullParticipantsData!
-                                    .map((participant) => SelectionChip(
-                                        label: participant.employeeName ?? '',
-                                        index: 0,
-                                        selectedIndex: 1,
-                                        selectIndex: (_) {
-                                          Navigator.pushNamed(
-                                              context, ProfileScreen.routeName,
-                                              arguments: {'user':participant} );
-                                        }))
-                                    .toList()
-                              ],
-                            ),
-                          ),
-                        ],
-
-                        if(request.hasDocuments!=null&&request.hasDocuments!)
-                          ...[
-                              Divider(),
-                          Text(
-                            "Documents",
-                            style: TextStyle(
-                              color: mainColor,
-                              fontSize: 14.sp,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 8.h,),
-                          state is GetRequestProfileAndDocumentsLoadingState?
-                            SizedBox(height: 120.h,child: Center(child: CircularProgressIndicator())):
-                            SizedBox(
-                            height: 120.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: (){
-                                    openGallery(index: 0);
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(right: 8.w),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: mainColor, width: 2),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Image.memory(
-                                        decodeImage(_cubit.profileAndDocuments!.documents![index]),
-                                        width: 120.h,
-                                        height: 120.h,
-                                        fit: BoxFit.fill,
-                                        gaplessPlayback: true),
-                                  ),
-                                );
-                              },
-                              itemCount: _cubit.profileAndDocuments!.documents!.length,
-                            ),
-                          ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                        ],
-                        if (request.warningMessage != null)
-                          Padding(
-                            padding: EdgeInsets.only(top: 16.h),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(children: [
-                                TextSpan(
-                                  text: 'Warning: ',
-                                  style: TextStyle(
-                                      color: redColor,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: request.warningMessage ?? '',
-                                  style: TextStyle(color: redColor, fontFamily: 'Roboto'),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        SizedBox(
-                          height: 8.h,
-                        ),
-                        request.myAction == null
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 130.w,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: redColor,
-                                      ),
-                                      onPressed: () =>
-                                          acceptOrReject(false, request.requestNumber!),
-                                      child: Text(
-                                        'Reject',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 16.w,
-                                  ),
-                                  SizedBox(
-                                    width: 130.w,
-                                    child: ElevatedButton(
-                                      onPressed: () =>
-                                          acceptOrReject(true, request.requestNumber!),
-                                      child: Text(
-                                        'Accept',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Align(
-                                alignment: Alignment.center,
-                                child: Column(
+                              Center(
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  alignment: WrapAlignment.center,
                                   children: [
-                                    RichText(
-                                        softWrap: true,
-                                        text: TextSpan(children: [
-                                          TextSpan(
-                                            text: 'You ',
-                                            style: TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14.sp,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: request.myAction?.action ?? '',
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: getBenefitStatusColor(
-                                                  request.myAction?.action ?? ''),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: ' this request ',
-                                            style: TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14.sp,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: timeago.format(DateTime.parse(
-                                                request.myAction?.replayDate ?? '')),
-                                            style: TextStyle(
-                                                color: greyColor,
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ])),
-                                    if (request.myAction?.notes != null)
-                                      RichText(
-                                          softWrap: true,
-                                          text: TextSpan(children: [
-                                            TextSpan(
-                                              text: 'Notes: ',
-                                              style: TextStyle(
-                                                  color: greyColor,
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            TextSpan(
-                                              text: request.myAction?.notes ?? 'test',
-                                              style: TextStyle(
-                                                  color: greyColor,
-                                                  fontSize: 14.sp,),
-                                            ),
-                                          ])),
+                                    ...request.fullParticipantsData!
+                                        .map((participant) => SelectionChip(
+                                            label:
+                                                participant.employeeName ?? '',
+                                            index: 0,
+                                            selectedIndex: 1,
+                                            selectIndex: (_) {
+                                              Navigator.pushNamed(context,
+                                                  ProfileScreen.routeName,
+                                                  arguments: {
+                                                    'user': participant
+                                                  });
+                                            }))
+                                        .toList()
                                   ],
                                 ),
                               ),
-                        SizedBox(
-                          height: 20.h,
+                            ],
+                            if (request.hasDocuments != null &&
+                                request.hasDocuments!) ...[
+                              Divider(),
+                              Text(
+                                "Documents",
+                                style: TextStyle(
+                                  color: mainColor,
+                                  fontSize: 14.sp,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              state is GetRequestProfileAndDocumentsLoadingState
+                                  ? SizedBox(
+                                      height: 120.h,
+                                      child: Center(
+                                          child: CircularProgressIndicator()))
+                                  : SizedBox(
+                                      height: 120.h,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              openGallery(index: 0);
+                                            },
+                                            child: Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 8.w),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: mainColor, width: 2),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: Image.memory(
+                                                  decodeImage(_cubit
+                                                      .profileAndDocuments!
+                                                      .documents![index]),
+                                                  width: 120.h,
+                                                  height: 120.h,
+                                                  fit: BoxFit.fill,
+                                                  gaplessPlayback: true),
+                                            ),
+                                          );
+                                        },
+                                        itemCount: _cubit.profileAndDocuments!
+                                            .documents!.length,
+                                      ),
+                                    ),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                            ],
+                            if (request.warningMessage != null)
+                              Padding(
+                                padding: EdgeInsets.only(top: 16.h),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: 'Warning: ',
+                                      style: TextStyle(
+                                          color: redColor,
+                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: request.warningMessage ?? '',
+                                      style: TextStyle(
+                                          color: redColor,
+                                          fontFamily: 'Roboto'),
+                                    ),
+                                  ]),
+                                ),
+                              ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            request.myAction == null
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 130.w,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: redColor,
+                                          ),
+                                          onPressed: () => acceptOrReject(
+                                              false, request.requestNumber!),
+                                          child: Text(
+                                            'Reject',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 16.w,
+                                      ),
+                                      SizedBox(
+                                        width: 130.w,
+                                        child: ElevatedButton(
+                                          onPressed: () => acceptOrReject(
+                                              true, request.requestNumber!),
+                                          child: Text(
+                                            'Accept',
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Align(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      children: [
+                                        RichText(
+                                            softWrap: true,
+                                            text: TextSpan(children: [
+                                              TextSpan(
+                                                text: 'You ',
+                                                style: TextStyle(
+                                                  color: greyColor,
+                                                  fontSize: 14.sp,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    request.myAction?.action ??
+                                                        '',
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  color: getBenefitStatusColor(
+                                                      request.myAction
+                                                              ?.action ??
+                                                          ''),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: ' this request ',
+                                                style: TextStyle(
+                                                  color: greyColor,
+                                                  fontSize: 14.sp,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: timeago.format(
+                                                    DateTime.parse(request
+                                                            .myAction
+                                                            ?.replayDate ??
+                                                        '')),
+                                                style: TextStyle(
+                                                    color: greyColor,
+                                                    fontSize: 14.sp,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ])),
+                                        if (request.myAction?.notes != null)
+                                          RichText(
+                                              softWrap: true,
+                                              text: TextSpan(children: [
+                                                TextSpan(
+                                                  text: 'Notes: ',
+                                                  style: TextStyle(
+                                                      color: greyColor,
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      request.myAction?.notes ??
+                                                          'test',
+                                                  style: TextStyle(
+                                                    color: greyColor,
+                                                    fontSize: 14.sp,
+                                                  ),
+                                                ),
+                                              ])),
+                                      ],
+                                    ),
+                                  ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
-  },
-);
         }).whenComplete(() => _cubit.isBottomSheetOpened = false);
   }
 
@@ -1528,7 +1649,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 8.h,),
+                        SizedBox(
+                          height: 8.h,
+                        ),
                         TextFormField(
                           controller: _textController,
                           keyboardType: TextInputType.multiline,
@@ -1768,8 +1891,8 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(0.0, size.height);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0.0);
-    path.addOval(
-        Rect.fromCircle(center: Offset(0.0, size.height / 1.4), radius: 15.0.w));
+    path.addOval(Rect.fromCircle(
+        center: Offset(0.0, size.height / 1.4), radius: 15.0.w));
     path.addOval(Rect.fromCircle(
         center: Offset(size.width, size.height / 1.4), radius: 15.0.w));
 

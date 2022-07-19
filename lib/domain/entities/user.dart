@@ -22,29 +22,34 @@ class User extends Equatable {
   final String? workDuration;
   final bool? hasRequests;
   final int? pendingRequestsCount;
+  final bool? isTheGroupCreator;
+  final bool? isAdmin;
 
-  const User(
-      {this.employeeName,
-      this.email,
-      required this.employeeNumber,
-      this.positionName,
-      this.departmentName,
-      required this.birthDate,
-      required this.joinDate,
-      this.gender,
-      this.maritalStatus,
-      this.company,
-      this.nationality,
-      this.phoneNumber,
-      this.address,
-      this.collar,
-      this.sapNumber,
-      this.id,
-      this.supervisorName,
-      this.profilePicture,
-      this.workDuration,
-      this.hasRequests,
-      this.pendingRequestsCount});
+  const User({
+    this.employeeName,
+    this.email,
+    required this.employeeNumber,
+    this.positionName,
+    this.departmentName,
+    required this.birthDate,
+    required this.joinDate,
+    this.gender,
+    this.maritalStatus,
+    this.company,
+    this.nationality,
+    this.phoneNumber,
+    this.address,
+    this.collar,
+    this.sapNumber,
+    this.id,
+    this.supervisorName,
+    this.profilePicture,
+    this.workDuration,
+    this.hasRequests,
+    this.pendingRequestsCount,
+    this.isTheGroupCreator,
+    this.isAdmin,
+  });
 
   @override
   List<Object?> get props => [
@@ -69,6 +74,8 @@ class User extends Equatable {
         workDuration,
         hasRequests,
         pendingRequestsCount,
+        isTheGroupCreator,
+        isAdmin,
       ];
 
 // String get genderString {

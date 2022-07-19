@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:more4u/core/constants/constants.dart';
+import 'package:more4u/domain/entities/manage_requests_response.dart';
 import 'package:more4u/domain/entities/profile_and_documents.dart';
 
 import '../../../domain/entities/benefit_request.dart';
@@ -25,6 +26,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
       : super(ManageRequestsInitial());
 
   List<BenefitRequest> benefitRequests = [];
+  List<Department>? departments;
   bool isBottomSheetOpened = false;
 
   getBenefitsToManage({FilteredSearch? search,int? requestNumber=-1}) async {
@@ -34,8 +36,10 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
 
     result.fold((failure) {
       emit(GetRequestsToManageErrorState(failure.message));
-    }, (benefitRequests) {
-      this.benefitRequests = benefitRequests;
+    }, (manageRequestsResponse) {
+      benefitRequests = manageRequestsResponse.requests??[];
+      departments = manageRequestsResponse.departments;
+      print(departments);
       emit(GetRequestsToManageSuccessState());
     });
   }
@@ -91,20 +95,27 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   TextEditingController employeeNumberSearch = TextEditingController();
   TextEditingController fromText = TextEditingController()..addListener(() {});
   TextEditingController toText = TextEditingController();
-  int statusCurrentIndex = -1;
+  int actionCurrentIndex = -1;
   int typeCurrentIndex = -1;
+  int departmentCurrentIndex = -1;
+  Department? selectedDepartment = Department(name: 'Any', id: -1);
   bool hasWarning = false;
 
   DateTime? fromDate;
   DateTime? toDate;
 
-  selectStatus(int index) {
-    statusCurrentIndex = index;
+  selectAction(int index) {
+    actionCurrentIndex = index;
     emit(ChangeFiltration());
   }
 
   selectType(int index) {
     typeCurrentIndex = index;
+    emit(ChangeFiltration());
+  }
+  selectDepartment(Department department) {
+    selectedDepartment=department;
+    departmentCurrentIndex = department.id!;
     emit(ChangeFiltration());
   }
 
@@ -138,12 +149,12 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
 
   search() {
     var search = FilteredSearch(
-        selectedRequestStatus: statusCurrentIndex,
+        selectedRequestStatus: actionCurrentIndex,
         selectedBenefitType: typeCurrentIndex,
         employeeNumberSearch: int.parse(employeeNumberSearch.text.isEmpty
             ? '-1'
             : employeeNumberSearch.text),
-        selectedDepartmentId: -1,
+        selectedDepartmentId: departmentCurrentIndex,
         selectedTimingId: -1,
         hasWarningMessage: hasWarning,
         searchDateFrom: fromText.text.isEmpty ? "0001-01-01" : fromText.text,

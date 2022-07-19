@@ -5,6 +5,7 @@ import '../../../../../core/errors/failures.dart';
 import '../entities/benefit.dart';
 import '../entities/filtered_search.dart';
 import '../entities/gift.dart';
+import '../entities/manage_requests_response.dart';
 import '../entities/notification.dart';
 import '../entities/profile_and_documents.dart';
 
@@ -42,7 +43,7 @@ abstract class BenefitRepository {
     required String message,
   });
 
-  Future<Either<Failure, List<BenefitRequest>>> getBenefitsToManage({
+  Future<Either<Failure, ManageRequestsResponse>> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
     int? requestNumber,

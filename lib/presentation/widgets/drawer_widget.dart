@@ -85,12 +85,10 @@ class DrawerWidget extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: Image.memory(
-                          decodeImage(
-                              userData!.profilePicture ?? ''),
+                          decodeImage(userData!.profilePicture ?? ''),
                           fit: BoxFit.cover,
                           gaplessPlayback: true,
-                          errorBuilder: (context, error,
-                              stackTrace) =>
+                          errorBuilder: (context, error, stackTrace) =>
                               Image.asset(
                                   'assets/images/profile_avatar_placeholder.png',
                                   fit: BoxFit.cover),
@@ -167,7 +165,7 @@ class DrawerWidget extends StatelessWidget {
                           HomeScreen.routeName) {
                         final completer = Completer();
                         final result = await Navigator.pushNamed(
-                            context, MyGiftsScreen.routeName)
+                                context, MyGiftsScreen.routeName)
                             .whenComplete(() {
                           _cubit.getHomeData();
                         });
@@ -189,9 +187,10 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          NotificationScreen.routeName,
-                          ModalRoute.withName(HomeScreen.routeName)).whenComplete(() => _cubit.getHomeData());
+                              context,
+                              NotificationScreen.routeName,
+                              ModalRoute.withName(HomeScreen.routeName))
+                          .whenComplete(() => _cubit.getHomeData());
                     },
                   ),
                   buildListTile(
@@ -221,8 +220,8 @@ class DrawerWidget extends StatelessWidget {
                     },
                   ),
                   Divider(),
-
-                  if (userData!.hasRequests!)
+//todo ctrl+z
+                  if (true)
                     buildListTile(
                       context,
                       title: 'Manage Requests',

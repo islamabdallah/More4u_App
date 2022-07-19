@@ -13,6 +13,7 @@ import '../../domain/entities/filtered_search.dart';
 import '../models/benefit_model.dart';
 import '../models/benefit_request_model.dart';
 import '../models/login_response_model.dart';
+import '../models/manage_requests_response_model.dart';
 import '../models/noitification_model.dart';
 import '../models/participant_model.dart';
 import '../models/privilege_model.dart';
@@ -67,7 +68,7 @@ abstract class RemoteDataSource {
     required String message,
   });
 
-  Future<List<BenefitRequest>> getBenefitsToManage({
+  Future<ManageRequestsResponseModel> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
     int? requestNumber,
@@ -137,7 +138,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   }
 
   @override
-  Future<List<BenefitRequest>> getBenefitsToManage({
+  Future<ManageRequestsResponseModel> getBenefitsToManage({
     required int employeeNumber,
     FilteredSearch? search,
     int? requestNumber,
@@ -184,14 +185,11 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
-      List<BenefitRequestModel> benefitRequests = [];
-      if (result['data']['requests'] != null) {
-        for (Map<String, dynamic> benefitRequest in result['data']
-            ['requests']) {
-          benefitRequests.add(BenefitRequestModel.fromJson(benefitRequest));
-        }
-      }
-      return benefitRequests;
+      ManageRequestsResponseModel manageRequestsResponseModel =
+      ManageRequestsResponseModel.fromJson(result);
+
+      return manageRequestsResponseModel;
+
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       print(result);

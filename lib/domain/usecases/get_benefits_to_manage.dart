@@ -3,6 +3,7 @@ import 'package:more4u/domain/entities/filtered_search.dart';
 
 import '../../core/errors/failures.dart';
 import '../entities/benefit_request.dart';
+import '../entities/manage_requests_response.dart';
 import '../repositories/benefit_repository.dart';
 
 class GetBenefitsToManageUsecase {
@@ -10,7 +11,7 @@ class GetBenefitsToManageUsecase {
 
   GetBenefitsToManageUsecase(this.repository);
 
-  Future<Either<Failure, List<BenefitRequest>>> call({
+  Future<Either<Failure, ManageRequestsResponse>> call({
     required int employeeNumber,
 
     FilteredSearch? search,

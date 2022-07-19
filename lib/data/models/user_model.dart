@@ -23,6 +23,8 @@ class UserModel extends User {
     workDuration,
     hasRequests,
     pendingRequestsCount,
+    isTheGroupCreator,
+    isAdmin,
   }) : super(
           employeeName: employeeName,
           email: email,
@@ -45,6 +47,8 @@ class UserModel extends User {
           workDuration: workDuration,
           hasRequests: hasRequests,
           pendingRequestsCount: pendingRequestsCount,
+          isTheGroupCreator: isTheGroupCreator,
+          isAdmin: isAdmin,
         );
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -70,6 +74,8 @@ class UserModel extends User {
       workDuration: json['workDuration'],
       hasRequests: json['hasRequests'],
       pendingRequestsCount: json['pendingRequestsCount'],
+      isTheGroupCreator: json['isTheGroupCreator'],
+      isAdmin: json['isAdmin'],
     );
   }
 }
