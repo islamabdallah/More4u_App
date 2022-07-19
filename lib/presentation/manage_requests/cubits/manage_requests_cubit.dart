@@ -33,7 +33,7 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
         employeeNumber: userData!.employeeNumber, search: search,requestNumber: requestNumber);
 
     result.fold((failure) {
-      emit(GetRequestsToManageFailedState(failure.message));
+      emit(GetRequestsToManageErrorState(failure.message));
     }, (benefitRequests) {
       this.benefitRequests = benefitRequests;
       emit(GetRequestsToManageSuccessState());
@@ -43,15 +43,15 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
   ProfileAndDocuments? profileAndDocuments;
   getRequestProfileAndDocuments(int requestNumber) async {
     profileAndDocuments=null;
-    emit(GetRequestsToManageLoadingState());
+    emit(GetRequestProfileAndDocumentsLoadingState());
     final result = await getRequestProfileAndDocumentsUsecase(
         employeeNumber: userData!.employeeNumber, requestNumber: requestNumber);
 
     result.fold((failure) {
-      emit(GetRequestsToManageFailedState(failure.message));
+      emit(GetRequestProfileAndDocumentsErrorState(failure.message));
     }, (profileAndDocuments) {
       this.profileAndDocuments = profileAndDocuments;
-      emit(GetRequestsToManageSuccessState());
+      emit(GetRequestProfileAndDocumentsSuccessState());
 
       print(profileAndDocuments.profilePicture?.length);
     });

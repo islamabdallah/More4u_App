@@ -17,12 +17,14 @@ class BenefitRequest extends Equatable {
   final User? sendToModel;
   final int? employeeNumber;
   final String? requestedat;
+  final bool? hasDocuments;
   final List<String>? documents;
 
   //benefit data
   final int? benefitId;
   final String? benefitName;
   final String? benefitType;
+  final String? benefitCard;
 
   //my request
   final String? status;
@@ -37,34 +39,36 @@ class BenefitRequest extends Equatable {
   final bool? employeeCanResponse;
   final MyAction? myAction;
 
-  const BenefitRequest(
-      {this.requestNumber,
-      this.from,
-      this.to,
-      this.message,
-      this.groupName,
-      this.selectedEmployeeNumbers,
-      // this.participants,
-      this.participantsData,
-      this.fullParticipantsData,
-      this.sendToID,
-      this.sendToModel,
-      this.employeeNumber,
-      this.requestedat,
-      this.documents,
-      this.benefitId,
-      this.benefitName,
-      this.benefitType,
-      this.status,
-      this.requestStatusId,
-      this.canCancel,
-      this.canEdit,
-      this.requestWorkFlowAPIs,
-      this.createdBy,
-      this.warningMessage,
-      this.employeeCanResponse,
-        this.myAction,
-      });
+  const BenefitRequest({
+    this.requestNumber,
+    this.from,
+    this.to,
+    this.message,
+    this.groupName,
+    this.selectedEmployeeNumbers,
+    // this.participants,
+    this.participantsData,
+    this.fullParticipantsData,
+    this.sendToID,
+    this.sendToModel,
+    this.employeeNumber,
+    this.requestedat,
+    this.hasDocuments,
+    this.documents,
+    this.benefitId,
+    this.benefitName,
+    this.benefitType,
+    this.benefitCard,
+    this.status,
+    this.requestStatusId,
+    this.canCancel,
+    this.canEdit,
+    this.requestWorkFlowAPIs,
+    this.createdBy,
+    this.warningMessage,
+    this.employeeCanResponse,
+    this.myAction,
+  });
 
   @override
   List<Object?> get props => [
@@ -81,10 +85,12 @@ class BenefitRequest extends Equatable {
         sendToModel,
         employeeNumber,
         requestedat,
+        hasDocuments,
         documents,
         benefitId,
         benefitName,
         benefitType,
+        benefitCard,
         status,
         requestStatusId,
         canCancel,
@@ -150,7 +156,7 @@ class RequestWorkFlowAPIs {
 // }
 }
 
-class MyAction extends Equatable{
+class MyAction extends Equatable {
   final String? action;
   final String? notes;
   final String? replayDate;
@@ -158,5 +164,5 @@ class MyAction extends Equatable{
   const MyAction({this.action, this.notes, this.replayDate});
 
   @override
-  List<Object?> get props => [action,notes,replayDate];
+  List<Object?> get props => [action, notes, replayDate];
 }

@@ -9,13 +9,25 @@ class GetRequestsToManageLoadingState extends ManageRequestsState {}
 
 class GetRequestsToManageSuccessState extends ManageRequestsState {}
 
-class RemoveRequestSuccessState extends ManageRequestsState {}
-
-class GetRequestsToManageFailedState extends ManageRequestsState {
+class GetRequestsToManageErrorState extends ManageRequestsState {
   final String message;
 
-  GetRequestsToManageFailedState(this.message);
+  GetRequestsToManageErrorState(this.message);
 }
+
+class GetRequestProfileAndDocumentsLoadingState extends ManageRequestsState {}
+
+class GetRequestProfileAndDocumentsSuccessState extends ManageRequestsState {}
+
+class GetRequestProfileAndDocumentsErrorState extends ManageRequestsState {
+  final String message;
+
+  GetRequestProfileAndDocumentsErrorState(this.message);
+}
+
+
+
+class RemoveRequestSuccessState extends ManageRequestsState {}
 
 class AddRequestResponseLoadingState extends ManageRequestsState {}
 

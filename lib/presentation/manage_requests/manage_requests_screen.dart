@@ -79,7 +79,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
         if (state is GetRequestsToManageSuccessState) {
           Navigator.pop(context);
         }
-        if (state is GetRequestsToManageFailedState) {
+        if (state is GetRequestsToManageErrorState) {
           showMessageDialog(
               context: context,
               isSucceeded: false,
@@ -530,15 +530,14 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       // border: Border.all()
                                       ),
                                   child: Image.network(
-                                    //todo fix this
-                                    request.benefitName!,
+                                    request.benefitCard??'',
                                     errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png',fit: BoxFit.fill),
 
                                     fit: BoxFit.fill,
                                     alignment: Alignment.centerLeft,
                                   ),
                                 ),
-                                if (request.warningMessage != null || (request.documents!=null&&request.documents!.isNotEmpty))
+                                if (request.warningMessage != null || (request.hasDocuments!=null&&request.hasDocuments!))
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 5.w, vertical: 8.h),
@@ -1073,9 +1072,19 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   width: 132.h,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
-                                    child: Image.network(
-                                      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                                    child:
+                                    state is GetRequestProfileAndDocumentsLoadingState?
+                                    Center(child: CircularProgressIndicator()):
+                                    Image.memory(
+                                      base64Decode(
+                                          _cubit.profileAndDocuments?.profilePicture??''),
                                       fit: BoxFit.cover,
+                                      gaplessPlayback: true,
+                                      errorBuilder: (context, error,
+                                          stackTrace) =>
+                                          Image.asset(
+                                              'assets/images/profile_avatar_placeholder.png',
+                                              fit: BoxFit.cover),
                                     ),
                                   ),
                                 ),
@@ -1293,7 +1302,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             ),
                           ),
                         ],
-                        if (_cubit.profileAndDocuments?.documents != null && _cubit.profileAndDocuments!.documents!.isNotEmpty )
+
+                        if(request.hasDocuments!=null&&request.hasDocuments!)
                           ...[
                               Divider(),
                           Text(
@@ -1306,7 +1316,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             ),
                           ),
                           SizedBox(height: 8.h,),
-                          SizedBox(
+                          state is GetRequestProfileAndDocumentsLoadingState?
+                            SizedBox(height: 120.h,child: Center(child: CircularProgressIndicator())):
+                            SizedBox(
                             height: 120.h,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -1333,7 +1345,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               },
                               itemCount: _cubit.profileAndDocuments!.documents!.length,
                             ),
-                          )
+                          ),
                         ],
                         if (request.warningMessage != null)
                           RichText(
