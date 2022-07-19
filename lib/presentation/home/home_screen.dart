@@ -10,6 +10,7 @@ import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/firebase/push_notification_service.dart';
+import '../../core/utils/app_lifecycle.dart';
 import '../../custom_icons.dart';
 import '../notification/notification_screen.dart';
 import '../widgets/benifit_card.dart';
@@ -27,9 +28,32 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver,TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.resumed && ModalRoute.of(context)?.isCurrent!=null&&ModalRoute.of(context)!.isCurrent){
+      print(ModalRoute.of(context)?.isCurrent);
+      print(ModalRoute.of(context)?.settings.name);
+      HomeCubit.get(context).getHomeData();
+    }
+  }
+
+
   @override
   void didChangeDependencies() {
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () async {
+          // HomeCubit.get(context).getHomeData();
+        },
+        suspendingCallBack: () async {}));
     PushNotificationService.init(context);
     super.didChangeDependencies();
   }
@@ -40,12 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var _cubit = HomeCubit.get(context);
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if(state is GetHomeDataLoadingState){
-          loadingAlertDialog(context);
-        }
-        if(state is GetHomeDataSuccessState){
-          Navigator.pop(context);
-        }
+
       },
       builder: (context, state) {
         return Scaffold(
@@ -55,12 +74,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 50.h,),
+                SizedBox(
+                  height: 50.h,
+                ),
                 const MyAppBar(),
                 Padding(
                   padding: EdgeInsets.zero,
                   child: Text(
-                    userData!.employeeName??'',
+                    userData!.employeeName ?? '',
                     style: TextStyle(
                         fontSize: 24.sp,
                         fontFamily: 'Joti',
@@ -92,11 +113,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: redColor),
                       padding: EdgeInsets.zero,
                       labelPadding: EdgeInsets.zero,
-                      onTap:(index){
-                        if(index==2){
+                      onTap: (index) {
+                        if (index == 2) {
                           _cubit.getPrivileges();
                         }
-                      } ,
+                      },
                       tabs: [
                         Tab(
                           child: Container(
@@ -139,21 +160,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             _cubit.availableBenefitModels?.length != 0
                         ? ListView.builder(
                             itemBuilder: (context, index) => BenefitCard(
-                                benefit:
-                                    _cubit.availableBenefitModels![index]),
+                                benefit: _cubit.availableBenefitModels![index]),
                             itemCount: _cubit.availableBenefitModels?.length,
                           )
                         : Center(child: Text('No Benefits available')),
-
-
-                        _cubit.privileges.isNotEmpty?
-                    ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (context, index) =>
-                         PrivilegeCard(privilege: _cubit.privileges[index]),
-                      itemCount: _cubit.privileges.length,
-                    )
-                    :Center(child: Text('No privileges available')),
+                    _cubit.privileges.isNotEmpty
+                        ? ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) => PrivilegeCard(
+                                privilege: _cubit.privileges[index]),
+                            itemCount: _cubit.privileges.length,
+                          )
+                        : Center(child: Text('No privileges available')),
                   ]),
                 ),
               ],

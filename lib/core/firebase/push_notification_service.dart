@@ -33,7 +33,9 @@ class PushNotificationService {
         print(
             'Message also contained a notification:\n${message.notification!.title}\n${message.notification!.body}');
 
-        HomeCubit.get(context).changeNotificationCount(5);
+        HomeCubit.get(context).changeNotificationCount(
+            HomeCubit.get(context).userUnSeenNotificationCount+1
+        );
 
         NotificationService notificationService = NotificationService();
         notificationService.initializeNotification();
@@ -47,6 +49,10 @@ class PushNotificationService {
         );
       }
     });
+
+   FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+     print('hola');
+   });
 
     // replacement for onResume: When the app is in the background and opened directly from the push notification.
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
