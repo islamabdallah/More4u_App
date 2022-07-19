@@ -11,6 +11,7 @@ import 'package:meta/meta.dart';
 import '../../../core/constants/constants.dart';
 import '../../../domain/entities/user.dart';
 import '../../../domain/usecases/changePassword.dart';
+import '../../../domain/usecases/get_employee_profile_picture.dart';
 import '../../../domain/usecases/updateProfilePicture.dart';
 
 part 'profile_state.dart';
@@ -20,13 +21,16 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   UpdateProfilePictureUsecase updateProfilePictureUsecase;
   ChangePasswordUsecase changePasswordUsecase;
+  GetEmployeeProfilePictureUsecase getEmployeeProfilePictureUsecase;
 
-  ProfileCubit(
-      {required this.updateProfilePictureUsecase,
-      required this.changePasswordUsecase})
-      : super(ProfileInitial());
+  ProfileCubit({
+    required this.updateProfilePictureUsecase,
+    required this.changePasswordUsecase,
+    required this.getEmployeeProfilePictureUsecase,
+  }) : super(ProfileInitial());
 
   User? user;
+  String? profileImage;
   String? pickedImage;
 
   void pickImage() async {
@@ -45,6 +49,18 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       emit(ImagePickedSuccessState());
     }
+  }
+
+  getProfileImage() async {
+    emit(GetProfilePictureLoadingState());
+    final result = await getEmployeeProfilePictureUsecase(
+        employeeNumber: user!.employeeNumber,);
+    result.fold((failure) {
+      emit(GetProfilePictureErrorState(failure.message));
+    }, (profileImage) {
+      this.profileImage=profileImage;
+      emit(GetProfilePictureSuccessState());
+    });
   }
 
   updateProfileImage() async {
@@ -66,22 +82,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileInitial());
   }
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-
-  final GlobalKey<FormState>
-  formKey =
-  GlobalKey<FormState>();
-
-  bool currentPassword = false,
-      newPassword = false,
-      confirmNewPassword = false;
-  TextEditingController
-  currentPasswordController =
-  TextEditingController(),
-      newPasswordController =
-      TextEditingController(),
-      confirmNewPasswordController =
-      TextEditingController();
+  bool currentPassword = false, newPassword = false, confirmNewPassword = false;
+  TextEditingController currentPasswordController = TextEditingController(),
+      newPasswordController = TextEditingController(),
+      confirmNewPasswordController = TextEditingController();
 
   changePassword() async {
     emit(ChangePasswordLoadingState());

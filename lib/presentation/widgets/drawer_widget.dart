@@ -85,7 +85,7 @@ class DrawerWidget extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6),
                         child: Image.memory(
-                          base64Decode(
+                          decodeImage(
                               userData!.profilePicture ?? ''),
                           fit: BoxFit.cover,
                           gaplessPlayback: true,

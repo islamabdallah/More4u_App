@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:more4u/core/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,13 +21,19 @@ Color getBenefitStatusColor(String status) {
     default:
       return redColor;
   }
-
 }
-  void logOut(BuildContext context){
-    PushNotificationService.deleteDeviceToken();
-    SharedPreferences.getInstance()
-        .then((value) => value.remove(CACHED_USER));
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        LoginScreen.routeName,
-            (Route<dynamic> route) => false);
+
+Uint8List decodeImage(String imageBase64) {
+  try {
+    return base64Decode(imageBase64);
+  } catch (error) {
+    return Uint8List(0);
   }
+}
+
+void logOut(BuildContext context) {
+  PushNotificationService.deleteDeviceToken();
+  SharedPreferences.getInstance().then((value) => value.remove(CACHED_USER));
+  Navigator.of(context).pushNamedAndRemoveUntil(
+      LoginScreen.routeName, (Route<dynamic> route) => false);
+}

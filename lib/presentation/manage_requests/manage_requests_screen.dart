@@ -1076,7 +1076,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     state is GetRequestProfileAndDocumentsLoadingState?
                                     Center(child: CircularProgressIndicator()):
                                     Image.memory(
-                                      base64Decode(
+                                      decodeImage(
                                           _cubit.profileAndDocuments?.profilePicture??''),
                                       fit: BoxFit.cover,
                                       gaplessPlayback: true,
@@ -1335,7 +1335,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Image.memory(
-                                        base64Decode(_cubit.profileAndDocuments!.documents![index]),
+                                        decodeImage(_cubit.profileAndDocuments!.documents![index]),
                                         width: 120.h,
                                         height: 120.h,
                                         fit: BoxFit.fill,
@@ -1346,26 +1346,32 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               itemCount: _cubit.profileAndDocuments!.documents!.length,
                             ),
                           ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
                         ],
                         if (request.warningMessage != null)
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: 'Warning: ',
-                                style: TextStyle(
-                                    color: redColor,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: request.warningMessage ?? '',
-                                style: TextStyle(color: redColor, fontFamily: 'Roboto'),
-                              ),
-                            ]),
+                          Padding(
+                            padding: EdgeInsets.only(top: 16.h),
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: 'Warning: ',
+                                  style: TextStyle(
+                                      color: redColor,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: request.warningMessage ?? '',
+                                  style: TextStyle(color: redColor, fontFamily: 'Roboto'),
+                                ),
+                              ]),
+                            ),
                           ),
                         SizedBox(
-                          height: 16.h,
+                          height: 8.h,
                         ),
                         request.myAction == null
                             ? Row(

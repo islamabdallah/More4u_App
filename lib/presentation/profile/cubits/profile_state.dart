@@ -17,6 +17,17 @@ class UpdatePictureErrorState extends ProfileState {
   UpdatePictureErrorState(this.message);
 }
 
+
+class GetProfilePictureLoadingState extends ProfileState {}
+
+class GetProfilePictureSuccessState extends ProfileState {}
+
+class GetProfilePictureErrorState extends ProfileState {
+  final String? message;
+
+  GetProfilePictureErrorState(this.message);
+}
+
   class ChangePasswordLoadingState extends ProfileState {}
 
   class  ChangePasswordSuccessState extends ProfileState {

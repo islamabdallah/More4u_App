@@ -24,8 +24,14 @@ abstract class RemoteDataSource {
     required String pass,
   });
 
+  Future<String> getEmployeeProfilePicture({
+    required int employeeNumber,
+  });
+
   Future<UserModel> updateProfilePicture(
       {required int employeeNumber, required String photo});
+
+
 
   Future<String> changePassword({
     required int employeeNumber,
@@ -37,6 +43,7 @@ abstract class RemoteDataSource {
   Future<BenefitModel> getBenefitDetails({required int benefitId});
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
+
   Future<List<GiftModel>> getMyGifts({required int employeeNumber,required int requestNumber});
 
   Future<List<PrivilegeModel>> getPrivileges();
@@ -462,6 +469,34 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
     if (response.statusCode == 200) {
       return;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
+
+
+  @override
+  Future<String> getEmployeeProfilePicture({
+    required int employeeNumber,
+  }) async {
+    final response = await client.post(
+      Uri.parse(getEmployeeProfilePictureEndPoint).replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      return result['data'];
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       print(result);

@@ -40,6 +40,24 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
+  Future<Either<Failure, String>> getEmployeeProfilePicture({
+    required int employeeNumber,
+  }) async {
+    if (await networkInfo.isConnected) {
+      try {
+        String result = await remoteDataSource.getEmployeeProfilePicture(
+            employeeNumber: employeeNumber,
+            );
+        return Right(result);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
+      }
+    } else {
+      return const Left(ConnectionFailure('No internet Connection'));
+    }
+  }
+
+  @override
   Future<Either<Failure, User>> updateProfilePicture(
       {required int employeeNumber, required String photo}) async {
     if (await networkInfo.isConnected) {

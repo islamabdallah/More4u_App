@@ -38,13 +38,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    _cubit = sl<ProfileCubit>()..user = widget.user;
+    _cubit = sl<ProfileCubit>()
+      ..user = widget.user;
+    if (!widget.isProfile!){
+      _cubit.getProfileImage();
+  }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit, ProfileState>(
+    return BlocConsumer(
       bloc: _cubit,
       listener: (context, state) {
         if (state is UpdatePictureLoadingState) {
@@ -155,9 +159,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 132.h,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(6),
-                                  child: Image.memory(
-                                    base64Decode(
+                                  child:
+
+                                  widget.isProfile != null && widget.isProfile!?
+                                  Image.memory(
+                                    decodeImage(
                                         _cubit.user?.profilePicture ?? ''),
+                                    errorBuilder: (context, error,
+                                        stackTrace) =>
+                                        Image.asset(
+                                            'assets/images/profile_avatar_placeholder.png',
+                                            fit: BoxFit.cover),
+                                    fit: BoxFit.cover,
+                                    gaplessPlayback: true,
+                                  ):
+                                  state is GetProfilePictureLoadingState?
+                                    Center(child: CircularProgressIndicator())
+                                        :
+                                  Image.memory(
+
+                                    decodeImage(
+                                        _cubit.profileImage?? ''
+                                    )
+
+                                  ,
                                     errorBuilder: (context, error,
                                             stackTrace) =>
                                         Image.asset(
@@ -293,12 +318,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                               BorderRadius.circular(6.r),
                                                                           child: _cubit.pickedImage != null
                                                                               ? Image.memory(
-                                                                                  base64Decode(_cubit.pickedImage!),
+                                                                            decodeImage(_cubit.pickedImage!),
                                                                                   fit: BoxFit.cover,
                                                                             gaplessPlayback: true,
                                                                           )
                                                                               : Image.memory(
-                                                                            base64Decode(
+                                                                            decodeImage(
                                                                                 _cubit.user?.profilePicture ?? ''),
                                                                             errorBuilder: (context, error,
                                                                                 stackTrace) =>

@@ -26,6 +26,7 @@ import 'domain/usecases/cancel_request.dart';
 import 'domain/usecases/changePassword.dart';
 import 'domain/usecases/get_benefit_details.dart';
 import 'domain/usecases/get_benefits_to_manage.dart';
+import 'domain/usecases/get_employee_profile_picture.dart';
 import 'domain/usecases/get_my_benefit_requests.dart';
 import 'domain/usecases/get_my_benefits.dart';
 import 'domain/usecases/get_my_gifts.dart';
@@ -46,8 +47,12 @@ Future<void> init() async {
 
 // Cubits
   sl.registerFactory(() => LoginCubit(loginUser: sl()));
-  sl.registerFactory(() => HomeCubit(loginUser: sl(),getPrivilegesUsecase: sl()));
-  sl.registerFactory(() => ProfileCubit(updateProfilePictureUsecase: sl(),changePasswordUsecase: sl()));
+  sl.registerFactory(
+      () => HomeCubit(loginUser: sl(), getPrivilegesUsecase: sl()));
+  sl.registerFactory(() => ProfileCubit(
+      updateProfilePictureUsecase: sl(),
+      changePasswordUsecase: sl(),
+      getEmployeeProfilePictureUsecase: sl()));
   sl.registerFactory(() => BenefitDetailsCubit(getBenefitDetailsUsecase: sl()));
   sl.registerFactory(
       () => RedeemCubit(getParticipantsUsecase: sl(), redeemCardUsecase: sl()));
@@ -56,11 +61,14 @@ Future<void> init() async {
   sl.registerFactory(() => MyBenefitRequestsCubit(
       getMyBenefitRequestsUsecase: sl(), cancelRequestsUsecase: sl()));
   sl.registerFactory(() => ManageRequestsCubit(
-      getBenefitsToManageUsecase: sl(), addRequestResponseUsecase: sl(),getRequestProfileAndDocumentsUsecase: sl()));
+      getBenefitsToManageUsecase: sl(),
+      addRequestResponseUsecase: sl(),
+      getRequestProfileAndDocumentsUsecase: sl()));
   sl.registerFactory(() => NotificationCubit(getNotificationsUsecase: sl()));
 // Usecases
 
   sl.registerLazySingleton(() => LoginUserUsecase(sl()));
+  sl.registerLazySingleton(() => GetEmployeeProfilePictureUsecase(sl()));
   sl.registerLazySingleton(() => UpdateProfilePictureUsecase(sl()));
   sl.registerLazySingleton(() => ChangePasswordUsecase(sl()));
   sl.registerLazySingleton(() => GetBenefitDetailsUsecase(sl()));
@@ -88,7 +96,6 @@ Future<void> init() async {
       () => RedeemRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()));
 
 // Datasources
-
 
   sl.registerLazySingleton<RemoteDataSource>(
       () => RemoteDataSourceImpl(client: sl()));

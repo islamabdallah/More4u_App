@@ -13,6 +13,10 @@ abstract class UserRepository {
     required String pass,
   });
 
+  Future<Either<Failure,String>> getEmployeeProfilePicture({
+    required int employeeNumber,
+  });
+
   Future<Either<Failure,User>> updateProfilePicture({
     required int employeeNumber,
     required String photo,

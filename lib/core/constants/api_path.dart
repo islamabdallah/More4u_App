@@ -19,3 +19,4 @@ const String showNotifications = baseUrl + '/BenefitAPI/ShowFiftyNotifications';
 const String updateProfilePictureEndPoint = baseUrl + '/BenefitAPI/updateProfilePicture';
 const String changePasswordEndPoint = baseUrl + '/LoginAPI/ChangePassword';
 const String getPrivilegesEndPoint = baseUrl + '/PriviligesAPI/Getprivilges';
+const String getEmployeeProfilePictureEndPoint = baseUrl + '/BenefitAPI/GetEmployeeProfilePicture';
