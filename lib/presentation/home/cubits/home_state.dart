@@ -16,4 +16,7 @@ class GetPrivilegesSuccessState extends HomeState {}
 class GetPrivilegesErrorState extends HomeState {
  final String message;
  GetPrivilegesErrorState(this.message);
+
 }
+
+class NotificationCountChangeState extends HomeState {}

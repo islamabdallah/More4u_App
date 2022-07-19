@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:more4u/presentation/home/cubits/home_cubit.dart';
 
 import '../../presentation/notification/notification_screen.dart';
 import 'notifcation_service.dart';
@@ -31,6 +32,8 @@ class PushNotificationService {
       if (notification != null && android != null) {
         print(
             'Message also contained a notification:\n${message.notification!.title}\n${message.notification!.body}');
+
+        HomeCubit.get(context).changeNotificationCount(5);
 
         NotificationService notificationService = NotificationService();
         notificationService.initializeNotification();

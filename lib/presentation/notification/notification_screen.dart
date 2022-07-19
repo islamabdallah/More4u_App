@@ -14,6 +14,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../core/constants/constants.dart';
 import '../../injection_container.dart';
+import '../home/cubits/home_cubit.dart';
 import '../my_benefit_requests/my_benefit_requests_screen.dart';
 import 'cubits/notification_cubit.dart';
 
@@ -32,7 +33,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     _cubit = NotificationCubit.get(context);
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.getNotifications();
     });
@@ -48,7 +48,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           // loadingAlertDialog(context);
         }
         if (state is GetNotificationsSuccessState) {
-          // Navigator.pop(context);
+          HomeCubit.get(context).changeNotificationCount(0);
         }
         if (state is GetNotificationsErrorState) {
           Navigator.pop(context);

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:simple_shadow/simple_shadow.dart';
@@ -49,7 +50,10 @@ class MyAppBar extends StatelessWidget {
             ),
           );
         }),
-        Badge(
+        BlocBuilder<HomeCubit, HomeState>(
+  builder: (context, state) {
+    return Badge(
+      showBadge: HomeCubit.get(context).userUnSeenNotificationCount!=0,
           ignorePointer: true,
           position: BadgePosition(bottom: -2, end: 3),
           badgeColor: redColor,
@@ -59,7 +63,7 @@ class MyAppBar extends StatelessWidget {
           // ),
           padding: EdgeInsets.all(8.r),
           badgeContent: Text(
-            '3',
+            HomeCubit.get(context).userUnSeenNotificationCount.toString(),
             style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.bold),
           ),
           child: Material(
@@ -94,7 +98,9 @@ class MyAppBar extends StatelessWidget {
                   )),
             ),
           ),
-        ),
+        );
+  },
+),
       ],
     );
   }
