@@ -28,21 +28,24 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver,TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if(state == AppLifecycleState.resumed && ModalRoute.of(context)?.isCurrent!=null&&ModalRoute.of(context)!.isCurrent){
-      print(ModalRoute.of(context)?.isCurrent);
-      print(ModalRoute.of(context)?.settings.name);
-      HomeCubit.get(context).getHomeData();
+    // if(state == AppLifecycleState.resumed && ModalRoute.of(context)?.isCurrent!=null&&ModalRoute.of(context)!.isCurrent){
+    //   print(ModalRoute.of(context)?.isCurrent);
+    //   print(ModalRoute.of(context)?.settings.name);
+    if (state == AppLifecycleState.resumed) {
+      if (mounted) {
+        Future.delayed(
+            Duration(milliseconds: 800), () => HomeCubit.get(context).getHomeData());
+      }
     }
   }
 
@@ -148,6 +151,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver,Tic
                         ),
                       ]),
                 ),
+
+
+                  Padding(
+                    padding: EdgeInsets.only( top: 8.h,bottom: 16.h,left: 8.w,right: 8.w),
+                    child:
+                    Center(
+                        child:
+
+                     state is GetHomeDataLoadingState?
+                     LinearProgressIndicator(
+                          minHeight: 4.h,
+                          backgroundColor: mainColor.withOpacity(0.4),
+                        ):SizedBox(),
+          ),
+                  ),
                 Expanded(
                   child: TabBarView(controller: _tabController, children: [
                     ListView.builder(
@@ -157,20 +175,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver,Tic
                       itemCount: _cubit.benefitModels.length,
                     ),
                     _cubit.availableBenefitModels != null &&
-                            _cubit.availableBenefitModels?.length != 0
+                        _cubit.availableBenefitModels?.length != 0
                         ? ListView.builder(
-                            itemBuilder: (context, index) => BenefitCard(
-                                benefit: _cubit.availableBenefitModels![index]),
-                            itemCount: _cubit.availableBenefitModels?.length,
-                          )
+                      itemBuilder: (context, index) =>
+                          BenefitCard(
+                              benefit: _cubit.availableBenefitModels![index]),
+                      itemCount: _cubit.availableBenefitModels?.length,
+                    )
                         : Center(child: Text('No Benefits available')),
                     _cubit.privileges.isNotEmpty
                         ? ListView.builder(
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (context, index) => PrivilegeCard(
-                                privilege: _cubit.privileges[index]),
-                            itemCount: _cubit.privileges.length,
-                          )
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) =>
+                          PrivilegeCard(
+                              privilege: _cubit.privileges[index]),
+                      itemCount: _cubit.privileges.length,
+                    )
                         : Center(child: Text('No privileges available')),
                   ]),
                 ),

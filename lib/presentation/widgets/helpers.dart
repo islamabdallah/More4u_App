@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/firebase/push_notification_service.dart';
 import '../../data/datasources/local_data_source.dart';
 import '../Login/login_screen.dart';
+import '../notification/cubits/notification_cubit.dart';
 
 Color getBenefitStatusColor(String status) {
   switch (status) {
@@ -32,6 +33,7 @@ Uint8List decodeImage(String imageBase64) {
 }
 
 void logOut(BuildContext context) {
+  NotificationCubit.get(context).notifications.clear();
   PushNotificationService.deleteDeviceToken();
   SharedPreferences.getInstance().then((value) => value.remove(CACHED_USER));
   Navigator.of(context).pushNamedAndRemoveUntil(

@@ -20,3 +20,4 @@ const String updateProfilePictureEndPoint = baseUrl + '/BenefitAPI/updateProfile
 const String changePasswordEndPoint = baseUrl + '/LoginAPI/ChangePassword';
 const String getPrivilegesEndPoint = baseUrl + '/PriviligesAPI/Getprivilges';
 const String getEmployeeProfilePictureEndPoint = baseUrl + '/BenefitAPI/GetEmployeeProfilePicture';
+const String refreshTokenAPI = baseUrl + '/LoginAPI/refreshToken';

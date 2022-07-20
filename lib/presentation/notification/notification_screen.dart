@@ -7,6 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:more4u/custom_icons.dart';
 import 'package:more4u/presentation/manage_requests/manage_requests_screen.dart';
+import 'package:more4u/presentation/my_gifts/my_gifts_screen.dart';
 import 'package:more4u/presentation/widgets/drawer_widget.dart';
 import 'package:more4u/presentation/widgets/utils/loading_dialog.dart';
 import 'package:more4u/presentation/widgets/utils/message_dialog.dart';
@@ -152,9 +153,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               ),
                                               result: completer.future);
                                       completer.complete(result);
-                                    } else if (_cubit.notifications[index]
-                                            .notificationType ==
-                                        'Response') {
+                                    }
+                                   else if (_cubit.notifications[index]
+                                        .notificationType ==
+                                        'Gift') {
+                                      final completer = Completer();
+                                      final result =
+                                      await Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                MyGiftsScreen(
+                                                  requestNumber: _cubit
+                                                      .notifications[index]
+                                                      .requestNumber!,
+                                                ),
+                                          ),
+                                          result: completer.future);
+                                      completer.complete(result);
+                                    }
+
+                                    else {
                                       final completer = Completer();
                                       final result =
                                           await Navigator.pushReplacement(
@@ -176,22 +195,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   },
                                   child: Row(children: [
                                     CircleAvatar(
-
-                                      radius: 24.w,
-                                      backgroundColor: mainColor,
+                                        radius: 24.w,
+                                        backgroundColor: mainColor,
                                         child: Icon(
-
-                                          _cubit.notifications[index].notificationType=='Request'?
-                                          Icons.swap_horiz:
-                                          _cubit.notifications[index].notificationType=='Response'?
-                                          Icons.reply:
-                                          _cubit.notifications[index].notificationType=='Gift'?
-                                          CustomIcons.balloons:
-                                          CustomIcons.users_alt
-
-
-
-                                          ,size: 30.w,color: Colors.white,)),
+                                          _cubit.notifications[index]
+                                                      .notificationType ==
+                                                  'Request'
+                                              ? Icons.task_outlined
+                                              : _cubit.notifications[index]
+                                                          .notificationType ==
+                                                      'Response'
+                                                  ? Icons.call_received
+                                                  : _cubit.notifications[index]
+                                                              .notificationType ==
+                                                          'Gift'
+                                                      ? CustomIcons.balloons
+                                                      : Icons.groups_outlined,
+                                          size: 30.w,
+                                          color: Colors.white,
+                                        )),
                                     SizedBox(width: 16.w),
                                     Expanded(
                                       child: Column(
