@@ -220,8 +220,7 @@ class DrawerWidget extends StatelessWidget {
                     },
                   ),
                   Divider(),
-//todo ctrl+z
-                  if (true)
+                  if (userData!.hasRequests!)
                     buildListTile(
                       context,
                       title: 'Manage Requests',

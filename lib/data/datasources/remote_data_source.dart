@@ -24,6 +24,10 @@ abstract class RemoteDataSource {
     required String employeeNumber,
     required String pass,
   });
+  Future<String> updateToken({
+    required int employeeNumber,
+    required String token,
+  });
 
   Future<String> getEmployeeProfilePicture({
     required int employeeNumber,
@@ -495,6 +499,35 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
       return result['data'];
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      print(result);
+      if (result.isNotEmpty && result['message'] != null) {
+        throw ServerException(result['message']);
+      } else {
+        throw ServerException('Something went wrong!');
+      }
+    }
+  }
+
+  @override
+  Future<String> updateToken({
+    required int employeeNumber,
+    required String token,
+  }) async {
+    final response = await client.post(
+      Uri.parse(refreshTokenAPI).replace(queryParameters: {
+        "employeeNumber": employeeNumber.toString(),
+        "newToken": token,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      return result['message'];
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       print(result);
