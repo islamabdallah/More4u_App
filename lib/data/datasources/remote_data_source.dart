@@ -450,7 +450,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     } else {
       print('nooooooooooooooo');
       Map<String, dynamic> result = jsonDecode(response.body);
-      print(result);
+      // print(result);
       if (result.isNotEmpty && result['message'] != null) {
         throw ServerException(result['message']);
       } else {

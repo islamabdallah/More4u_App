@@ -77,16 +77,23 @@ class MyApp extends StatelessWidget {
               color: mainColor,
 
               theme: ThemeData(
-                  primaryColor: mainColor,
-                  colorScheme: ColorScheme.fromSwatch().copyWith(
-                    primary: mainColor,
-                  ),
-                  iconTheme: IconThemeData(color: greyColor, size: 20.r),
-                  fontFamily: 'Cairo',
-                  drawerTheme:
-                      DrawerThemeData(scrimColor: Colors.black.withOpacity(0.2))
-                  // textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-                  ),
+                primaryColor: mainColor,
+                colorScheme: ColorScheme.fromSwatch().copyWith(
+                  primary: mainColor,
+                ),
+                iconTheme: IconThemeData(color: greyColor, size: 20.r),
+                fontFamily: 'Cairo',
+                drawerTheme:
+                    DrawerThemeData(scrimColor: Colors.black.withOpacity(0.2))
+                // textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
+                ,
+                pageTransitionsTheme: const PageTransitionsTheme(
+                  builders: <TargetPlatform, PageTransitionsBuilder>{
+                    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+                    // Apply this to every platforms you need.
+                  },
+                ),
+              ),
               title: 'Flutter Demo',
               debugShowCheckedModeBanner: false,
               onGenerateRoute: AppRoutes.onGenerateRoutes,

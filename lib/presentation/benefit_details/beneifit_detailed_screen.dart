@@ -51,12 +51,10 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                 width: 1.sw,
                 color: Colors.transparent,
               ),
-              Hero(
-                  tag: widget.benefit.id,
-                  child:Image.network(
-                    widget.benefit.benefitCard,
-                    errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png',fit: BoxFit.fill),
-                  ),),
+              Image.network(
+                widget.benefit.benefitCard,
+                errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png',fit: BoxFit.fill),
+              ),
               Positioned(
                 top: 280.h,
                 child: Container(

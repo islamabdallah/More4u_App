@@ -1,78 +1,41 @@
 {
   "project_info": {
-    "project_number": "501748161939",
-    "project_id": "testfcm-6bcd1",
-    "storage_bucket": "testfcm-6bcd1.appspot.com"
+    "project_number": "548188848493",
+    "project_id": "testmore4u",
+    "storage_bucket": "testmore4u.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:501748161939:android:24620c8d5b7485ca131c66",
+        "mobilesdk_app_id": "1:548188848493:android:e384a8bc74a0c79d7b9a64",
         "android_client_info": {
-          "package_name": "com.cemex.more4u"
+          "package_name": "com.cemex.more4u.v1"
         }
       },
       "oauth_client": [
         {
-          "client_id": "501748161939-0c8o02m1v625c850vsjphinor19ortud.apps.googleusercontent.com",
+          "client_id": "548188848493-v9b7c74tog620tvhqld23v75jvl229fd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.cemex.more4u",
+            "package_name": "com.cemex.more4u.v1",
             "certificate_hash": "dd37c8af4d5f14d6fbacb184f6e2ce5a60d8b48d"
           }
         },
         {
-          "client_id": "501748161939-9qss72em46vmrtqm6tc2j0f29lu0ugij.apps.googleusercontent.com",
+          "client_id": "548188848493-jppruq0riurejueei4jk2b8blej4cu48.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBiBA3YQy0HanW2Q97WHH3dJ8f01zWIhY4"
+          "current_key": "AIzaSyDhe2Y8aBYk_RU_e7uDtQGZNuhhZf4XFhQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "501748161939-9qss72em46vmrtqm6tc2j0f29lu0ugij.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:501748161939:android:5f85ee4158cd2fbf131c66",
-        "android_client_info": {
-          "package_name": "com.example.test_design"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "501748161939-k65a7llibeufmgo13l0hekkvadnjbinc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.test_design",
-            "certificate_hash": "dd37c8af4d5f14d6fbacb184f6e2ce5a60d8b48d"
-          }
-        },
-        {
-          "client_id": "501748161939-9qss72em46vmrtqm6tc2j0f29lu0ugij.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBiBA3YQy0HanW2Q97WHH3dJ8f01zWIhY4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "501748161939-9qss72em46vmrtqm6tc2j0f29lu0ugij.apps.googleusercontent.com",
+              "client_id": "548188848493-jppruq0riurejueei4jk2b8blej4cu48.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

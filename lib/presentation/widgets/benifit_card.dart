@@ -50,12 +50,9 @@ class BenefitCard extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10.r),
                       topRight: Radius.circular(10.r)),
-                  child: Hero(
-                    tag: benefit.id,
-                    child: Image.network(
-                    benefit.benefitCard,
-                      errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png'),
-                    ),
+                  child: Image.network(
+                  benefit.benefitCard,
+                    errorBuilder: (context, error, stackTrace) => Image.asset('assets/images/more4u_card.png'),
                   ),
                 ),
                 SizedBox(

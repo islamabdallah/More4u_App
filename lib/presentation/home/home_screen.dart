@@ -67,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen>
     var _cubit = HomeCubit.get(context);
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-
       },
       builder: (context, state) {
         return Scaffold(
@@ -161,9 +160,11 @@ class _HomeScreenState extends State<HomeScreen>
 
                      state is GetHomeDataLoadingState?
                      LinearProgressIndicator(
-                          minHeight: 4.h,
+                          minHeight: 2.h,
                           backgroundColor: mainColor.withOpacity(0.4),
-                        ):SizedBox(),
+                        ):SizedBox(
+                       height: 2.h,
+                     ),
           ),
                   ),
                 Expanded(
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen>
                               privilege: _cubit.privileges[index]),
                       itemCount: _cubit.privileges.length,
                     )
-                        : Center(child: Text('No privileges available')),
+                        : Center(child: CircularProgressIndicator()),
                   ]),
                 ),
               ],

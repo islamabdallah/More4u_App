@@ -504,7 +504,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                 ),
 
                               if (_cubit.missingDocs != null)
-                                Text(_cubit.missingDocs!),
+                                Text(_cubit.missingDocs!,style: TextStyle(color: redColor),),
 
                               SizedBox(
                                 height: 20,

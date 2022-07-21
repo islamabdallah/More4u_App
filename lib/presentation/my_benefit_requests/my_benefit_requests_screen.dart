@@ -85,7 +85,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
               isSucceeded: true,
               message: state.message,
               onPressedOk: () {
-                _cubit.getMyBenefitRequests(benefitId: widget.benefitID);
+                _cubit.getMyBenefitRequests(benefitId: widget.benefitID,requestNumber: widget.requestNumber);
               });
         }
         if (state is CancelRequestErrorState) {
@@ -243,7 +243,7 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                         AlertDialog alert = AlertDialog(
                                           title: Text("Cancel Request"),
                                           content: Text(
-                                              "Are you sure you want to cancel this request?"),
+                                              "Are you sure you want to cancel this request?",style: TextStyle(fontFamily: 'Roboto'),),
                                           actions: [
                                             TextButton(
                                               child: Text("Cancel"),
