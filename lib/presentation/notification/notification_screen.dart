@@ -118,169 +118,187 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     )),
                   ),
                 Expanded(
-                  child: AnimationLimiter(
-                    child: ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Divider();
-                      },
-                      itemCount: _cubit.notifications.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return AnimationConfiguration.staggeredList(
-                          position: index,
-                          duration: const Duration(milliseconds: 1000),
-                          child: SlideAnimation(
-                            horizontalOffset: 100.0,
-                            child: FadeInAnimation(
-                              child: Material(
-                                // borderRadius: BorderRadius.circular(16.0.r),
-                                elevation: 0,
-                                child: InkWell(
-                                  onTap: () async {
-                                    if (_cubit.notifications[index]
-                                            .notificationType ==
-                                        'Request') {
-                                      final completer = Completer();
-                                      final result =
-                                          await Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ManageRequestsScreen(
-                                                  requestNumber: _cubit
-                                                      .notifications[index]
-                                                      .requestNumber!,
-                                                ),
-                                              ),
-                                              result: completer.future);
-                                      completer.complete(result);
-                                    }
-                                   else if (_cubit.notifications[index]
-                                        .notificationType ==
-                                        'Gift') {
-                                      final completer = Completer();
-                                      final result =
-                                      await Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                MyGiftsScreen(
-                                                  requestNumber: _cubit
-                                                      .notifications[index]
-                                                      .requestNumber!,
-                                                ),
-                                          ),
-                                          result: completer.future);
-                                      completer.complete(result);
-                                    }
-
-                                    else {
-                                      final completer = Completer();
-                                      final result =
-                                          await Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyBenefitRequestsScreen(
-                                                  benefitID: _cubit
-                                                      .notifications[index]
-                                                      .benefitId!,
-                                                  requestNumber: _cubit
-                                                      .notifications[index]
-                                                      .requestNumber!,
-                                                ),
-                                              ),
-                                              result: completer.future);
-                                      completer.complete(result);
-                                    }
-                                  },
-                                  child: Row(children: [
-                                    CircleAvatar(
-                                        radius: 24.w,
-                                        backgroundColor: mainColor,
-                                        child: Icon(
-                                          _cubit.notifications[index]
-                                                      .notificationType ==
-                                                  'Request'
-                                              ? Icons.task_outlined
-                                              : _cubit.notifications[index]
-                                                          .notificationType ==
-                                                      'Response'
-                                                  ? Icons.call_received
-                                                  : _cubit.notifications[index]
-                                                              .notificationType ==
-                                                          'Gift'
-                                                      ? CustomIcons.balloons
-                                                      : Icons.groups_outlined,
-                                          size: 30.w,
-                                          color: Colors.white,
-                                        )),
-                                    SizedBox(width: 16.w),
-                                    Expanded(
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              _cubit.notifications[index]
-                                                      .employeeFullName ??
-                                                  '',
-                                              style: TextStyle(
-                                                  color: mainColor,
-                                                  fontSize: 13.sp,
-                                                  fontFamily: "Roboto",
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              _cubit.notifications[index]
-                                                      .message ??
-                                                  '',
-                                              style: TextStyle(
-                                                color: greyColor,
-                                                fontSize: 13.sp,
-                                                fontFamily: "Roboto",
-                                              ),
-                                            ),
-                                            Text(
-                                              _cubit.notifications[index]
-                                                      .requestNumber
-                                                      .toString() ??
-                                                  '',
-                                              style: TextStyle(
-                                                color: greyColor,
-                                                fontSize: 13.sp,
-                                                fontFamily: "Roboto",
-                                              ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
+                  child: _cubit.notifications.isNotEmpty
+                      ? AnimationLimiter(
+                          child: ListView.separated(
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return Divider();
+                            },
+                            itemCount: _cubit.notifications.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 1000),
+                                child: SlideAnimation(
+                                  horizontalOffset: 100.0,
+                                  child: FadeInAnimation(
+                                    child: Material(
+                                      // borderRadius: BorderRadius.circular(16.0.r),
+                                      elevation: 0,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          if (_cubit.notifications[index]
+                                                  .notificationType ==
+                                              'Request') {
+                                            final completer = Completer();
+                                            final result =
+                                                await Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ManageRequestsScreen(
+                                                        requestNumber: _cubit
+                                                            .notifications[
+                                                                index]
+                                                            .requestNumber!,
+                                                      ),
+                                                    ),
+                                                    result: completer.future);
+                                            completer.complete(result);
+                                          } else if (_cubit.notifications[index]
+                                                  .notificationType ==
+                                              'Gift') {
+                                            final completer = Completer();
+                                            final result =
+                                                await Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MyGiftsScreen(
+                                                        requestNumber: _cubit
+                                                            .notifications[
+                                                                index]
+                                                            .requestNumber!,
+                                                      ),
+                                                    ),
+                                                    result: completer.future);
+                                            completer.complete(result);
+                                          } else {
+                                            final completer = Completer();
+                                            final result =
+                                                await Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MyBenefitRequestsScreen(
+                                                        benefitID: _cubit
+                                                            .notifications[
+                                                                index]
+                                                            .benefitId!,
+                                                        requestNumber: _cubit
+                                                            .notifications[
+                                                                index]
+                                                            .requestNumber!,
+                                                      ),
+                                                    ),
+                                                    result: completer.future);
+                                            completer.complete(result);
+                                          }
+                                        },
+                                        child: Row(children: [
+                                          CircleAvatar(
+                                              radius: 24.w,
+                                              backgroundColor: mainColor,
+                                              child: Icon(
+                                                _cubit.notifications[index]
+                                                            .notificationType ==
+                                                        'Request'
+                                                    ? Icons.task_outlined
+                                                    : _cubit
+                                                                .notifications[
+                                                                    index]
+                                                                .notificationType ==
+                                                            'Response'
+                                                        ? Icons.call_received
+                                                        : _cubit
+                                                                    .notifications[
+                                                                        index]
+                                                                    .notificationType ==
+                                                                'Gift'
+                                                            ? CustomIcons
+                                                                .balloons
+                                                            : Icons
+                                                                .groups_outlined,
+                                                size: 30.w,
+                                                color: Colors.white,
+                                              )),
+                                          SizedBox(width: 16.w),
+                                          Expanded(
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Icon(
-                                                    Icons.alarm,
-                                                    size: 22.r,
+                                                  Text(
+                                                    _cubit.notifications[index]
+                                                            .employeeFullName ??
+                                                        '',
+                                                    style: TextStyle(
+                                                        color: mainColor,
+                                                        fontSize: 13.sp,
+                                                        fontFamily: "Roboto",
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
-                                                  SizedBox(
-                                                    width: 5.w,
+                                                  Text(
+                                                    _cubit.notifications[index]
+                                                            .message ??
+                                                        '',
+                                                    style: TextStyle(
+                                                      color: greyColor,
+                                                      fontSize: 13.sp,
+                                                      fontFamily: "Roboto",
+                                                    ),
                                                   ),
-                                                  Text(timeago.format(
-                                                      DateTime.parse(_cubit
-                                                          .notifications[index]
-                                                          .date!)))
-                                                ],
-                                              ),
-                                            ),
-                                          ]),
+                                                  Text(
+                                                    _cubit.notifications[index]
+                                                            .requestNumber
+                                                            .toString() ??
+                                                        '',
+                                                    style: TextStyle(
+                                                      color: greyColor,
+                                                      fontSize: 13.sp,
+                                                      fontFamily: "Roboto",
+                                                    ),
+                                                  ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Icon(
+                                                          Icons.alarm,
+                                                          size: 22.r,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.w,
+                                                        ),
+                                                        Text(timeago.format(
+                                                            DateTime.parse(_cubit
+                                                                .notifications[
+                                                                    index]
+                                                                .date!)))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ]),
+                                          ),
+                                        ]),
+                                      ),
                                     ),
-                                  ]),
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        )
+                      : state is GetNotificationsLoadingState
+                          ? Center(child: CircularProgressIndicator())
+                          : Center(
+                              child: Text('There is no notification'),
+                            ),
                 ),
                 // Expanded(
                 //   child:

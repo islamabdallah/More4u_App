@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -971,12 +972,16 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                                 color: greyColor,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          Text(
-                                            request.createdBy?.employeeName ??
-                                                '',
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: greyColor,
+                                          Expanded(
+                                            child: AutoSizeText(
+                                              request.createdBy?.employeeName ??
+                                                  '',
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: greyColor,
+                                                height: 1.1
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -984,7 +989,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       Row(
                                         children: [
                                           Text(
-                                            'Number    ',
+                                            'Request Number    ',
                                             style: TextStyle(
                                                 fontSize: 14.sp,
                                                 color: greyColor,
@@ -1086,18 +1091,37 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               height: 8.h,
                             ),
                             Divider(),
+                            Text(
+                              "Created By",
+                              style: TextStyle(
+                                color: mainColor,
+                                fontSize: 14.sp,
+                                fontFamily: "Roboto",
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+
                             Row(
                               children: [
-                                Text(
-                                  "Created By",
-                                  style: TextStyle(
-                                    color: mainColor,
-                                    fontSize: 14.sp,
-                                    fontFamily: "Roboto",
-                                    fontWeight: FontWeight.w700,
+                                Expanded(
+                                  child: Padding(
+                                    padding:  EdgeInsets.only(left: 4.w),
+                                    child: AutoSizeText(
+                                      request.createdBy?.employeeName ?? '',
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        color: greyColor,
+                                        fontSize: 12.sp,
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                Spacer(),
+                                SizedBox(width: 8.w,),
                                 if (request.requestedat != null)
                                   RichText(
                                     text: TextSpan(children: [
@@ -1120,24 +1144,14 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   ),
                               ],
                             ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
+
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      request.createdBy?.employeeName ?? '',
-                                      style: TextStyle(
-                                        color: greyColor,
-                                        fontSize: 14.sp,
-                                        fontFamily: "Roboto",
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
+
                                     SizedBox(
                                       height: 4.h,
                                     ),

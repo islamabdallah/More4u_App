@@ -213,7 +213,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                       deleteIconColor: mainColor,
                                       labelStyle: TextStyle(
                                           fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.normal,
                                           color: mainColor),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
@@ -514,8 +514,8 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                   width: 187.w,
                                   child: ElevatedButton(
                                       onPressed: () {
-                                        if ((_formKey.currentState!.validate() &&
-                                            _cubit.validateParticipants() &&
+                                        if ((_formKey.currentState!.validate() &
+                                            _cubit.validateParticipants() &
                                             _cubit.validateDocuments())) {
                                           _cubit.redeemCard();
                                         }

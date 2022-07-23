@@ -701,13 +701,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  _cubit.user?.employeeName ?? '',
-                                  style: TextStyle(
-                                    color: Color(0xff182756),
-                                    fontSize: 20.sp,
-                                    fontFamily: "Cairo",
-                                    fontWeight: FontWeight.w700,
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    _cubit.user?.employeeName ?? '',
+                                    style: TextStyle(
+                                      color: Color(0xff182756),
+                                      fontSize: 20.sp,
+                                      fontFamily: "Cairo",
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -716,12 +719,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     SizedBox(
                                       width: 6.w,
                                     ),
-                                    Text(
-                                      _cubit.user?.email ?? '',
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: greyColor,
-                                          fontWeight: FontWeight.bold),
+                                    Expanded(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          _cubit.user?.email ?? '',
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              color: greyColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -731,12 +740,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     SizedBox(
                                       width: 6.w,
                                     ),
-                                    Text(
-                                      '',
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: greyColor,
-                                          fontWeight: FontWeight.bold),
+                                    Expanded(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          _cubit.user?.positionName??'',
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              color: greyColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),

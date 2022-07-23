@@ -63,6 +63,9 @@ class _MyBenefitsScreenState extends State<MyBenefitsScreen>
         if (state is GetMyBenefitsSuccessState) {
           Navigator.pop(context);
         }
+        if (state is GetMyBenefitsErrorState) {
+          Navigator.pop(context);
+        }
       },
       builder: (context, state) {
         return Scaffold(

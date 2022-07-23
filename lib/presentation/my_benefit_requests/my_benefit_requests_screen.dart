@@ -363,14 +363,18 @@ class _MyBenefitRequestsScreenState extends State<MyBenefitRequestsScreen> {
                                       color: greyColor,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Text(
-                                  request.createdBy?.employeeName ?? '',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: greyColor,
+                                Expanded(
+                                  child: Text(
+                                    request.createdBy?.employeeName ?? '',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: greyColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                Spacer(),
+
                                 Text(
                                   'Type: ',
                                   style: TextStyle(

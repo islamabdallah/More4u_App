@@ -1,10 +1,10 @@
 import 'package:more4u/domain/entities/participant.dart';
 
 class ParticipantModel extends Participant {
-  ParticipantModel(
+  const ParticipantModel(
       {required int employeeNumber,
       required String fullName,
-      required String profilePicture})
+       String? profilePicture})
       : super(
             employeeNumber: employeeNumber,
             fullName: fullName,

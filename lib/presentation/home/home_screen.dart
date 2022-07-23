@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,9 +82,10 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 const MyAppBar(),
                 Padding(
-                  padding: EdgeInsets.zero,
-                  child: Text(
+                  padding: EdgeInsets.only(right: 50.w),
+                  child: AutoSizeText(
                     userData!.employeeName ?? '',
+                    maxLines: 1,
                     style: TextStyle(
                         fontSize: 24.sp,
                         fontFamily: 'Joti',
@@ -126,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen>
                             padding: EdgeInsets.symmetric(horizontal: 8.w),
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("All"),
+                              child: Text("All (${_cubit.benefitModels.length})"),
                             ),
                           ),
                         ),
@@ -135,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen>
                             padding: EdgeInsets.symmetric(horizontal: 8.w),
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("Available"),
+                              child: Text("Available (${_cubit.availableBenefitModels?.length??'0'})"),
                             ),
                           ),
                         ),
@@ -191,8 +193,10 @@ class _HomeScreenState extends State<HomeScreen>
                           PrivilegeCard(
                               privilege: _cubit.privileges[index]),
                       itemCount: _cubit.privileges.length,
-                    )
-                        : Center(child: CircularProgressIndicator()),
+                    ):
+                    state is GetPrivilegesLoadingState?
+                    Center(child: CircularProgressIndicator())
+                        : Center(child: Text('No Privileges available')),
                   ]),
                 ),
               ],

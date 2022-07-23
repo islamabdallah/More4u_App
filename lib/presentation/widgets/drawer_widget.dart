@@ -105,14 +105,18 @@ class DrawerWidget extends StatelessWidget {
                       alignment: Alignment.topCenter,
                       children: [
                         Image.asset('assets/images/banner.png'),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.h),
-                          child: Text(
-                            userData!.email ?? '',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14.0.sp),
+                        SizedBox(
+                          width: 170.w,
+                          height: 53.h,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              userData!.email ?? '',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14.0.sp),
+                            ),
                           ),
                         ),
                       ],

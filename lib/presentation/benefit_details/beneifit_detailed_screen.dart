@@ -367,7 +367,7 @@ class _BenefitDetailedScreenState extends State<BenefitDetailedScreen>
                               width: 4.w,
                             ),
                             Text(
-                              "You did used this card before",
+                              "You used this card before",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: redColor,

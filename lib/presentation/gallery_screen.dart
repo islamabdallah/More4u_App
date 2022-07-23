@@ -41,13 +41,15 @@ class _GalleryScreenState extends State<GalleryScreen> {
           PhotoViewGallery.builder(
             pageController: pageController,
             itemCount: widget.base64Images.length,
+            gaplessPlayback: true,
             builder: (context, index) {
               final image = widget.base64Images[index];
               return PhotoViewGalleryPageOptions(
                   minScale: PhotoViewComputedScale.contained,
                   maxScale: PhotoViewComputedScale.covered * 4.1,
                   heroAttributes: PhotoViewHeroAttributes(tag: index),
-                  imageProvider: MemoryImage(base64Decode(image)));
+                  imageProvider: MemoryImage(base64Decode(image)
+                  ));
             },
             onPageChanged: (index) => setState(() => this.index = index),
           ),

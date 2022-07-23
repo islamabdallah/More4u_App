@@ -24,6 +24,7 @@ abstract class RemoteDataSource {
     required String employeeNumber,
     required String pass,
   });
+
   Future<String> updateToken({
     required int employeeNumber,
     required String token,
@@ -36,8 +37,6 @@ abstract class RemoteDataSource {
   Future<UserModel> updateProfilePicture(
       {required int employeeNumber, required String photo});
 
-
-
   Future<String> changePassword({
     required int employeeNumber,
     required String oldPassword,
@@ -49,7 +48,8 @@ abstract class RemoteDataSource {
 
   Future<List<BenefitModel>> getMyBenefits({required int employeeNumber});
 
-  Future<List<GiftModel>> getMyGifts({required int employeeNumber,required int requestNumber});
+  Future<List<GiftModel>> getMyGifts(
+      {required int employeeNumber, required int requestNumber});
 
   Future<List<PrivilegeModel>> getPrivileges();
 
@@ -147,7 +147,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     FilteredSearch? search,
     int? requestNumber,
   }) async {
-    if (search != null)
+    if (search != null) {
       print(jsonEncode({
         "selectedBenefitType": search.selectedBenefitType,
         "selectedRequestStatus": search.selectedRequestStatus,
@@ -160,6 +160,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
         "selectedAll": false,
         "employeeNumber": employeeNumber,
       }));
+    }
     final response = search != null
         ? await client.post(Uri.parse(showRequests),
             headers: {
@@ -190,10 +191,9 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
       ManageRequestsResponseModel manageRequestsResponseModel =
-      ManageRequestsResponseModel.fromJson(result);
+          ManageRequestsResponseModel.fromJson(result);
 
       return manageRequestsResponseModel;
-
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       print(result);
@@ -205,11 +205,9 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     }
   }
 
-
   @override
   Future<ProfileAndDocumentsModel> getRequestProfileAndDocuments(
-      {required int employeeNumber,
-        required int requestNumber}) async {
+      {required int employeeNumber, required int requestNumber}) async {
     final response = await client.post(
       Uri.parse(getProfilePictureAndRequestDocuments).replace(queryParameters: {
         "employeeNumber": employeeNumber.toString(),
@@ -270,7 +268,6 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<List<PrivilegeModel>> getPrivileges() async {
-
     final response = await client.get(
       Uri.parse(getPrivilegesEndPoint),
       headers: {
@@ -329,7 +326,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
   @override
   Future<List<GiftModel>> getMyGifts(
-      {required int employeeNumber,int? requestNumber}) async {
+      {required int employeeNumber, int? requestNumber}) async {
     final response = await client.post(
       Uri.parse(showMyGifts).replace(queryParameters: {
         "employeeNumber": employeeNumber.toString(),
@@ -358,6 +355,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
       }
     }
   }
+
   @override
   Future<List<NotificationModel>> getNotifications(
       {required int employeeNumber}) async {
@@ -373,9 +371,10 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     if (response.statusCode == 200) {
       Map<String, dynamic> result = jsonDecode(response.body);
       List<NotificationModel> notifications = [];
-
-      for (var notification in result['data']) {
-        notifications.add(NotificationModel.fromJson(notification));
+      if (result['data'] != null) {
+        for (var notification in result['data']) {
+          notifications.add(NotificationModel.fromJson(notification));
+        }
       }
       return notifications;
     } else {
@@ -450,7 +449,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
     } else {
       print('nooooooooooooooo');
       Map<String, dynamic> result = jsonDecode(response.body);
-      // print(result);
+      print(result);
       if (result.isNotEmpty && result['message'] != null) {
         throw ServerException(result['message']);
       } else {
@@ -481,7 +480,6 @@ class RemoteDataSourceImpl extends RemoteDataSource {
       }
     }
   }
-
 
   @override
   Future<String> getEmployeeProfilePicture({
