@@ -109,7 +109,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
               context: context,
               isSucceeded: false,
               message: state.message,
-              onPressedOk: () {});
+              onPressedOk: () {
+                _cubit.getBenefitsToManage(requestNumber: widget.requestNumber);
+              });
         }
       },
       builder: (context, state) {
