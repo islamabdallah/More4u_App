@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,8 @@ class DrawerWidget extends StatelessWidget {
                           gaplessPlayback: true,
                           errorBuilder: (context, error, stackTrace) =>
                               Image.asset(
+                                cacheHeight: 181,
+                                  cacheWidth: 184,
                                   'assets/images/profile_avatar_placeholder.png',
                                   fit: BoxFit.cover),
                         ),
@@ -104,19 +107,20 @@ class DrawerWidget extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.topCenter,
                       children: [
-                        Image.asset('assets/images/banner.png'),
-                        SizedBox(
+                        Image.asset('assets/images/banner.png',height: 66.h),
+                        Container(
+                          alignment: Alignment.center,
                           width: 170.w,
                           height: 53.h,
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              userData!.email ?? '',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14.0.sp),
-                            ),
+                          child: AutoSizeText(
+                            userData!.employeeName ?? '',
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            wrapWords: false,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14.0.sp),
                           ),
                         ),
                       ],

@@ -116,6 +116,8 @@ class LoginScreenState extends State<LoginScreen> {
                     homeCubit.benefitModels = state.loginResponse.benefitModels;
                     homeCubit.availableBenefitModels =
                         state.loginResponse.availableBenefitModels;
+                    homeCubit.userUnSeenNotificationCount = state.loginResponse.userUnSeenNotificationCount;
+                    homeCubit.priviligesCount = state.loginResponse.priviligesCount;
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         HomeScreen.routeName, (Route<dynamic> route) => false);
                   }

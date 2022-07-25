@@ -28,6 +28,7 @@ class HomeCubit extends Cubit<HomeState> {
   List<Privilege> privileges = [];
   String? user;
   int userUnSeenNotificationCount = 0;
+  int priviligesCount = 0;
 
   void getHomeData() async {
     emit(GetHomeDataLoadingState());
@@ -44,6 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
       benefitModels = loginResponse.benefitModels;
       availableBenefitModels = loginResponse.availableBenefitModels;
       userUnSeenNotificationCount = loginResponse.userUnSeenNotificationCount;
+      priviligesCount = loginResponse.priviligesCount;
       emit(GetHomeDataSuccessState());
     });
   }
@@ -60,9 +62,9 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> getPrivileges() async {
-    emit(GetPrivilegesLoadingState());
 
     if (privileges.isEmpty) {
+    emit(GetPrivilegesLoadingState());
       final result = await getPrivilegesUsecase();
 
       result.fold((failure) {
@@ -72,8 +74,6 @@ class HomeCubit extends Cubit<HomeState> {
 
         emit(GetPrivilegesSuccessState());
       });
-    } else {
-      emit(GetPrivilegesSuccessState());
     }
   }
 }

@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen>
                             padding: EdgeInsets.symmetric(horizontal: 8.w),
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text("Privileges"),
+                              child: Text("Privileges (${_cubit.priviligesCount})"),
                             ),
                           ),
                         ),

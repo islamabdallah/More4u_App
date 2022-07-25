@@ -15,12 +15,14 @@ class LoginResponseModel extends LoginResponse {
     required List<Benefit> benefitModels,
     required List<Benefit>? availableBenefitModels,
     required int userUnSeenNotificationCount,
+    required int priviligesCount,
   }) : super(
           message: message,
           user: user,
           benefitModels: benefitModels,
           availableBenefitModels: availableBenefitModels,
           userUnSeenNotificationCount: userUnSeenNotificationCount,
+          priviligesCount: priviligesCount,
         );
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +38,7 @@ class LoginResponseModel extends LoginResponse {
               .toList())
           : null,
       userUnSeenNotificationCount: json['data']['userUnSeenNotificationCount'],
+      priviligesCount: json['data']['priviligesCount'],
     );
   }
 }

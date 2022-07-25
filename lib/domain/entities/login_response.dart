@@ -9,6 +9,7 @@ class LoginResponse extends Equatable {
   final List<Benefit> benefitModels;
   final List<Benefit>? availableBenefitModels;
   final int userUnSeenNotificationCount;
+  final int priviligesCount;
 
   const LoginResponse(
       {required this.message,
@@ -16,6 +17,7 @@ class LoginResponse extends Equatable {
       required this.benefitModels,
       required this.availableBenefitModels,
       required this.userUnSeenNotificationCount,
+      required this.priviligesCount,
       });
 
   @override

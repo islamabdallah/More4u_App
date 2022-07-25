@@ -871,6 +871,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
     }
 
     return showFlexibleBottomSheet(
+      isModal: true,
+        isDismissible: false,
         minHeight: 0,
         initHeight: 1.0 -
             MediaQuery.of(context).viewPadding.top /

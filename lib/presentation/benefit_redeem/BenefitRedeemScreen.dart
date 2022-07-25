@@ -100,6 +100,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
       },
       builder: (context, state) {
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -164,6 +165,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                 ChipsInput<Participant>(
                                   enabled: _cubit.enableParticipantsField,
                                   // enabled: false,
+
                                   allowChipEditing: true,
                                   decoration: InputDecoration(
                                     isDense: true,
