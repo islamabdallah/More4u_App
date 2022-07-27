@@ -8,6 +8,7 @@ import 'user_model.dart';
 class BenefitRequestModel extends BenefitRequest {
   const BenefitRequestModel({
     int? requestNumber,
+    int? requestWorkflowId,
     String? from,
     String? to,
     String? message,
@@ -43,6 +44,7 @@ class BenefitRequestModel extends BenefitRequest {
     MyAction? myAction,
   }) : super(
           requestNumber: requestNumber,
+    requestWorkflowId: requestWorkflowId,
           from: from,
           to: to,
           message: message,
@@ -75,6 +77,7 @@ class BenefitRequestModel extends BenefitRequest {
   factory BenefitRequestModel.fromJson(Map<String, dynamic> json) =>
       BenefitRequestModel(
           requestNumber: json['requestNumber'],
+          requestWorkflowId: json['requestWorkflowId'],
           from: json['from'],
           to: json['to'],
           message: json['message'],

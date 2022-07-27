@@ -39,7 +39,7 @@ abstract class BenefitRepository {
   Future<Either<Failure, String>> addResponse({
     required int employeeNumber,
     required int status,
-    required int requestNumber,
+    required int requestWorkflowId,
     required String message,
   });
 

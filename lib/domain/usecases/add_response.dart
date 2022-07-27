@@ -11,13 +11,13 @@ class AddRequestResponseUsecase {
   Future<Either<Failure, String>> call({
     required int employeeNumber,
     required int status,
-    required int requestNumber,
+    required int requestWorkflowId,
     required String message,
   }) {
     return repository.addResponse(
       employeeNumber: employeeNumber,
       status: status,
-      requestNumber: requestNumber,
+      requestWorkflowId: requestWorkflowId,
       message: message,
     );
   }

@@ -762,7 +762,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                           primary: redColor,
                                         ),
                                         onPressed: () => acceptOrReject(
-                                            false, request.requestNumber!),
+                                            false, request.requestWorkflowId!),
                                         child: Text(
                                           'Reject',
                                           style: TextStyle(
@@ -783,7 +783,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                           primary: mainColor,
                                         ),
                                         onPressed: () => acceptOrReject(
-                                            true, request.requestNumber!),
+                                            true, request.requestWorkflowId!),
                                         child: Text(
                                           'Accept',
                                           style: TextStyle(
@@ -1445,7 +1445,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                         itemBuilder: (context, index) {
                                           return GestureDetector(
                                             onTap: () {
-                                              openGallery(index: 0);
+                                              openGallery(index: index);
                                             },
                                             child: Container(
                                               margin:
@@ -1511,7 +1511,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                             primary: redColor,
                                           ),
                                           onPressed: () => acceptOrReject(
-                                              false, request.requestNumber!),
+                                              false, request.requestWorkflowId!),
                                           child: Text(
                                             'Reject',
                                             style: TextStyle(
@@ -1528,7 +1528,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                         width: 130.w,
                                         child: ElevatedButton(
                                           onPressed: () => acceptOrReject(
-                                              true, request.requestNumber!),
+                                              true, request.requestWorkflowId!),
                                           child: Text(
                                             'Accept',
                                             style: TextStyle(
@@ -1627,7 +1627,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
         }).whenComplete(() => _cubit.isBottomSheetOpened = false);
   }
 
-  acceptOrReject(bool isAccepted, int requestNumber) {
+  acceptOrReject(bool isAccepted, int requestWorkflowId) {
     showDialog(
       context: context,
       builder: (_) {
@@ -1776,14 +1776,14 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       Navigator.of(context).pop();
                                     }
                                     var b = await _cubit.acceptOrRejectRequest(
-                                        requestNumber,
+                                        requestWorkflowId,
                                         isAccepted ? 1 : 2,
                                         _textController.text);
                                     print('hello');
                                     if (b ?? false) {
                                       print('hello');
                                       print(b);
-                                      _cubit.removeRequest(requestNumber);
+                                      _cubit.removeRequest(requestWorkflowId);
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(

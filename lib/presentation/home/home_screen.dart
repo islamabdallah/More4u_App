@@ -44,8 +44,7 @@ class _HomeScreenState extends State<HomeScreen>
     //   print(ModalRoute.of(context)?.settings.name);
     if (state == AppLifecycleState.resumed) {
       if (mounted) {
-        Future.delayed(
-            Duration(milliseconds: 800), () => HomeCubit.get(context).getHomeData());
+        HomeCubit.get(context);
       }
     }
   }

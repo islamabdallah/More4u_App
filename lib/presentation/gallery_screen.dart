@@ -24,8 +24,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
   void initState() {
     index = widget.index;
     pageController = PageController(initialPage: index);
+
     super.initState();
   }
+
+
   @override
   void dispose() {
     pageController.dispose();
@@ -35,6 +38,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -42,6 +46,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
             pageController: pageController,
             itemCount: widget.base64Images.length,
             gaplessPlayback: true,
+            wantKeepAlive: true,
             builder: (context, index) {
               final image = widget.base64Images[index];
               return PhotoViewGalleryPageOptions(

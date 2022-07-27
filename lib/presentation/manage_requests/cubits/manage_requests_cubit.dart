@@ -61,19 +61,19 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
     });
   }
 
-  removeRequest(int requestNumber) {
+  removeRequest(int requestWorkflowId) {
     benefitRequests
-        .removeWhere((element) => element.requestNumber == requestNumber);
+        .removeWhere((element) => element.requestWorkflowId == requestWorkflowId);
     emit(RemoveRequestSuccessState());
   }
 
   Future<bool?> acceptOrRejectRequest(
-      int requestNumber, int status, String message) async {
+      int requestWorkflowId, int status, String message) async {
     emit(AddRequestResponseLoadingState());
     final result = await addRequestResponseUsecase(
         employeeNumber: userData!.employeeNumber,
         status: status,
-        requestNumber: requestNumber,
+        requestWorkflowId: requestWorkflowId,
         message: message);
 
     bool? isSuccess;

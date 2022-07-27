@@ -117,7 +117,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
   Future<Either<Failure, String>> addResponse({
     required int employeeNumber,
     required int status,
-    required int requestNumber,
+    required int requestWorkflowId,
     required String message,
   }) async {
     if (await networkInfo.isConnected) {
@@ -126,7 +126,7 @@ class BenefitRepositoryImpl extends BenefitRepository {
             employeeNumber: employeeNumber,
             status: status,
             message: message,
-            requestNumber: requestNumber);
+            requestWorkflowId: requestWorkflowId);
         return Right(result);
       } on ServerException catch (e) {
         return Left(ServerFailure(e.message));

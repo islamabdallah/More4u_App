@@ -4,6 +4,7 @@ import 'package:more4u/domain/entities/user.dart';
 
 class BenefitRequest extends Equatable {
   final int? requestNumber;
+  final int? requestWorkflowId;
   final String? from;
   final String? to;
   final String? message;
@@ -41,6 +42,7 @@ class BenefitRequest extends Equatable {
 
   const BenefitRequest({
     this.requestNumber,
+    this.requestWorkflowId,
     this.from,
     this.to,
     this.message,
@@ -73,6 +75,7 @@ class BenefitRequest extends Equatable {
   @override
   List<Object?> get props => [
         requestNumber,
+    requestWorkflowId,
         from,
         to,
         message,

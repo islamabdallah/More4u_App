@@ -68,7 +68,7 @@ abstract class RemoteDataSource {
   Future<String> addResponse({
     required int employeeNumber,
     required int status,
-    required int requestNumber,
+    required int requestWorkflowId,
     required String message,
   });
 
@@ -573,11 +573,11 @@ class RemoteDataSourceImpl extends RemoteDataSource {
   Future<String> addResponse({
     required int employeeNumber,
     required int status,
-    required int requestNumber,
+    required int requestWorkflowId,
     required String message,
   }) async {
     print({
-      "requestId": requestNumber.toString(),
+      "requestWorkflowId": requestWorkflowId.toString(),
       "status": status.toString(),
       "message": message,
       "employeeNumber": employeeNumber.toString(),
@@ -585,7 +585,7 @@ class RemoteDataSourceImpl extends RemoteDataSource {
 
     final response = await client.post(
       Uri.parse(addRequestResponse).replace(queryParameters: {
-        "requestId": requestNumber.toString(),
+        "requestWorkflowId": requestWorkflowId.toString(),
         "status": status.toString(),
         "message": message,
         "employeeNumber": employeeNumber.toString(),
