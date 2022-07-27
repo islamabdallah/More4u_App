@@ -119,7 +119,11 @@ class RedeemCubit extends Cubit<RedeemState> {
   List<int> participantsIds = [];
 
   participantsOnChange(List<Participant> selectedParticipants) {
-    if (selectedParticipants.length == benefit.maxParticipant) {
+    if (  benefit.benefitType == 'Group'&& selectedParticipants.length == benefit.maxParticipant-1) {
+      enableParticipantsField = false;
+      emit(ParticipantsChangedState());
+    }
+    else if (benefit.isAgift && selectedParticipants.length == benefit.maxParticipant) {
       enableParticipantsField = false;
       emit(ParticipantsChangedState());
     }
@@ -178,13 +182,21 @@ class RedeemCubit extends Cubit<RedeemState> {
   String? lowParticipantError;
 
   bool validateParticipants() {
-    if ((benefit.benefitType == 'Group' || benefit.isAgift) &&
-        participantsIds.length < benefit.minParticipant) {
-      lowParticipantError =
-          'Participants should be between ${benefit.minParticipant} and ${benefit.maxParticipant}';
-      emit(ErrorValidationState());
-      return false;
-    } else {
+    if (benefit.benefitType == 'Group' &&
+        participantsIds.length+1 < benefit.minParticipant) {
+        lowParticipantError =
+            'Participants should be between ${benefit.minParticipant} and ${benefit.maxParticipant} Including You';
+        emit(ErrorValidationState());
+        return false;
+      } else if (benefit.isAgift&&participantsIds.length < benefit.minParticipant )
+      {
+        lowParticipantError = 'required';
+        emit(ErrorValidationState());
+        return false;
+      }
+
+
+     else {
       lowParticipantError = null;
       emit(ErrorValidationState());
     }

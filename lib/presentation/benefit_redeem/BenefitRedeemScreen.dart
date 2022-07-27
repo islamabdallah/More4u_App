@@ -185,7 +185,7 @@ class _BenefitRedeemScreenState extends State<BenefitRedeemScreen> {
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                   ),
-                                  maxChips: _cubit.benefit.maxParticipant,
+                                  maxChips: widget.benefit.isAgift? _cubit.benefit.maxParticipant:_cubit.benefit.maxParticipant-1,
                                   findSuggestions: (String query) {
                                     if (query.length > 1) {
                                       var lowercaseQuery = query.toLowerCase();
