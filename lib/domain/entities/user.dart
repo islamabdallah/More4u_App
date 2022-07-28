@@ -24,6 +24,8 @@ class User extends Equatable {
   final int? pendingRequestsCount;
   final bool? isTheGroupCreator;
   final bool? isAdmin;
+  final bool? hasRoles;
+
 
   const User({
     this.employeeName,
@@ -49,6 +51,7 @@ class User extends Equatable {
     this.pendingRequestsCount,
     this.isTheGroupCreator,
     this.isAdmin,
+    this.hasRoles,
   });
 
   @override
@@ -76,6 +79,7 @@ class User extends Equatable {
         pendingRequestsCount,
         isTheGroupCreator,
         isAdmin,
+    hasRoles,
       ];
 
 // String get genderString {

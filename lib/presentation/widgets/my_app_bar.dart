@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,16 +56,27 @@ class MyAppBar extends StatelessWidget {
     return Badge(
       showBadge: HomeCubit.get(context).userUnSeenNotificationCount!=0,
           ignorePointer: true,
-          position: BadgePosition(bottom: -2, end: 3),
+          position: BadgePosition.bottomEnd(bottom: 0,end: 0),
           badgeColor: redColor,
           // badgeContent: SizedBox(
           //   width: 12.h,
           //   height: 12.h,
           // ),
-          padding: EdgeInsets.all(8.r),
-          badgeContent: Text(
-            HomeCubit.get(context).userUnSeenNotificationCount.toString(),
-            style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.bold),
+          padding: EdgeInsets.all(0),
+          badgeContent: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle
+            ),
+            width: 25,height: 25,
+            child: AutoSizeText(
+              HomeCubit.get(context).userUnSeenNotificationCount>99?'+99':
+              HomeCubit.get(context).userUnSeenNotificationCount.toString(),
+              maxLines: 1,
+              wrapWords: false,
+              textAlign: TextAlign.center,
+              minFontSize: 9,
+              style: TextStyle(color: Colors.white,fontSize: 22.sp,fontWeight: FontWeight.bold),
+            ),
           ),
           child: Material(
             borderRadius: BorderRadius.circular(150.r),

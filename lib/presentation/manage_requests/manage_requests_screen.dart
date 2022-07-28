@@ -408,24 +408,23 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                               DropdownMenuItem<Department>(
                                 child: Text('Any',
                                     style: TextStyle(
-                                        color:
-                                            _cubit.departmentCurrentIndex == -1
-                                                ? mainColor
-                                                : Colors.black,
-                                       )),
+                                      color: _cubit.departmentCurrentIndex == -1
+                                          ? mainColor
+                                          : Colors.black,
+                                    )),
                                 value: Department(name: 'Any', id: -1),
                               ),
                               ..._cubit.departments!
                                   .map((e) => DropdownMenuItem<Department>(
                                         child: Text(e.name!,
-                                            style: e ==
-                                                    _cubit.selectedDepartment
-                                                ? TextStyle(
-                                                    color: mainColor,
-                                                  )
-                                                : TextStyle(
-                                                    color: Colors.black87,
-                                                  )),
+                                            style:
+                                                e == _cubit.selectedDepartment
+                                                    ? TextStyle(
+                                                        color: mainColor,
+                                                      )
+                                                    : TextStyle(
+                                                        color: Colors.black87,
+                                                      )),
                                         value: e,
                                       ))
                                   .toList()
@@ -871,7 +870,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
     }
 
     return showFlexibleBottomSheet(
-      isModal: true,
+        isModal: true,
         isDismissible: false,
         minHeight: 0,
         initHeight: 1.0 -
@@ -982,10 +981,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                                   '',
                                               maxLines: 2,
                                               style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: greyColor,
-                                                height: 1.1
-                                              ),
+                                                  fontSize: 14.sp,
+                                                  color: greyColor,
+                                                  height: 1.1),
                                             ),
                                           ),
                                         ],
@@ -1107,12 +1105,11 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                             SizedBox(
                               height: 8.h,
                             ),
-
                             Row(
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding:  EdgeInsets.only(left: 4.w),
+                                    padding: EdgeInsets.only(left: 4.w),
                                     child: AutoSizeText(
                                       request.createdBy?.employeeName ?? '',
                                       maxLines: 2,
@@ -1125,7 +1122,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 8.w,),
+                                SizedBox(
+                                  width: 8.w,
+                                ),
                                 if (request.requestedat != null)
                                   RichText(
                                     text: TextSpan(children: [
@@ -1148,14 +1147,12 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                   ),
                               ],
                             ),
-
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-
                                     SizedBox(
                                       height: 4.h,
                                     ),
@@ -1510,8 +1507,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                           style: ElevatedButton.styleFrom(
                                             primary: redColor,
                                           ),
-                                          onPressed: () => acceptOrReject(
-                                              false, request.requestWorkflowId!),
+                                          onPressed: () => acceptOrReject(false,
+                                              request.requestWorkflowId!),
                                           child: Text(
                                             'Reject',
                                             style: TextStyle(
@@ -1784,6 +1781,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                       print('hello');
                                       print(b);
                                       _cubit.removeRequest(requestWorkflowId);
+                                      HomeCubit.get(context)
+                                          .changePendingRequestsCount(
+                                              _cubit.benefitRequests.length);
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(

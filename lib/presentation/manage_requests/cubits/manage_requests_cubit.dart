@@ -65,6 +65,8 @@ class ManageRequestsCubit extends Cubit<ManageRequestsState> {
     benefitRequests
         .removeWhere((element) => element.requestWorkflowId == requestWorkflowId);
     emit(RemoveRequestSuccessState());
+
+
   }
 
   Future<bool?> acceptOrRejectRequest(

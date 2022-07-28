@@ -28,6 +28,7 @@ class HomeCubit extends Cubit<HomeState> {
   List<Privilege> privileges = [];
   String? user;
   int userUnSeenNotificationCount = 0;
+  int pendingRequestsCount = 0;
   int priviligesCount = 0;
 
   void getHomeData() async {
@@ -45,6 +46,7 @@ class HomeCubit extends Cubit<HomeState> {
       benefitModels = loginResponse.benefitModels;
       availableBenefitModels = loginResponse.availableBenefitModels;
       userUnSeenNotificationCount = loginResponse.userUnSeenNotificationCount;
+      pendingRequestsCount = loginResponse.user.pendingRequestsCount!;
       priviligesCount = loginResponse.priviligesCount;
       emit(GetHomeDataSuccessState());
     });
@@ -52,6 +54,10 @@ class HomeCubit extends Cubit<HomeState> {
 
   void changeNotificationCount(int count) {
     userUnSeenNotificationCount = count;
+    emit(NotificationCountChangeState());
+  }
+  void changePendingRequestsCount(int count) {
+    pendingRequestsCount = count;
     emit(NotificationCountChangeState());
   }
 

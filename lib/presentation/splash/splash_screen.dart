@@ -57,6 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
         homeCubit.benefitModels = loginResponse.benefitModels;
         homeCubit.availableBenefitModels =
             loginResponse.availableBenefitModels;
+        homeCubit.pendingRequestsCount = loginResponse.user.pendingRequestsCount!;
+        homeCubit.priviligesCount = loginResponse.priviligesCount;
         Navigator.of(context).pushNamedAndRemoveUntil(
             HomeScreen.routeName, (Route<dynamic> route) => false);
       });

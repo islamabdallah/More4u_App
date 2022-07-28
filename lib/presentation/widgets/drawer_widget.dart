@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:more4u/custom_icons.dart';
@@ -91,7 +92,7 @@ class DrawerWidget extends StatelessWidget {
                           gaplessPlayback: true,
                           errorBuilder: (context, error, stackTrace) =>
                               Image.asset(
-                                cacheHeight: 181,
+                                  cacheHeight: 181,
                                   cacheWidth: 184,
                                   'assets/images/profile_avatar_placeholder.png',
                                   fit: BoxFit.cover),
@@ -107,7 +108,7 @@ class DrawerWidget extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.topCenter,
                       children: [
-                        Image.asset('assets/images/banner.png',height: 66.h),
+                        Image.asset('assets/images/banner.png', height: 66.h),
                         Container(
                           alignment: Alignment.center,
                           width: 170.w,
@@ -143,11 +144,14 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () async {
                       Navigator.pop(context);
 
-                      if (ModalRoute.of(context)?.settings.name ==
+                      if (ModalRoute
+                          .of(context)
+                          ?.settings
+                          .name ==
                           HomeScreen.routeName) {
                         final completer = Completer();
                         final result = await Navigator.pushNamed(
-                                context, MyBenefitsScreen.routeName)
+                            context, MyBenefitsScreen.routeName)
                             .whenComplete(() {
                           _cubit.getHomeData();
                         });
@@ -169,11 +173,14 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () async {
                       Navigator.pop(context);
 
-                      if (ModalRoute.of(context)?.settings.name ==
+                      if (ModalRoute
+                          .of(context)
+                          ?.settings
+                          .name ==
                           HomeScreen.routeName) {
                         final completer = Completer();
                         final result = await Navigator.pushNamed(
-                                context, MyGiftsScreen.routeName)
+                            context, MyGiftsScreen.routeName)
                             .whenComplete(() {
                           _cubit.getHomeData();
                         });
@@ -195,9 +202,9 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              NotificationScreen.routeName,
-                              ModalRoute.withName(HomeScreen.routeName))
+                          context,
+                          NotificationScreen.routeName,
+                          ModalRoute.withName(HomeScreen.routeName))
                           .whenComplete(() => _cubit.getHomeData());
                     },
                   ),
@@ -208,7 +215,10 @@ class DrawerWidget extends StatelessWidget {
                     onTap: () async {
                       Navigator.pop(context);
 
-                      if (ModalRoute.of(context)?.settings.name ==
+                      if (ModalRoute
+                          .of(context)
+                          ?.settings
+                          .name ==
                           HomeScreen.routeName) {
                         Navigator.pushNamed(context, ProfileScreen.routeName,
                             arguments: {
@@ -228,17 +238,20 @@ class DrawerWidget extends StatelessWidget {
                     },
                   ),
                   Divider(),
-                  if (userData!.hasRequests!)
+                  if (userData!.hasRoles! || userData!.hasRequests!)
                     buildListTile(
                       context,
                       title: 'Manage Requests',
                       leading: CustomIcons.business_time,
                       onTap: () async {
                         Navigator.pop(context);
-                        if (ModalRoute.of(context)?.settings.name ==
+                        if (ModalRoute
+                            .of(context)
+                            ?.settings
+                            .name ==
                             HomeScreen.routeName) {
                           Navigator.pushNamed(
-                                  context, ManageRequestsScreen.routeName)
+                              context, ManageRequestsScreen.routeName)
                               .whenComplete(() => _cubit.getHomeData());
                         } else {
                           final result = await Navigator.pushReplacementNamed(
@@ -377,8 +390,8 @@ class DrawerWidget extends StatelessWidget {
 
   Widget buildListTile(BuildContext context,
       {required IconData leading,
-      required String title,
-      void Function()? onTap}) {
+        required String title,
+        void Function()? onTap}) {
     return SizedBox(
       height: 55.h,
       child: Material(
@@ -389,10 +402,43 @@ class DrawerWidget extends StatelessWidget {
           minLeadingWidth: 0,
           minVerticalPadding: 0,
           contentPadding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
-          leading: SimpleShadow(
+          leading:
+          title == 'Manage Requests' ?
+          BlocBuilder<HomeCubit, HomeState>(
+  builder: (context, state) {
+    return Badge(
+            showBadge: HomeCubit.get(context).pendingRequestsCount!=0,
+            ignorePointer: true,
+            position: BadgePosition.bottomEnd(),
+            badgeColor: redColor,
+            padding: EdgeInsets.all(0),
+            badgeContent: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle
+              ),
+              height: 18,
+              width: 18,
+              child: AutoSizeText(
+                HomeCubit.get(context).pendingRequestsCount>99?'+99':
+                HomeCubit.get(context).pendingRequestsCount.toString(),
+              maxLines: 1,
+                wrapWords: false,
+                textAlign: TextAlign.center,
+                minFontSize: 9,
+                style: TextStyle(color: Colors.white,fontSize: 14.sp,fontWeight: FontWeight.bold),
+              ),
+            ),
+            child: SimpleShadow(
               offset: Offset(0, 4),
               color: Colors.black,
-              child: Icon(leading, color: mainColor, size: 25.r)),
+              child: Icon(leading, color: mainColor, size: 25.r),),
+          );
+  },
+) :SimpleShadow(
+            offset: Offset(0, 4),
+            color: Colors.black,
+            child: Icon(leading, color: mainColor, size: 25.r),)
+          ,
           title: Text(
             title,
             style: TextStyle(
