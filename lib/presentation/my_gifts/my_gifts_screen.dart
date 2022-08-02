@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,100 +137,94 @@ class _MyGiftsScreenState extends State<MyGiftsScreen> {
             ),
           ),
         ),
-        child: IntrinsicHeight(
+        child: SizedBox(
+          height: 100.h,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                flex: 6,
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          // border: Border.all()
-                          ),
-                      child: Image.network(
-                        gift.benefitCard!,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Image.asset('assets/images/more4u_card.png',
-                                fit: BoxFit.fill),
-                        fit: BoxFit.fill,
-                        alignment: Alignment.centerLeft,
-                      ),
-                    ),
-                  ],
+                flex: 7,
+                child: Image.network(
+                  gift.benefitCard!,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Image.asset('assets/images/more4u_card.png',
+                          fit: BoxFit.fill),
+                  fit: BoxFit.fill,
                 ),
               ),
               SizedBox(
                 width: 9,
               ),
               Expanded(
-                flex: 10,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        gift.benefitName ?? '',
-                        style: TextStyle(
-                          color: mainColor,
-                          fontSize: 14.sp,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.w600,
-                        ),
-                        overflow: TextOverflow.ellipsis,
+                flex: 11,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      gift.benefitName ?? '',
+                      style: TextStyle(
+                        color: mainColor,
+                        fontSize: 14.sp,
+                        fontFamily: "Roboto",
+                        fontWeight: FontWeight.w600,
                       ),
-                      Text(
-                        timeago.format(DateTime.parse(gift.date ?? '')),
-                        style: TextStyle(
-                          color: greyColor,
-                          fontSize: 12.sp,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.w600,
-                        ),
-                        overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      timeago.format(DateTime.parse(gift.date ?? '')),
+                      style: TextStyle(
+                        color: greyColor,
+                        fontSize: 12.sp,
+                        fontFamily: "Roboto",
+                        fontWeight: FontWeight.w600,
                       ),
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'From   ',
-                            style: TextStyle(
-                                fontSize: 12.sp,
-                                color: greyColor,
-                                fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    AutoSizeText.rich(
+                      maxLines: 1,
+                       TextSpan(children: [
+                        TextSpan(
+                          text: 'From   ',
+                          style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 14.sp,
+                              color: greyColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: gift.employeeName ?? '',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 12.sp,
+                            color: greyColor,
                           ),
-                          TextSpan(
-                            text: gift.employeeName ?? '',
-                            style: TextStyle(
+                        ),
+                      ]),
+                    ),
+                    AutoSizeText.rich(
+                      maxLines: 2,
+                     TextSpan(children: [
+                        TextSpan(
+                          text: 'Department   ',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
                               fontSize: 12.sp,
                               color: greyColor,
-                            ),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: gift.employeeDepartment.toString(),
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 10.sp,
+                            color: greyColor,
                           ),
-                        ]),
-                      ),
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'Department   ',
-                            style: TextStyle(
-                                fontSize: 12.sp,
-                                color: greyColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: gift.employeeDepartment.toString(),
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: greyColor,
-                            ),
-                          ),
-                        ]),
-                      ),
-                    ],
-                  ),
+                        ),
+                      ]),
+                    ),
+                  ],
                 ),
               ),
             ],
