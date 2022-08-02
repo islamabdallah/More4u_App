@@ -75,7 +75,7 @@ class BenefitRequest extends Equatable {
   @override
   List<Object?> get props => [
         requestNumber,
-    requestWorkflowId,
+        requestWorkflowId,
         from,
         to,
         message,
@@ -163,9 +163,11 @@ class MyAction extends Equatable {
   final String? action;
   final String? notes;
   final String? replayDate;
+  final String? whoIsResponseName;
 
-  const MyAction({this.action, this.notes, this.replayDate});
+  const MyAction(
+      {this.action, this.notes, this.replayDate, this.whoIsResponseName});
 
   @override
-  List<Object?> get props => [action, notes, replayDate];
+  List<Object?> get props => [action, notes, replayDate, whoIsResponseName];
 }

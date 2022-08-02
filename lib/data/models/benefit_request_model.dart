@@ -44,7 +44,7 @@ class BenefitRequestModel extends BenefitRequest {
     MyAction? myAction,
   }) : super(
           requestNumber: requestNumber,
-    requestWorkflowId: requestWorkflowId,
+          requestWorkflowId: requestWorkflowId,
           from: from,
           to: to,
           message: message,
@@ -190,15 +190,18 @@ class MyActionModel extends MyAction {
     String? action,
     String? notes,
     String? replayDate,
+    String? whoIsResponseName,
   }) : super(
           action: action,
           notes: notes,
           replayDate: replayDate,
+          whoIsResponseName: whoIsResponseName,
         );
 
   factory MyActionModel.fromJson(Map<String, dynamic> json) => MyActionModel(
         action: json['action'],
         notes: json['notes'],
         replayDate: json['replayDate'],
+        whoIsResponseName: json['whoIsResponseName'],
       );
 }

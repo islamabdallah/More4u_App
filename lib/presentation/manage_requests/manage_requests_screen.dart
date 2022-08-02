@@ -813,7 +813,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                         softWrap: true,
                                         text: TextSpan(children: [
                                           TextSpan(
-                                            text: 'You ',
+                                            text: request.myAction
+                                                    ?.whoIsResponseName ??
+                                                'You',
                                             style: TextStyle(
                                               color: greyColor,
                                               fontSize: 14.sp,
@@ -821,7 +823,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                           ),
                                           TextSpan(
                                             text:
-                                                request.myAction?.action ?? '',
+                                                ' ${request.myAction?.action ?? ''}',
                                             style: TextStyle(
                                               fontSize: 14.sp,
                                               color: getBenefitStatusColor(
@@ -1545,7 +1547,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                             softWrap: true,
                                             text: TextSpan(children: [
                                               TextSpan(
-                                                text: 'You ',
+                                                text: request.myAction
+                                                        ?.whoIsResponseName ??
+                                                    'You',
                                                 style: TextStyle(
                                                   color: greyColor,
                                                   fontSize: 14.sp,
@@ -1553,8 +1557,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen>
                                               ),
                                               TextSpan(
                                                 text:
-                                                    request.myAction?.action ??
-                                                        '',
+                                                    ' ${request.myAction?.action ?? ''}',
                                                 style: TextStyle(
                                                   fontSize: 14.sp,
                                                   color: getBenefitStatusColor(
